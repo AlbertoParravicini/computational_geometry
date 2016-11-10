@@ -7,17 +7,6 @@ class Point
   y: 0.0
   constructor: (@x, @y) ->
 
-area_of_triangle = (a, b, c, abs = true, divide = true) ->
-  console.log a, b, c
-  res = (a.x * b.y) + (a.y * c.x) + (b.x * c.y) - (b.y * c.x) - (c.y * a.x) - (b.x * a.y)
-  if divide == true
-    res = (1 / 2) * res
-  if abs == true
-    res = Math.abs(res)
-
-  console.log "area: ", res
-  return res
-
 swap = (list, index_1, index_2) ->
   temp = list[index_1]
   list[index_1] = list[index_2]
@@ -31,7 +20,7 @@ squared_distance = (a, b) ->
 
 
 ###################################
-# ASSIGNMENT ######################
+# ASSIGNMENT 1 ####################
 ###################################
 
 ###################################
@@ -49,41 +38,6 @@ orientation_test = (p, q, r) ->
   #console.log "det:", determinant, "\n"
   return determinant
 
-
-console.log "\nTest orientation_test"
-p = new Point(3, 1)
-q = new Point(4, 3)
-r = new Point(10, 2)
-console.log p, q, r
-result = orientation_test(p, q, r)
-console.log result
-switch result
-  when 0 then console.log "r is on the same line as p and q"
-  when 1 then console.log "r is on the left of p and q"
-  else console.log "r is on the right of p and q"
-
-# Check if the angle anchor-a is bigger than the angle anchor-b.
-compare_by_angle = (anchor, a, b) ->
-  orientation = orientation_test(anchor, a, b)
-  # if orientation < 0, anchor-a is bigger than anchor-b, as we have a right turn.
-  if orientation == 0 
-    if squared_distance(anchor, a) >= squared_distance(anchor, b)
-      return true
-    else return false
-  else if orientation < 0
-      return true
-  else return false
-
-console.log "\nTest compare"
-anchor = new Point(0, 0)
-a = new Point(4, -2)
-b = new Point(2, 2)
-console.log anchor, a, b
-result = compare_by_angle(anchor, a, b)
-if result == false
-  console.log "a is smaller than b"
-else console.log "a is bigger than b"
-
 ###################################
 # POINT INSIDE TRIANGLE ###########
 # Check if the point p lies inside the triangle formed by a, b, c.
@@ -91,7 +45,7 @@ else console.log "a is bigger than b"
 # Based on "http://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle"
 point_inside_triangle = (a, b, c, p) ->
   # The points a, b, c are collinear!
-  if area_of_triangle(a, b, c, divide = false, abs = false) == 0
+  if area_of_triangle(a, b, c, divide = false, abs = false) == 0 
     return false
 
   b1 = orientation_test(a, b, p) > 0
@@ -100,47 +54,12 @@ point_inside_triangle = (a, b, c, p) ->
 
   return (b1 == b2) && (b2 == b3)
 
-console.log "\nTest point_inside_triangle"
-a = new Point(-3, 1)
-b = new Point(1, 5)
-c = new Point(3, 1)
-p = new Point(10, 2)
-
-console.log "abc: ", a, b, c
-console.log "p: ", p
-
-console.log point_inside_triangle(a, b, c, p)
-
-# Check if the point p lies inside the triangle formed by a, b, c.
-# In this case, the given points are converted to baricentric coordinates.
-# Note: if p lies on an edge, it isn't considered to be inside the triangle.
-# Based on "http://www.geeksforgeeks.org/check-whether-a-given-point-lies-inside-a-triangle-or-not/"
-point_inside_triangle_baricentric = (a, b, c, p) ->
-  area_abc = area_of_triangle(a, b, c)
-  # The points a, b, c are collinear!
-  if area_abc == 0 
-    return false
-
-  alfa = area_of_triangle(p, b, c)
-  beta = area_of_triangle(p, a, c)
-  gamma = area_of_triangle(p, a, b)
-
-  return alfa + beta + gamma == area_abc
-
-console.log "\nTest point_inside_baricentric"
-console.log point_inside_triangle_baricentric(a, b, c, p)
-
 
 
 
 ###################################
 # RADIAL SORT #####################
 ###################################
-points = [new Point(1, 1), new Point(-2, 1), new Point(-1, 3), new Point(2, 1), new Point(2, -2), new Point(-1, -2), new Point(2, 1)]#, new Point(2, -2), new Point(2, 1), new Point(1, 1), new Point(-1, -2), new Point(4, -2), new Point(0, 0)]
-
-for p in points
-  p.x -= anchor.x
-  p.y -= anchor.y
 # Sort clockwise (or counter-clockwise) a list of points w.r.t. a given anchor point.
 # If the points, translated w.r.t. the anchor, span multiple quadrants of the plane,
 # they are sorted by taking the positive x semi-axis as starting point.
@@ -165,28 +84,22 @@ radial_sort = (points, anchor, cw) ->
     if a.x - anchor.x == 0 and b.x - anchor.x == 0
       if a.y - anchor.y < 0 and b.y - anchor.y < 0
         return if a.y < b.y then 1 else -1
-      else
+      else 
         return if a.y > b.y then 1 else -1
     # Check the position of b wrt the line defined by the anchor and a.
     # b has greater angle than a if it lies on the left of the line.
     orientation = orientation_test(anchor, a, b)
     # if orientation < 0, anchor-a is bigger than anchor-b, as we have a right turn.
-    if orientation == 0
+    if orientation == 0 
       return if squared_distance(anchor, a) >= squared_distance(anchor, b) then 1 else -1
-    else
+    else 
       return if orientation > 0 then 1 else -1
     )
 
-  if !cw
+  if !cw 
     points.reverse()
     
   return points
-
-console.log "\nTesting radial sort"
-console.log points
-radial_sort(points, anchor = new Point(0,0))
-console.log(points)
-
 
 
 
@@ -194,11 +107,6 @@ console.log(points)
 ###################################
 # CONVEX HULL #####################
 ###################################
-# points = [new Point(-3, 1), new Point(1, 5), new Point(-4, -4), new Point(1, -3), new Point(0, 2), new Point(0, -3),
-#           new Point(-3, 4), new Point(-1, 3), new Point(-3, -3), new Point(3, 1), new Point(4, 3), new Point(-3, -1)]
-points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), new Point(1, 1),
-     new Point(-2, 1), new Point(4, -2), new Point(0, 0)]
-
 console.log points
 
 # Compute the convex hull of the given list of points by using Graham scan
@@ -246,9 +154,82 @@ convex_hull_graham_scan = (input_points) ->
 
   return convex_hull
 
-# Test convex hull
-points = convex_hull_graham_scan(points)
+
+
+
+
+
+
+###################################
+# ASSIGNMENT 2 ####################
+###################################
+
+# FInd the required element in a sorted list.
+# Inspired by "https://www.nczonline.net/blog/2009/09/01/computer-science-in-javascript-binary-search/"
+binary_search = (list, elem) ->
+  start_index = 0
+  stop_index = list.length - 1
+  middle = Math.floor((stop_index + start_index) / 2)
+
+  while (list[middle] != elem and start_index < stop_index) 
+    if (elem < list[middle])
+      stop_index = middle - 1
+    else if (elem > list[middle])
+      start_index = middle + 1
+      
+    middle = Math.floor((stop_index + start_index) / 2)
+  
+  if list[middle] != elem  
+    throw(new Error("Element not found!"))
+  return middle
+
+inclusion_in_hull = (points, new_point) ->
+
+  # pick the first point p0 of the hull as reference
+  # pick the start and stop indexes
+  # pick the middle index 
+  # if  p0-q-middle is left and p0-q-middle+1 is right, stop
+  # if both are left, q is below:
+  #   stop = middle - 1,
+  #   middle = ...
+  # else q is above
+
+  p0 = points[0]
+  start_index = 1
+  stop_index = points.length - 1
+  middle = Math.floor((stop_index + start_index) / 2)
+
+  while (start_index < stop_index) 
+    o1 = orientation_test(p0, points[middle], new_point)
+    o2 = orientation_test(p0, points[middle + 1], new_point)
+    console.log points[middle], points[middle + 1]
+    console.log o1, o2
+    if o1 >= 0 and o2 <= 0 
+      return orientation_test(points[middle], points[middle + 1], new_point) > 0
+    else 
+      if o1 >= 0 and o2 >= 0
+        start_index = middle + 1
+      else 
+        stop_index = middle
+
+    middle = Math.floor((stop_index + start_index) / 2)
+  
+  return false
+
+
+
+points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), new Point(1, 1),
+     new Point(-2, 1), new Point(4, -2)]
+new_point = new Point(-1, 2)
+
+points = [new Point(100, 10), new Point(300, 200), new Point(423, 200), new Point(100, 300), new Point(500, 120), 
+    new Point(200, 320), new Point(50, 40),new Point(50, 350), new Point(150, 350),
+    new Point(220, 400), new Point(240, 320), new Point(280, 450)];
+new_point = new Point(153, 44)
+
 console.log points
+hull = convex_hull_graham_scan(points)
+console.log hull
 
 
-
+console.log inclusion_in_hull(hull, new_point)
