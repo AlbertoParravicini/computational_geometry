@@ -11,15 +11,29 @@ setup = function() {
 };
 
 draw = function() {
-  var i, j, k, len, p_i, ref;
+  var i, j, k, len, p_i, ref, ref1;
   background(200);
-  for (j = 0, len = input_points.length; j < len; j++) {
-    p_i = input_points[j];
+  line(0, 240, 640, 240);
+  line(320, 0, 320, 480);
+  fill("green");
+  stroke("green");
+  ellipse(0, 0, 6, 6);
+  ellipse(input_points[0].x, input_points[0].y, 6, 6);
+  stroke(51);
+  fill(51);
+  ref = input_points.slice(1);
+  for (j = 0, len = ref.length; j < len; j++) {
+    p_i = ref[j];
     ellipse(p_i.x, p_i.y, 4, 4);
   }
   if (convex_hull.length > 2) {
-    for (i = k = 0, ref = convex_hull.length - 2; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
-      line(convex_hull[i].x, convex_hull[i].y, convex_hull[i + 1].x, convex_hull[i + 1].y);
+    fill("green");
+    stroke("green");
+    ellipse(convex_hull[0].x, convex_hull[0].y, 6, 6);
+    fill("black");
+    stroke("black");
+    for (i = k = 1, ref1 = convex_hull.length - 1; 1 <= ref1 ? k <= ref1 : k >= ref1; i = 1 <= ref1 ? ++k : --k) {
+      line(convex_hull[i - 1].x, convex_hull[i - 1].y, convex_hull[i].x, convex_hull[i].y);
     }
     return line(convex_hull[convex_hull.length - 1].x, convex_hull[convex_hull.length - 1].y, convex_hull[0].x, convex_hull[0].y);
   }

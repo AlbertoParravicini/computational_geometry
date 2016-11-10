@@ -6,12 +6,26 @@ setup = () ->
 
 draw = () -> 
     background(200)
-    for p_i in input_points
+    line(0, 240, 640, 240)
+    line(320, 0, 320, 480)
+    fill("green");
+    stroke("green");
+    ellipse(0, 0, 6, 6)
+    ellipse(input_points[0].x, input_points[0].y, 6, 6)
+    stroke(51);
+    fill(51);
+    for p_i in input_points[1..]
         ellipse(p_i.x, p_i.y, 4, 4)
 
+
     if convex_hull.length > 2
-        for i in [0..convex_hull.length - 2]
-            line(convex_hull[i].x, convex_hull[i].y, convex_hull[i + 1].x, convex_hull[i + 1].y)
+        fill("green");
+        stroke("green");
+        ellipse(convex_hull[0].x, convex_hull[0].y, 6, 6)
+        fill("black");
+        stroke("black");
+        for i in [1..convex_hull.length - 1]
+            line(convex_hull[i-1].x, convex_hull[i-1].y, convex_hull[i].x, convex_hull[i].y)
         line(convex_hull[convex_hull.length - 1].x, convex_hull[convex_hull.length - 1].y, convex_hull[0].x, convex_hull[0].y)
 
 mousePressed = () ->

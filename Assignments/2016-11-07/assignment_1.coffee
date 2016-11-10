@@ -145,15 +145,19 @@ for p in points
 # If the points, translated w.r.t. the anchor, span multiple quadrants of the plane,
 # they are sorted by taking the positive x semi-axis as starting point.
 # Inspired by "http://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order"
-radial_sort = (points, anchor, ccw) ->
+radial_sort = (points, anchor, cw) ->
   if points.length == 0
     return []
     
   anchor ?= new Point(points[0].x, points[0].y)
-  ccw ?= true
+  cw ?= true
   
   points.sort((a, b) ->
-    console.log anchor.x, anchor.y
+    
+    if a.x - anchor.x == 0 and a.y - anchor.y == 0 and b.x - anchor.x != 0 and b.y - anchor.y != 0
+      return -1
+    if a.x - anchor.x != 0 and a.y - anchor.y != 0 and b.x - anchor.x == 0 and b.y - anchor.y == 0
+      return 1
     if a.x - anchor.x >= 0 and b.x - anchor.x < 0
       return  -1
     if a.x - anchor.x < 0 and b.x - anchor.x >= 0
@@ -173,8 +177,10 @@ radial_sort = (points, anchor, ccw) ->
       return if orientation > 0 then 1 else -1
     )
 
-  if !ccw 
+  if !cw 
     points.reverse()
+    
+  return points
 
 console.log "\nTesting radial sort"
 console.log points
@@ -199,25 +205,27 @@ console.log points
 convex_hull_graham_scan = (input_points) ->
   points = input_points.slice()
   convex_hull = []
-  # Find the point with the smalles y.
-  smallest_y_point_index = 0
+  # Find the point with the smalles x.
+  smallest_x_point_index = 0
   for i in [0..points.length - 1]
-    if ((points[i].y < points[smallest_y_point_index].y) ||
-        ((points[i].y == points[smallest_y_point_index].y) && (points[i].x < points[smallest_y_point_index].x)))
-      smallest_y_point_index = i
-  # Put the point with smallest y at the beginning of the list.
-  swap(points, 0, smallest_y_point_index)
-  anchor = points[0]
+    if ((points[i].x < points[smallest_x_point_index].x) ||
+        ((points[i].x == points[smallest_x_point_index].x) && (points[i].y < points[smallest_x_point_index].y)))
+      smallest_x_point_index = i
+  # Put the point with smallest x at the beginning of the list.
+  swap(points, 0, smallest_x_point_index)
 
   # Order the list with respect to the angle that each point forms 
   # with the anchor. Given two points a, b, in the output a is before b
   # if the polar angle of a w.r.t the anchor is bigger than the one of b,
   # in counter-clockwise direction.
-  radial_sort(points)
+  anchor = new Point(points[0].x, points[0].y)
+  points = [anchor].concat(radial_sort(points[1..], anchor, cw = false))
+  console.log "sorted: \n", points
   # If more points have the same angle w.r.t. the anchor, keep only the farthest one.
-  for i in [1..points.length-1] by 1
-    while i < points.length-1 and (orientation_test(anchor, points[i], points[i+1]) == 0)
-      points.splice(i, 1)
+  i = 1
+  while i < points.length-1 and (orientation_test(anchor, points[i], points[i+1]) == 0)
+    points.splice(i, 1)
+  console.log "sorted2: \n", points
 
   # If there are fewer than 3 points, it isn't possible to build a convex hull.
   if points.length < 3
@@ -225,17 +233,19 @@ convex_hull_graham_scan = (input_points) ->
 
   # Add the first 3 points to the convex hull.
   # The first 2 will be for sure part of the hull.
-  convex_hull.push(points[0])
-  convex_hull.push(points[1])
-  convex_hull.push(points[2])
+  convex_hull.push(new Point(points[0].x, points[0].y))
+  convex_hull.push(new Point(points[1].x, points[1].y))
+  convex_hull.push(new Point(points[2].x, points[2].y))
 
   for i in [3..points.length - 1]
     # While the i-th point forms a non-left turn with the last 2 elements of the convex hull...
     while orientation_test(convex_hull[convex_hull.length - 2], convex_hull[convex_hull.length - 1], points[i]) <= 0
       # Delete from the convex hull the point that causes a right turn.
+      if convex_hull.length < 2
+        console.log "alert: ", convex_hull
       convex_hull.pop()  
     # Once no new right turns are found, add the point that gives a left turn.   
-    convex_hull.push(points[i])
+    convex_hull.push(new Point(points[i].x, points[i].y))
 
   return convex_hull
 

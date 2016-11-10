@@ -32,7 +32,7 @@ mousePressed = () ->
 
 keyPressed = () ->
    console.log "\n input: ", input_points
-   radial_sort(input_points, anchor = null, ccw = true)
+   radial_sort(input_points, anchor = null, cw = true)
    console.log "sorted: ", input_points, "\n"
     
 

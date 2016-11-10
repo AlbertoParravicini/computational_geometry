@@ -162,19 +162,24 @@ for (j = 0, len = points.length; j < len; j++) {
   p.y -= anchor.y;
 }
 
-radial_sort = function(points, anchor, ccw) {
+radial_sort = function(points, anchor, cw) {
   if (points.length === 0) {
     return [];
   }
   if (anchor == null) {
     anchor = new Point(points[0].x, points[0].y);
   }
-  if (ccw == null) {
-    ccw = true;
+  if (cw == null) {
+    cw = true;
   }
   points.sort(function(a, b) {
     var orientation;
-    console.log(anchor.x, anchor.y);
+    if (a.x - anchor.x === 0 && a.y - anchor.y === 0 && b.x - anchor.x !== 0 && b.y - anchor.y !== 0) {
+      return -1;
+    }
+    if (a.x - anchor.x !== 0 && a.y - anchor.y !== 0 && b.x - anchor.x === 0 && b.y - anchor.y === 0) {
+      return 1;
+    }
     if (a.x - anchor.x >= 0 && b.x - anchor.x < 0) {
       return -1;
     }
@@ -211,9 +216,10 @@ radial_sort = function(points, anchor, ccw) {
       }
     }
   });
-  if (!ccw) {
-    return points.reverse();
+  if (!cw) {
+    points.reverse();
   }
+  return points;
 };
 
 console.log("\nTesting radial sort");
@@ -229,34 +235,38 @@ points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1)
 console.log(points);
 
 convex_hull_graham_scan = function(input_points) {
-  var convex_hull, i, k, l, m, ref, ref1, ref2, smallest_y_point_index;
+  var convex_hull, cw, i, k, l, ref, ref1, smallest_x_point_index;
   points = input_points.slice();
   convex_hull = [];
-  smallest_y_point_index = 0;
+  smallest_x_point_index = 0;
   for (i = k = 0, ref = points.length - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
-    if ((points[i].y < points[smallest_y_point_index].y) || ((points[i].y === points[smallest_y_point_index].y) && (points[i].x < points[smallest_y_point_index].x))) {
-      smallest_y_point_index = i;
+    if ((points[i].x < points[smallest_x_point_index].x) || ((points[i].x === points[smallest_x_point_index].x) && (points[i].y < points[smallest_x_point_index].y))) {
+      smallest_x_point_index = i;
     }
   }
-  swap(points, 0, smallest_y_point_index);
-  anchor = points[0];
-  radial_sort(points);
-  for (i = l = 1, ref1 = points.length - 1; l <= ref1; i = l += 1) {
-    while (i < points.length - 1 && (orientation_test(anchor, points[i], points[i + 1]) === 0)) {
-      points.splice(i, 1);
-    }
+  swap(points, 0, smallest_x_point_index);
+  anchor = new Point(points[0].x, points[0].y);
+  points = [anchor].concat(radial_sort(points.slice(1), anchor, cw = false));
+  console.log("sorted: \n", points);
+  i = 1;
+  while (i < points.length - 1 && (orientation_test(anchor, points[i], points[i + 1]) === 0)) {
+    points.splice(i, 1);
   }
+  console.log("sorted2: \n", points);
   if (points.length < 3) {
     return [];
   }
-  convex_hull.push(points[0]);
-  convex_hull.push(points[1]);
-  convex_hull.push(points[2]);
-  for (i = m = 3, ref2 = points.length - 1; 3 <= ref2 ? m <= ref2 : m >= ref2; i = 3 <= ref2 ? ++m : --m) {
+  convex_hull.push(new Point(points[0].x, points[0].y));
+  convex_hull.push(new Point(points[1].x, points[1].y));
+  convex_hull.push(new Point(points[2].x, points[2].y));
+  for (i = l = 3, ref1 = points.length - 1; 3 <= ref1 ? l <= ref1 : l >= ref1; i = 3 <= ref1 ? ++l : --l) {
     while (orientation_test(convex_hull[convex_hull.length - 2], convex_hull[convex_hull.length - 1], points[i]) <= 0) {
+      if (convex_hull.length < 2) {
+        console.log("alert: ", convex_hull);
+      }
       convex_hull.pop();
     }
-    convex_hull.push(points[i]);
+    convex_hull.push(new Point(points[i].x, points[i].y));
   }
   return convex_hull;
 };
