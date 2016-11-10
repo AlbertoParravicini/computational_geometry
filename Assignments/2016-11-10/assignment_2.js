@@ -168,12 +168,16 @@ inclusion_in_hull = function(points, new_point) {
     console.log(points[middle], points[middle + 1]);
     console.log(o1, o2);
     if (o1 >= 0 && o2 <= 0) {
-      return orientation_test(points[middle], points[middle + 1], new_point) > 0;
+      if (orientation_test(points[middle], points[middle + 1], new_point) > 0) {
+        return [true, points[0], points[middle], points[middle + 1]];
+      } else {
+        return false;
+      }
     } else {
       if (o1 >= 0 && o2 >= 0) {
         start_index = middle + 1;
       } else {
-        stop_index = middle - 1;
+        stop_index = middle;
       }
     }
     middle = Math.floor((stop_index + start_index) / 2);
@@ -183,12 +187,16 @@ inclusion_in_hull = function(points, new_point) {
 
 points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), new Point(1, 1), new Point(-2, 1), new Point(4, -2)];
 
+new_point = new Point(-1, 2);
+
+points = [new Point(100, 10), new Point(300, 200), new Point(423, 200), new Point(100, 300), new Point(500, 120), new Point(200, 320), new Point(50, 40), new Point(50, 350), new Point(150, 350), new Point(220, 400), new Point(240, 320), new Point(280, 450)];
+
+new_point = new Point(153, 44);
+
 console.log(points);
 
 hull = convex_hull_graham_scan(points);
 
 console.log(hull);
-
-new_point = new Point(1, 2.5);
 
 console.log(inclusion_in_hull(hull, new_point));

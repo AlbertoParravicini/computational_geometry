@@ -205,7 +205,7 @@ inclusion_in_hull = (points, new_point) ->
     console.log points[middle], points[middle + 1]
     console.log o1, o2
     if o1 >= 0 and o2 <= 0 
-      return orientation_test(points[middle], points[middle + 1], new_point) > 0
+      return if orientation_test(points[middle], points[middle + 1], new_point) > 0 then [true, points[0], points[middle], points[middle + 1]] else false
     else 
       if o1 >= 0 and o2 >= 0
         start_index = middle + 1

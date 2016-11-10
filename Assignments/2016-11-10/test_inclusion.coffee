@@ -6,6 +6,10 @@ new_point = new Point(320, 240)
 
 hull = convex_hull_graham_scan(input_points)
 
+fill_triangle = false
+
+res = false
+
 setup = () ->
     createCanvas(640, 480)
     fill('black') 
@@ -25,17 +29,28 @@ draw = () ->
     if hull.length > 2
         for i in [0..hull.length - 2]
             line(hull[i].x, hull[i].y, hull[i + 1].x, hull[i + 1].y)
-        #line(hull[hull.length - 1].x, hull[hull.length - 1].y, hull[0].x, hull[0].y)
+        line(hull[hull.length - 1].x, hull[hull.length - 1].y, hull[0].x, hull[0].y)
 
         for i in [2..hull.length - 2]
-            stroke("red");
+            stroke("red")
             line(hull[0].x, hull[0].y, hull[i].x, hull[i].y)
-            stroke("black");
+            stroke("black")
+
+    if fill_triangle
+        console.log res
+        fill(255, 204, 0, 80)
+        triangle(res[1].x, res[1].y, res[2].x, res[2].y, res[3].x, res[3].y)
+        noFill()
  
 mousePressed = () ->
     new_point = new Point(mouseX, mouseY)
+    fill_triangle = false
 
 keyPressed = () -> 
-   console.log "result: ", inclusion_in_hull(hull, new_point), "\n"
+   res = inclusion_in_hull(hull, new_point)
+   if !res
+    console.log "result: ", res, "\n"
+   else 
+    fill_triangle = true
     
 
