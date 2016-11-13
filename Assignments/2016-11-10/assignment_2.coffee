@@ -183,6 +183,15 @@ binary_search = (list, elem) ->
     throw(new Error("Element not found!"))
   return middle
 
+
+###################################
+# POINT INCLUSION IN HULL #########
+###################################
+
+# Find if a given point is inside a convex polygon.
+# Note that the input list of points must be convex,
+# and must be radially sorted counter-clockwise, 
+# starting from the point with smallest x
 inclusion_in_hull = (points, new_point) ->
 
   # pick the first point p0 of the hull as reference
@@ -213,7 +222,6 @@ inclusion_in_hull = (points, new_point) ->
         stop_index = middle
 
     middle = Math.floor((stop_index + start_index) / 2)
-  
   return false
 
 
@@ -222,14 +230,163 @@ points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1)
      new Point(-2, 1), new Point(4, -2)]
 new_point = new Point(-1, 2)
 
-points = [new Point(100, 10), new Point(300, 200), new Point(423, 200), new Point(100, 300), new Point(500, 120), 
-    new Point(200, 320), new Point(50, 40),new Point(50, 350), new Point(150, 350),
-    new Point(220, 400), new Point(240, 320), new Point(280, 450)];
-new_point = new Point(153, 44)
+
+###################################
+# FIND TANGENTS TO A POLYGON ######
+###################################
+# Find the tangents of a point to a given convex polygon.
+# Note that the input list of points must be convex,
+# and must be radially sorted counter-clockwise, 
+# starting from the point with smallest x.
+# Works in linear time, inspired by "http://geomalgorithms.com/a15-_tangents.html"
+find_tangents = (input_points, new_point) ->
+  points = input_points.slice()
+  if inclusion_in_hull(points, new_point) 
+    console.log "The point ", new_point, "is inside the polygon!"
+    return false
+
+  points = points.concat([points[0]])
+
+  v_r = points[0]
+  v_l = points[0]
+  
+  for i in [1..points.length-2]
+    e_prev = orientation_test(points[i - 1], points[i], new_point) >= 0
+    e_next = orientation_test(points[i], points[i + 1], new_point) >= 0
+    if !e_prev and e_next
+      v_r = points[i]
+    else if e_prev and !e_next
+      v_l = points[i]
+
+  return [true, v_l, v_r]
+
+points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), 
+     new Point(-2, 1), new Point(4, -2)]
+new_point = new Point(-4, 0)
+
+# Given a convex polygon and an external point, find the edge of the polygon that intersect the line 
+# given by the external point and the leftmost point of the polygon.
+find_intersecting_edge = (input_points, new_point) -> 
+  list = input_points.slice(0)
+  
+  if inclusion_in_hull(list, new_point) 
+    console.log "The point ", new_point, "is inside the polygon!"
+    return false 
+
+  list = list.concat([list[0]])
+  start = 0
+  stop = list.length - 1
+
+  middle = Math.floor((start + stop) / 2)
+
+  while start < stop
+    o1 = orientation_test(new_point, list[0], list[middle])
+    o2 = orientation_test(new_point, list[0], list[middle + 1])
+    if (new_point.x <= list[0].x) 
+      if o1 <= 0 and o2 >= 0
+        return [middle, list[middle], list[middle + 1]]
+      else if o1 >= 0 and o2 >= 0
+        stop = middle
+      else     
+        start = middle + 1
+
+    else 
+      if o1 >= 0 and o2 <= 0
+        return [middle, list[middle], list[middle + 1]] 
+      else if o1 >= 0 and o2 >= 0
+        start = middle + 1
+      else
+        stop = middle
+      
+    middle = Math.floor((start + stop) / 2)
+
+  if new_point.y < points[0].y  
+    return [list.length - 2, list[points.length - 2], list[0]]
+  else 
+    return [0, list[0], list[1]]
+
+
+
+find_tangents_bin_search = (input_points, new_point) ->
+  points = input_points.slice(0)
+  
+  if inclusion_in_hull(points, new_point) 
+    console.log "The point ", new_point, "is inside the polygon!"
+    return false 
+
+
+  # Find where to split the polygon.
+  intersecting_edge = find_intersecting_edge(points, new_point)
+
+  stop_bottom = intersecting_edge[0]
+  
+  start_top = stop_bottom + 1
+  # Needed to handle the tangents to the second edge.
+  if stop_bottom == 1 
+    stop_bottom = 2
+
+  points = points.concat([points[0]])
+  start = 0
+  stop = points.length - 1
+
+  middle = Math.floor((start + stop) / 2)
+
+  middle_bottom = Math.floor((start + stop_bottom) / 2)
+  middle_top = Math.floor((start_top + stop) / 2)
+
+  v_b = false
+  v_t = false
+
+  # Find the bottom tangent
+  while (start < stop_bottom)
+    o_bottom_1 = orientation_test(new_point, points[middle_bottom - 1], points[middle_bottom])
+    o_bottom_2 = orientation_test(new_point, points[middle_bottom], points[middle_bottom + 1])
+    if  o_bottom_1 * o_bottom_2 <= 0
+      v_b = new Point(points[middle_bottom].x, points[middle_bottom].y)
+      break
+    else if o_bottom_1 <= 0 and o_bottom_2 <= 0
+      if new_point.x < points[0].x 
+        start = middle_bottom + 1
+      else
+        stop_bottom = middle_bottom
+    else if o_bottom_1 >= 0 and o_bottom_2 >= 0
+      if new_point.x < points[0].x 
+        stop_bottom = middle_bottom 
+      else
+          start = middle_bottom + 1
+    middle_bottom = Math.floor((start + stop_bottom) / 2)
+
+  # Find the top tangent
+  while (start_top < stop)    
+    o_top_1 = orientation_test(new_point, points[middle_top - 1], points[middle_top])
+    o_top_2 = orientation_test(new_point, points[middle_top], points[middle_top + 1])
+    if o_top_1 * o_top_2 <= 0
+      v_t = new Point(points[middle_top].x, points[middle_top].y)
+      break
+    else if o_top_1 >= 0 and o_top_2 >= 0
+      if new_point.x < points[0].x 
+        start_top = middle_top + 1
+      else 
+        stop = middle_top 
+    else if o_top_1 <= 0 and o_top_2 <= 0
+      if new_point.x < points[0].x 
+        stop = middle_top 
+      else
+        start_top = middle_top + 1
+    middle_top = Math.floor((start_top + stop) / 2)
+ 
+  v_b = points[middle_bottom]
+  v_t = points[middle_top]
+ 
+  return [true, v_b, v_t]
+
+
+points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), 
+     new Point(-2, 1), new Point(4, -2)]
+new_point = new Point(-4, 0)
+
 
 console.log points
 hull = convex_hull_graham_scan(points)
 console.log hull
-
-
-console.log inclusion_in_hull(hull, new_point)
+console.log find_tangents_bin_search(hull, new_point)
