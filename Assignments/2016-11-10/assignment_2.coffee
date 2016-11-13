@@ -16,13 +16,6 @@ squared_distance = (a, b) ->
   (a.x - b.x) ** 2 + (a.y - b.y) ** 2
 
 
-
-
-
-###################################
-# ASSIGNMENT 1 ####################
-###################################
-
 ###################################
 # ORIENTATION DETERMINANT #########
 # Test whether the point "r" lies on the left or on the right
@@ -164,25 +157,7 @@ convex_hull_graham_scan = (input_points) ->
 # ASSIGNMENT 2 ####################
 ###################################
 
-# FInd the required element in a sorted list.
-# Inspired by "https://www.nczonline.net/blog/2009/09/01/computer-science-in-javascript-binary-search/"
-binary_search = (list, elem) ->
-  start_index = 0
-  stop_index = list.length - 1
-  middle = Math.floor((stop_index + start_index) / 2)
-
-  while (list[middle] != elem and start_index < stop_index) 
-    if (elem < list[middle])
-      stop_index = middle - 1
-    else if (elem > list[middle])
-      start_index = middle + 1
-      
-    middle = Math.floor((stop_index + start_index) / 2)
-  
-  if list[middle] != elem  
-    throw(new Error("Element not found!"))
-  return middle
-
+# Binary search code inspired by "https://www.nczonline.net/blog/2009/09/01/computer-science-in-javascript-binary-search/"
 
 ###################################
 # POINT INCLUSION IN HULL #########
@@ -226,13 +201,10 @@ inclusion_in_hull = (points, new_point) ->
 
 
 
-points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), new Point(1, 1),
-     new Point(-2, 1), new Point(4, -2)]
-new_point = new Point(-1, 2)
 
 
 ###################################
-# FIND TANGENTS TO A POLYGON ######
+# FIND TANGENTS TO A POLYGON, LINEAR TIME
 ###################################
 # Find the tangents of a point to a given convex polygon.
 # Note that the input list of points must be convex,
@@ -260,9 +232,6 @@ find_tangents = (input_points, new_point) ->
 
   return [true, v_l, v_r]
 
-points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), 
-     new Point(-2, 1), new Point(4, -2)]
-new_point = new Point(-4, 0)
 
 # Given a convex polygon and an external point, find the edge of the polygon that intersect the line 
 # given by the external point and the leftmost point of the polygon.
@@ -306,7 +275,13 @@ find_intersecting_edge = (input_points, new_point) ->
     return [0, list[0], list[1]]
 
 
-
+###################################
+# FIND TANGENTS TO A POLYGON, BINARY SEARCH
+###################################
+# Find the tangents of a point to a given convex polygon.
+# Note that the input list of points must be convex,
+# and must be radially sorted counter-clockwise, 
+# starting from the point with smallest x.
 find_tangents_bin_search = (input_points, new_point) ->
   points = input_points.slice(0)
   
@@ -386,7 +361,3 @@ points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1)
 new_point = new Point(-4, 0)
 
 
-console.log points
-hull = convex_hull_graham_scan(points)
-console.log hull
-console.log find_tangents_bin_search(hull, new_point)
