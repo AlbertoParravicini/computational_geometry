@@ -25,6 +25,7 @@ setup = function() {
 draw = function() {
   var k, l, len, m, p_i, ref1, ref2;
   background(200);
+  scale(1, -1);
   line(0, h / 2, w, h / 2);
   line(w / 2, 0, w / 2, h);
   fill("green");
@@ -41,7 +42,6 @@ draw = function() {
     for (i = l = 0, ref1 = hull.length - 2; 0 <= ref1 ? l <= ref1 : l >= ref1; i = 0 <= ref1 ? ++l : --l) {
       line(hull[i].x, hull[i].y, hull[i + 1].x, hull[i + 1].y);
     }
-    line(hull[hull.length - 1].x, hull[hull.length - 1].y, hull[0].x, hull[0].y);
     for (i = m = 2, ref2 = hull.length - 2; 2 <= ref2 ? m <= ref2 : m >= ref2; i = 2 <= ref2 ? ++m : --m) {
       stroke("red");
       line(hull[0].x, hull[0].y, hull[i].x, hull[i].y);

@@ -20,6 +20,7 @@ setup = () ->
 
 draw = () -> 
     background(200)
+    scale(1, -1);
     line(0, h / 2, w, h / 2)
     line(w / 2, 0, w / 2, h)
     fill("green");
@@ -34,7 +35,7 @@ draw = () ->
     if hull.length > 2
         for i in [0..hull.length - 2]
             line(hull[i].x, hull[i].y, hull[i + 1].x, hull[i + 1].y)
-        line(hull[hull.length - 1].x, hull[hull.length - 1].y, hull[0].x, hull[0].y)
+        #line(hull[hull.length - 1].x, hull[hull.length - 1].y, hull[0].x, hull[0].y)
 
         for i in [2..hull.length - 2]
             stroke("red")
