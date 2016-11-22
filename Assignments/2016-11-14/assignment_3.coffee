@@ -51,7 +51,7 @@ simple_polygon_orientation_clockwise = (input_simple_polygon) ->
 
 # Check if adding a given new point to a list of points (sorted cw or ccw) creates a self-intersection.
 check_self_intersection_new_point = (input_points_list, new_point) ->
-  # If we have just 0 or 1 vertex, we have no self-intersection.
+  # If we have just 0 or 1 vertices, we have no self-intersection.
   if input_points_list.length < 2
     return false
   # If we have just two vertices and the new point is not one of them,

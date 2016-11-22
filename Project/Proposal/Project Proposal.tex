@@ -1,0 +1,92 @@
+\documentclass[
+12pt,
+a4paper,
+oneside,
+headinclude,
+footinclude]{article}
+
+
+
+\usepackage[table,xcdraw,svgnames]{xcolor}
+\usepackage[capposition=bottom]{floatrow}
+\usepackage[colorlinks]{hyperref} % to add hyperlinks
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{csquotes}
+\usepackage{amsmath} % For the big bracket
+\usepackage[export]{adjustbox}[2011/08/13]
+% \usepackage{subfig}
+\usepackage{array}
+\usepackage{url}
+\usepackage{graphicx} % to insert images
+\usepackage{titlepic} % to insert image on front page
+\usepackage{geometry} % to define margin
+\usepackage{listings} % to add code
+\usepackage{caption}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[utf8]{inputenc} % Required for including letters with accents
+\usepackage{color}
+\usepackage{subcaption}
+\usepackage[nochapters, eulermath, dottedtoc ]{classicthesis}
+
+
+\usepackage{color}
+
+
+\usepackage{etoolbox}
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+
+\definecolor{webbrown}{rgb}{.6,0,0}
+
+\usepackage{titlesec} % to customize titles
+\titleformat{\chapter}{\normalfont\huge}{\textbf{\thechapter.}}{20pt}{\huge\textbf}[\vspace{2ex}\titlerule] % to customize chapter title aspect
+\titleformat{\section} % to customize section titles
+  {\fontsize{14}{15}\bfseries}{\thesection}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{-50pt}{20pt} % to customize chapter title space
+
+\graphicspath{ {../Figures/} } % images folder
+\parindent0pt \parskip10pt % make block paragraphs
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm,headheight=3cm,headsep=3cm,footskip=1cm} % define margin
+\hyphenation{Fortran hy-phen-ation}
+
+\AtBeginDocument{%
+    \hypersetup{
+    colorlinks=true, breaklinks=true, bookmarks=true,
+    urlcolor=webbrown, citecolor=webbrown, linkcolor=Black% Link colors
+}}
+
+\pagestyle{plain}
+\title{\textbf{Computational Geometry: \\ Zonoids Visualization}}
+\author{{Alberto Parravicini}}
+\date{}	% default \today
+
+% =============================================== BEGIN
+
+\begin{document}
+\maketitle
+\pagenumbering{gobble}
+
+\section{Project Proposal}
+The project will focus on the study of zonoids and their properties. 
+\begin{itemize}
+	\item Interactive \textit{visualization} of \textbf{2-Dimensional Zonoids} of arbitrary polygons.
+	\item Study of the relation between \textit{Zonoids} and \textit{k-levels} of lines arrangements.\\
+	Once again, the idea is to offer an interactive visualization to guide the understanding of these relationship; in fact, given a polygon, it is possible to extract information about its zonoids by analyzing the k-levels of the \textit{dual line arrangement} of the polygon.
+	\item The aforementioned visualizations will be embedded in a \textit{webpage} that will provide the readed with the necessary background knowledge about zonoids. \\
+	On a side note, using \textit{incremental visualizations} to show how zonoids and k-levels are computed will also improve the understandability of the topic (as an example, showing how the dual of a polygon is built or showing how to find the left-most point on a k-zonoid).
+\end{itemize}
+The literature about zonoids provide a number of efficient algorithms to compute the \textit{depth map} (i.e. the set of zonoids) \cite{GOPALA20082} and to test whether a point is included in a given zonoid \cite{MORIN2008229}. \\It would be interesting to show the improvements of some of these efficient algorithms with respect to more naive implementations.
+
+
+\bibliographystyle{plainurl}
+\bibliography{proposal_bib}
+
+\end{document}
+

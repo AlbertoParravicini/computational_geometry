@@ -6,8 +6,14 @@ query_point = false
 
 result = false
 
+triangles = false
+
 w= 1200
 h = 800
+
+r1 = Math.random()
+r2 = Math.random()
+r3 = Math.random()
 
 setup = () ->
     createCanvas(w, h)
@@ -21,27 +27,18 @@ draw = () ->
     stroke("black");
     for p_i in input_points
         ellipse(p_i.x, p_i.y, 4, 4)
-
-    if input_points.length >= 2
-        if !drawing_polygon_done
+        
+    if !triangles
+        if input_points.length >= 2
             for i in [0..input_points.length - 2] 
                 line(input_points[i].x, input_points[i].y, input_points[i + 1].x, input_points[i + 1].y)
-
+        if drawing_polygon_done
+            line(input_points[0].x, input_points[0].y, input_points[input_points.length - 1].x, input_points[input_points.length - 1].y)
+                    
             
-    if drawing_polygon_done      
-        result = if check_inclusion_in_polygon(input_points, new Point(mouseX, mouseY)) then "INSIDE" else "OUTSIDE"
-        if result == "INSIDE"
-            fill("green");
-            stroke("green");
-        else
-            fill("red");
-            stroke("red");
-        ellipse(mouseX, mouseY, 15, 15)
-        line(0, mouseY, w, mouseY)
-        fill("black");
-        stroke("black");
-        draw_shape(input_points)
-
+    if triangles  
+        for i in [0...triangles.length]
+            draw_triangle(triangles[i])
 
 mousePressed = () ->
     if !drawing_polygon_done
@@ -54,8 +51,9 @@ mousePressed = () ->
                 else 
                     drawing_polygon_done = true
                     # Note that the HTML5 canvas is flipped on the y axis, so the result must be inverted!
-                    direction = if simple_polygon_orientation_clockwise(input_points) then "counter-clockwise" else "clockwise"
-                    console.log "direction: ", direction, "\n"
+                    triangles = triangle_decomposition_recursive(input_points, [])
+                    #triangles = triangle_decomposition(input_points)
+                    console.log "dec:" , triangles     
             else 
                 if check_self_intersection_new_point(input_points, new_point)
                     console.log new_point, "creates a self-intersection!"
@@ -73,14 +71,19 @@ keyPressed = () ->
             direction = if simple_polygon_orientation_clockwise(input_points) then "counter-clockwise" else "clockwise"
             console.log "direction: ", direction, "\n"
 
-draw_shape = (points) ->
-    if result == "INSIDE"
-        fill(153, 255, 153, 40)
-    else 
-        fill(255, 179, 179, 40)
+    if drawing_polygon_done
+        triangles = triangle_decomposition_recursive(input_points, [])
+        #triangles = triangle_decomposition(input_points)
+        console.log "dec:" , triangles     
+
+
+draw_triangle = (points) ->
+
+    coord = points[0].x + points[1].x + points[2].x + points[0].y + points[1].y + points[2].y
+    fill((coord * r1) %% 256, (coord * r2) %% 256, (coord * r3) %% 256, 40)
     beginShape()
     for p_i in points 
-        vertex(p_i.x, p_i.y);
+        vertex(p_i.x, p_i.y)
     endShape(CLOSE)
    
 
