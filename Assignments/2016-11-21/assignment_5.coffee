@@ -274,9 +274,7 @@ class BinarySearchTree
     return result
 
   toString: ->
-    return this.to_array().toString()
-
-  
+    return this.to_array().toString()  
 # Test bst
 
 points = [
@@ -324,31 +322,6 @@ while i < points.length
   edges_points.push(p1, p2)
   i += 2
 
-# console.log "input: ", edges_points
-# edges_points.sort((a, b) ->
-#             if a.x > b.x
-#               return 1
-#             else if a.x < b.x
-#               return -1
-#             else return 0
-#             )
-
-# # console.log "\n\nsorted: ", edges_points
-
-
-# # console.log "\n\nother tests"
-# # console.log edges_points[2].edge.end_point
-# # console.log edges_points[2].edge.end_point == edges_points[4]
-
-# console.log "\n\ntesting tree\n"
-# for p in edges_points
-#   if p.start 
-#     tree.insert(p)
-#     console.log "inserted:", p
-#   else
-#     tree.remove(p.edge.start_point)
-#     console.log "removed", p.edge.start_point
-#   console.log "tree_size: ", tree.size()
 
 
 ###################################
@@ -396,9 +369,9 @@ check_intersection = (edge_1, edge_2) ->
     y = (m1 * q2 - m2 * q1) / (m1 - m2)
 
     if edge_2.end_point.y > edge_1.end_point.y
-      return new PointIntersection(x, y, edge_2, edge_1)
-    else
       return new PointIntersection(x, y, edge_1, edge_2)
+    else
+      return new PointIntersection(x, y, edge_2, edge_1)
   return false
 
 
@@ -407,6 +380,7 @@ check_list = (list, point) ->
     if p.x == point.x and p.y == point.y
       return true
   return false
+  
   
 
 ###################################
@@ -449,29 +423,29 @@ sweep_line_intersection = (input_edges) ->
       if pred != null and pred != undefined     
         intersection = check_intersection(point.edge, pred.edge)
         if intersection
-          # TODO: Sorted Insertion!
-          points.push(intersection)
-          points.sort((a, b) ->
-            if a.x > b.x
-              return 1
-            else if a.x < b.x
-              return -1
-            else return 0
-          )
+         if !check_list(intersections, intersection)
+            points.push(intersection)
+            points.sort((a, b) ->
+              if a.x > b.x
+                return 1
+              else if a.x < b.x
+                return -1
+              else return 0
+            )  
             
           
       if succ != null and succ != undefined
         intersection = check_intersection(point.edge, succ.edge)
         if intersection
-          # TODO: Sorted Insertion!
-          points.push(intersection)
-          points.sort((a, b) ->
-            if a.x > b.x
-              return 1
-            else if a.x < b.x
-              return -1
-            else return 0
-          )
+          if !check_list(intersections, intersection) 
+            points.push(intersection)
+            points.sort((a, b) ->
+              if a.x > b.x
+                return 1
+              else if a.x < b.x
+                return -1
+              else return 0
+            )  
           
 
     else if point instanceof PointEdge and !point.start
@@ -483,9 +457,8 @@ sweep_line_intersection = (input_edges) ->
       if pred != null and succ != null and pred != undefined and succ != undefined
         intersection = check_intersection(pred.edge, succ.edge)
         if intersection 
-          # TODO: Sorted Insertion!
-          # TODO: check if already present
-          if !check_list(points, intersection)
+
+          if !check_list(intersections, intersection)
             points.push(intersection)
             points.sort((a, b) ->
               if a.x > b.x
@@ -497,23 +470,16 @@ sweep_line_intersection = (input_edges) ->
 
     else # intersection
       intersections.push(point)
-      edge_1 = point.edge_1
-      edge_2 = point.edge_2
-      console.log "CHECK: ", edge_1.end_point.y > edge_2.end_point.y
-      # temp_a = sweep_line.successor(edge_2.start_point, sweep_line.root)
-      # if temp_a
-      #   seg_a = sweep_line.successor(temp_a, sweep_line.root)
-      # temp_b = sweep_line.predecessor(edge_1.start_point, sweep_line.root)
-      # if temp_b
-      #   seg_b = sweep_line.predecessor(temp_b, sweep_line.root)
-
-      # seg_a = sweep_line.successor(edge_2.end_point, sweep_line.root)
-      # seg_b = sweep_line.predecessor(edge_1.end_point, sweep_line.root)
+      edge_1 = point.edge_2
+      edge_2 = point.edge_1
+      seg_a = sweep_line.successor(edge_2.end_point, sweep_line.root)
+      seg_b = sweep_line.predecessor(edge_1.end_point, sweep_line.root)
+      
 
       if seg_a != null and seg_a != undefined
         intersection = check_intersection(edge_2, seg_a.edge)
         if intersection
-          if !check_list(points, intersection)
+          if !check_list(intersections, intersection)
             points.push(intersection)
             points.sort((a, b) ->
               if a.x > b.x
@@ -526,7 +492,7 @@ sweep_line_intersection = (input_edges) ->
       if seg_b != null and seg_b != undefined
         intersection = check_intersection(edge_1, seg_b.edge)
         if intersection
-          if !check_list(points, intersection)
+          if !check_list(intersections, intersection)
             points.push(intersection)
             points.sort((a, b) ->
               if a.x > b.x

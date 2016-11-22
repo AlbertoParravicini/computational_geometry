@@ -416,9 +416,9 @@ check_intersection = function(edge_1, edge_2) {
     x = (q2 - q1) / (m1 - m2);
     y = (m1 * q2 - m2 * q1) / (m1 - m2);
     if (edge_2.end_point.y > edge_1.end_point.y) {
-      return new PointIntersection(x, y, edge_2, edge_1);
-    } else {
       return new PointIntersection(x, y, edge_1, edge_2);
+    } else {
+      return new PointIntersection(x, y, edge_2, edge_1);
     }
   }
   return false;
@@ -436,7 +436,7 @@ check_list = function(list, point) {
 };
 
 sweep_line_intersection = function(input_edges) {
-  var edge_1, edge_2, intersection, intersections, num_of_intersections, point, pred, seg_a, seg_b, succ, sweep_line;
+  var edge_1, edge_2, intersection, intersections, num_of_intersections, point, pred, seg_a, seg_b, succ, sweep_line, temp_edge_1, temp_edge_2;
   points = input_edges.slice();
   intersections = [];
   points.sort(function(a, b) {
@@ -469,31 +469,35 @@ sweep_line_intersection = function(input_edges) {
       if (pred !== null && pred !== void 0) {
         intersection = check_intersection(point.edge, pred.edge);
         if (intersection) {
-          points.push(intersection);
-          points.sort(function(a, b) {
-            if (a.x > b.x) {
-              return 1;
-            } else if (a.x < b.x) {
-              return -1;
-            } else {
-              return 0;
-            }
-          });
+          if (!check_list(intersections, intersection)) {
+            points.push(intersection);
+            points.sort(function(a, b) {
+              if (a.x > b.x) {
+                return 1;
+              } else if (a.x < b.x) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          }
         }
       }
       if (succ !== null && succ !== void 0) {
         intersection = check_intersection(point.edge, succ.edge);
         if (intersection) {
-          points.push(intersection);
-          points.sort(function(a, b) {
-            if (a.x > b.x) {
-              return 1;
-            } else if (a.x < b.x) {
-              return -1;
-            } else {
-              return 0;
-            }
-          });
+          if (!check_list(intersections, intersection)) {
+            points.push(intersection);
+            points.sort(function(a, b) {
+              if (a.x > b.x) {
+                return 1;
+              } else if (a.x < b.x) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          }
         }
       }
     } else if (point instanceof PointEdge && !point.start) {
@@ -504,7 +508,7 @@ sweep_line_intersection = function(input_edges) {
       if (pred !== null && succ !== null && pred !== void 0 && succ !== void 0) {
         intersection = check_intersection(pred.edge, succ.edge);
         if (intersection) {
-          if (!check_list(points, intersection)) {
+          if (!check_list(intersections, intersection)) {
             points.push(intersection);
             points.sort(function(a, b) {
               if (a.x > b.x) {
@@ -520,15 +524,24 @@ sweep_line_intersection = function(input_edges) {
       }
     } else {
       intersections.push(point);
-      edge_1 = point.edge_1;
-      edge_2 = point.edge_2;
-      console.log("CHECK: ", edge_1.end_point.y > edge_2.end_point.y);
-      seg_a = sweep_line.successor(edge_2.end_point, sweep_line.root);
-      seg_b = sweep_line.predecessor(edge_1.end_point, sweep_line.root);
+      edge_1 = point.edge_2;
+      edge_2 = point.edge_1;
+      sweep_line.remove(edge_1.start_point);
+      sweep_line.remove(edge_1.end_point);
+      sweep_line.remove(edge_2.start_point);
+      sweep_line.remove(edge_2.end_point);
+      p1 = new PointEdge(point.x, point.y);
+      p2 = new PointEdge(point.x + 0.00001, point.y - 0.00001);
+      temp_edge_1 = new Edge(p1, edge_2.end_point);
+      temp_edge_2 = new Edge(p2, edge_1.end_point);
+      sweep_line.insert(p1);
+      sweep_line.insert(p2);
+      seg_a = sweep_line.successor(p1, sweep_line.root);
+      seg_b = sweep_line.predecessor(p2, sweep_line.root);
       if (seg_a !== null && seg_a !== void 0) {
-        intersection = check_intersection(edge_2, seg_a.edge);
+        intersection = check_intersection(p1.edge, seg_a.edge);
         if (intersection) {
-          if (!check_list(points, intersection)) {
+          if (!check_list(intersections, intersection)) {
             points.push(intersection);
             points.sort(function(a, b) {
               if (a.x > b.x) {
@@ -543,9 +556,9 @@ sweep_line_intersection = function(input_edges) {
         }
       }
       if (seg_b !== null && seg_b !== void 0) {
-        intersection = check_intersection(edge_1, seg_b.edge);
+        intersection = check_intersection(p2.edge, seg_b.edge);
         if (intersection) {
-          if (!check_list(points, intersection)) {
+          if (!check_list(intersections, intersection)) {
             points.push(intersection);
             points.sort(function(a, b) {
               if (a.x > b.x) {
