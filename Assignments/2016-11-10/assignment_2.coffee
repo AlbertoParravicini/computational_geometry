@@ -316,7 +316,7 @@ find_tangents_bin_search = (input_points, new_point) ->
   while (start < stop_bottom)
     o_bottom_1 = orientation_test(new_point, points[middle_bottom - 1], points[middle_bottom])
     o_bottom_2 = orientation_test(new_point, points[middle_bottom], points[middle_bottom + 1])
-    if  o_bottom_1 * o_bottom_2 <= 0
+    if o_bottom_1 * o_bottom_2 <= 0
       v_b = new Point(points[middle_bottom].x, points[middle_bottom].y)
       break
     else if o_bottom_1 <= 0 and o_bottom_2 <= 0
@@ -356,8 +356,9 @@ find_tangents_bin_search = (input_points, new_point) ->
   return [true, v_b, v_t]
 
 
-points = [new Point(-1, 3), new Point(-1, -2), new Point(2, -2), new Point(2, 1), 
-     new Point(-2, 1), new Point(4, -2)]
-new_point = new Point(-4, 0)
+points = [new Point(0.1, 7), new Point(2, 4), new Point(8, 1), new Point(5, 10)]
+new_point = new Point(0.0, 4)
+
+console.log find_tangents_bin_search(points, new_point)
 
 
