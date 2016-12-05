@@ -324,7 +324,6 @@ find_lines = (input_lines, query_point) ->
       temp_line[1].y = h
     final_output_lines.push(temp_line)
 
-  console.log final_output_lines.toString()
   return final_output_lines
 
 

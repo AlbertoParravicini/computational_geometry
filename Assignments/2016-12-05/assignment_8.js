@@ -262,7 +262,7 @@ turn_polar_points_to_lines = function(input_points) {
 };
 
 find_lines = function(input_lines, query_point) {
-  var final_output_lines, hull, k, l, len, lines, output_lines, polar_points;
+  var final_output_lines, hull, k, l, len, lines, output_lines, polar_points, temp_line;
   lines = translate_to_origin(input_lines, query_point);
   polar_points = turn_lines_to_polar_point(lines);
   hull = convex_hull_graham_scan(polar_points);
@@ -271,7 +271,18 @@ find_lines = function(input_lines, query_point) {
   final_output_lines = [];
   for (k = 0, len = output_lines.length; k < len; k++) {
     l = output_lines[k];
-    final_output_lines.push(create_line(l[0], l[1]));
+    temp_line = create_line(l[0], l[1]);
+    if (temp_line[0].y < 0) {
+      temp_line[0].y = 0;
+    }
+    if (temp_line[1].y < 0) {
+      temp_line[1].y = 0;
+    }
+    if (Math.abs(temp_line[0].x - temp_line[1].x) < 1) {
+      temp_line[0].y = 0;
+      temp_line[1].y = h;
+    }
+    final_output_lines.push(temp_line);
   }
   return final_output_lines;
 };
