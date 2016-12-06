@@ -9,6 +9,10 @@ h = 800
 # Small constant to avoid division by 0
 epsilon = 0.000001
 
+# Absolute smallest difference between two horizontal coordinates
+# for a line to be considered vertical.
+vertical_coeff = 1 
+
 class Point
   x: 0.0
   y: 0.0
@@ -319,7 +323,7 @@ find_lines = (input_lines, query_point) ->
       temp_line[0].y = 0
     if temp_line[1].y < 0
       temp_line[1].y = 0
-    if Math.abs(temp_line[0].x - temp_line[1].x) < 1
+    if Math.abs(temp_line[0].x - temp_line[1].x) < vertical_coeff
       temp_line[0].y = 0
       temp_line[1].y = h
     final_output_lines.push(temp_line)
@@ -342,28 +346,6 @@ check_intersection = (edge_1, edge_2) ->
 
   m1 = (p_12.y - p_11.y) / (p_12.x - p_11.x + epsilon)
   m2 = (p_22.y - p_21.y) / (p_22.x - p_21.x + epsilon)
-
-
-  # Numerical approximations
-  if Math.abs(m1) > 1000 
-    if p_11.x < 0.1 and p_12.x < 0.1
-      p_11.x = 0.01
-      p_12.x = 0.01
-    else if p_11.x > w - 0.1 and p_12.x > w - 0.1
-      p_11.x = w - 0.01
-      p_12.x = w - 0.01
-    p_11.y = 0
-    p_12.y = h
-
-  if Math.abs(m2) > 1000
-    if p_21.x < 0.1 and p_22.x < 0.1
-      p_21.x = 0.01
-      p_22.x = 0.01
-    else if p_21.x > w - 0.1 and p_22.x > w - 0.1
-      p_21.x = w - 0.01
-      p_22.x = w - 0.01
-    p_21.y = 0
-    p_22.y = h
   
   o1 = orientation_test(p_11, p_12, p_21)
   o2 = orientation_test(p_11, p_12, p_22)
@@ -507,5 +489,4 @@ find_cells = (input_points) ->
     cell = find_cell(input_points, p)[3]
     cells.push(cell)
   return cells
-
 

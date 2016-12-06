@@ -1,7 +1,5 @@
-
-query_point = false
-
 drawing_points_done = false
+
 
 
 w= 1200
@@ -13,7 +11,10 @@ r3 = Math.random()
 
 input_points = []
 
-cells = false
+cell = false
+lines = false
+res = false
+inter = false
 
 
 setup = () ->
@@ -29,23 +30,26 @@ draw = () ->
     for p in input_points
         ellipse(p.x, p.y, 10, 10)
 
-    if cells
-        for i in [0...cells.length]
-            draw_poly(radial_sort(cells[i], input_points[i]))
+    if cell
+        fill("black");
+        stroke("black");
+        for l in res
+            ellipse(l[0].x, l[0].y, 14, 14)
+            ellipse(l[1].x, l[1].y, 14, 14)
+            line(l[0].x, l[0].y, l[1].x, l[1].y)
+        draw_poly(radial_sort(cell, input_points[input_points.length - 1]))
 
    
 
 mousePressed = () ->
-    if !drawing_points_done
-        input_points.push(new Point(mouseX, mouseY))
+
+    input_points.push(new Point(mouseX, mouseY))
     
-    else
-        cells = find_cells(input_points)
+    if input_points.length > 1
+       [lines, res, inter, cell] = find_cell(input_points, input_points[input_points.length - 1])
 
 
-keyPressed = () -> 
-    drawing_points_done = true
-    cells = find_cells(input_points)
+
       
 
 draw_poly = (points) ->
