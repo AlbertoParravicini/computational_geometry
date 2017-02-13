@@ -1,10 +1,10 @@
-# # Import classes
-{Point, KSetElem} = require('./utils.coffee')
-# # Import functions
-{swap, squared_distance, orientation_test} = require('./utils.coffee')
+# # # Import classes
+# {Point, KSetElem} = require('./utils.coffee')
+# # # Import functions
+# {swap, squared_distance, orientation_test} = require('./utils.coffee')
 
-_ = require("./underscore.js")
-utils = require("./utils.coffee")
+# _ = require("./underscore.js")
+# utils = require("./utils.coffee")
 
 a = new Point(2, 3)
 
@@ -117,19 +117,19 @@ compute_k_sets_cont = (S, {k} = {}) ->
         # Set containing the points on the left of i-j. 
         temp_set = []
 
-        console.log "----------------\n\n"
-        console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
+        #console.log "----------------\n\n"
+        # console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
 
         for n in [0..n_points - 1]
           # Test the position of every other point w.r.t. the line passing thourgh i and j,
           # and put the point in the temp_set if it falls on the left of the line. 
           if (n != i) and (n != j) 
-            pos = utils.orientation_test(S[i], S[j], S[n])
+            pos = orientation_test(S[i], S[j], S[n])
             if pos > 0
               temp_set.push(new KSetElem(S[n].x, S[n].y, 1 / k))
-            console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
+            #console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
         
-        console.log "temp_set: ", temp_set, "\n"
+        #console.log "temp_set: ", temp_set, "\n"
 
         # Process temp_set
         if temp_set.length > 0
@@ -168,7 +168,7 @@ compute_zonoid = (S, {k} = {}) ->
   zonoid = []
 
   for k_set_i in k_sets
-    console.log "computing vertex of: ", k_set_i, "\n"
+    #console.log "computing vertex of: ", k_set_i, "\n"
     v_x = 0
     v_y = 0
     for p_i in k_set_i
@@ -201,10 +201,10 @@ console.log k_sets
 
 zonoid = compute_zonoid(S, k:k)
 
-for k in [0..k_sets.length - 1]
-  console.log "\nk-set number: ", k
-  for p in k_sets[k]
-    console.log p
+# for k in [0..k_sets.length - 1]
+#   console.log "\nk-set number: ", k
+#   for p in k_sets[k]
+#     console.log p
 
-console.log "ZONOID: ", zonoid
+# console.log "ZONOID: ", zonoid
 
