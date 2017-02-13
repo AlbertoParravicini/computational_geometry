@@ -125,10 +125,12 @@ compute_zonoid <- function(S, k = 1) {
 
 
 S = matrix(c(1, 3, 4, 2, 8, 2, 9, 4, 2, 5, 4, 3, 6, 4), ncol = 2, byrow = T)
+S
+#matrix(c(setdiff(S, matrix(c(1,3), ncol = 2, byrow = T))), ncol=2, byrow=T)
 
-S = matrix(rnorm(100, mean = c(0,0)), ncol = 2, byrow = T)
+#S = matrix(rnorm(100, mean = c(0,0)), ncol = 2, byrow = T)
 
-k = 49
+k = 3
 
 plot(S, col = "blue", cex = 1)
 

@@ -1,7 +1,10 @@
 # # Import classes
-# {Point, KSetElem} = require('./utils.coffee')
+{Point, KSetElem} = require('./utils.coffee')
 # # Import functions
-# {swap, squared_distance, orientation_test} = require('./utils.coffee')
+{swap, squared_distance, orientation_test} = require('./utils.coffee')
+
+_ = require("./underscore.js")
+utils = require("./utils.coffee")
 
 a = new Point(2, 3)
 
@@ -9,10 +12,33 @@ a = new Point(2, 3)
 
 b = new KSetElem(4,5,0.1)
 
+
+
 console.log _.isEqual(a, a)
 
 console.log b
-console.log squared_distance(a, new Point(2,3))
+
+
+# Check if the k_set A is contained in the list of k_sets B
+in_set = (A, B) ->
+  for B_i in B 
+    if set_equal(A, B_i)
+      return true
+  return false
+
+# Check if two k-sets have the same elements
+set_equal = (A, B) ->
+  if a.length != b.length
+    return false
+  for a in A 
+    flag = false
+    for b in B
+      if _.isEqual(a, b)
+        flag = true
+        break
+    if !flag
+      return false
+  return true
 
 compute_k_sets = (S, {k} = {}) ->
   k ?= 1
@@ -22,60 +48,134 @@ compute_k_sets = (S, {k} = {}) ->
 
   # Handle case where n_points == k 
   if n_points == k
+    n_set = []
     for p in S 
-      k_sets.push(new KSetElem(p.x, p.y, 1 / k))
-      return k_sets
+      n_set.push(new KSetElem(p.x, p.y, 1 / k))
+    k_sets.push(n_set)
+    return k_sets
 
   # If n_points != k, consider the line passing every pair of points
   for i in [0..n_points - 1]
-    for j in [i..n_points]
+    for j in [0..n_points - 1]
       if i != j
 
-        # Sets containing the points on the left and in the right of i-j, respectively. 
-        set_left = []
-        set_right = []
+        # Set containing the points on the left of i-j. 
+        temp_set = []
 
         console.log "----------------\n\n"
         console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
-        for n in [1..n_points - 1]
+
+        for n in [0..n_points - 1]
           # Test the position of every other point w.r.t. the line passing thourgh i and j,
-          # and put the point in the appropriate set. 
+          # and put the point in the temp_set if it falls on the left of the line. 
           if (n != i) and (n != j) 
-            pos = orientation_test(S[i], S[j], S[n])
+            pos = utils.orientation_test(S[i], S[j], S[n])
             if pos > 0
-              set_left.push(new KSetElem(S[n].x, S[n].y, 1 / k))
-            else if pos < 0
-              set_right.push(new KSetElem(S[n].x, S[n].y, 1 / k))
-
-            console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", if pos > 0 then "left" else "right", "\n"
+              temp_set.push(new KSetElem(S[n].x, S[n].y, 1 / k))
+            console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
         
-        console.log "set left: ", set_left, "\n"
-        console.log "set right: ", set_right, "\n"
+        console.log "temp_set: ", temp_set, "\n"
 
-        # Process set_left
-        if set_left.length > 0
-          # Handle case with k = nrow(S) - 1, return all points except the 1-set 
-          if (k == S.length) and (set_left.length == 1) 
-            set_right.push(new KSetElem(S[i].x, S[i].y, 1 / k))
-            set_right.push(new KSetElem(S[j].x, S[j].y, 1 / k))
-            k_sets.push(set_right)
+        # Process temp_set
+        if temp_set.length > 0
+          # Handle case with k = n_points - 1, add to the k-set every points except the 1-set 
+          if (k == n_points - 1) and (temp_set.length == 1)
+            n_minus_1_set = []
+            for p in S             
+              if (p.x != temp_set[0].x) or (p.y != temp_set[0].y)
+                n_minus_1_set.push(new KSetElem(p.x, p.y, 1 / k))
+              else console.log "rejected:", p
+            # If the k_set hasn't been seen yet, add it to the list.
+            if !in_set(n_minus_1_set, k_sets)
+              k_sets.push(n_minus_1_set)
+
           # Case where the set has the desired length
-          else if set_left.length == k
-            k_sets.push(set_left)
-        
+          else if (temp_set.length == k) and !(in_set(temp_set, k_sets))
+            k_sets.push(temp_set)
+  return k_sets
 
-        # Process set_right
-        if set_left.length > 0
-          # Handle case with k = nrow(S) - 1, return all points except the 1-set 
-          if (k == S.length) and (set_left.length == 1) 
-            set_right.push(new KSetElem(S[i].x, S[i].y, 1 / k))
-            set_right.push(new KSetElem(S[j].x, S[j].y, 1 / k))
-            k_sets.push(set_right)
+
+compute_k_sets_cont = (S, {k} = {}) ->
+  k ?= 1
+
+  n_points = S.length
+  k_sets = []
+
+  # Handle case where n_points == k 
+  if n_points == k
+    n_set = []
+    for p in S 
+      n_set.push(new KSetElem(p.x, p.y, 1 / k))
+    k_sets.push(n_set)
+    return k_sets
+
+  # If n_points != k, consider the line passing every pair of points
+  for i in [0..n_points - 1]
+    for j in [0..n_points - 1]
+      if i != j
+
+        # Set containing the points on the left of i-j. 
+        temp_set = []
+
+        console.log "----------------\n\n"
+        console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
+
+        for n in [0..n_points - 1]
+          # Test the position of every other point w.r.t. the line passing thourgh i and j,
+          # and put the point in the temp_set if it falls on the left of the line. 
+          if (n != i) and (n != j) 
+            pos = utils.orientation_test(S[i], S[j], S[n])
+            if pos > 0
+              temp_set.push(new KSetElem(S[n].x, S[n].y, 1 / k))
+            console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
+        
+        console.log "temp_set: ", temp_set, "\n"
+
+        # Process temp_set
+        if temp_set.length > 0
+          # Handle case with k = n_points - 1, add to the k-set every points except the 1-set 
+          if (Math.floor(k) == n_points - 1) and (temp_set.length == 1)
+            n_minus_1_set = []
+            for p in S             
+              if (p.x != temp_set[0].x) or (p.y != temp_set[0].y)
+                n_minus_1_set.push(new KSetElem(p.x, p.y, 1 / k))
+              else if Math.floor(k) != k # If k is not integer
+                n_minus_1_set.push(new KSetElem(p.x, p.y, 1 - Math.floor(k) / k))
+            # If the k_set hasn't been seen yet, add it to the list.
+            if !in_set(n_minus_1_set, k_sets) 
+              k_sets.push(n_minus_1_set)
+
           # Case where the set has the desired length
-          else if set_left.length == k
-            k_sets.push(set_left)
+          else if Math.floor(k) == k
+            if (temp_set.length == k) and !(in_set(temp_set, k_sets))
+              k_sets.push(temp_set)
+          else 
+            temp_set_1 = temp_set.slice()
+            temp_set_2 = temp_set.slice()
+            temp_set_1.push((new KSetElem(S[i].x, S[i].y, 1 - Math.floor(k) / k)))
+            temp_set_2.push((new KSetElem(S[j].x, S[j].y, 1 - Math.floor(k) / k)))
+            if (temp_set.length == Math.floor(k)) and !in_set(temp_set_1, k_sets)
+              k_sets.push(temp_set_1)
+            if (temp_set.length == Math.floor(k)) and !in_set(temp_set_2, k_sets)
+              k_sets.push(temp_set_2)
+  return k_sets 
         
+compute_zonoid = (S, {k} = {}) ->
+  k ?= 1
 
+  k_sets = compute_k_sets_cont(S, k:k)
+
+  zonoid = []
+
+  for k_set_i in k_sets
+    console.log "computing vertex of: ", k_set_i, "\n"
+    v_x = 0
+    v_y = 0
+    for p_i in k_set_i
+      v_x += p_i.x * p_i.weight
+      v_y += p_i.y * p_i.weight
+    zonoid.push(new Point(v_x, v_y))
+  return zonoid    
 
 S = [
   new Point(1, 3),
@@ -91,8 +191,20 @@ S = [
 
 console.log S
  
-k = 1
+k = 4.3
 
-k_sets = compute_k_sets(S, k)
+
+
+k_sets = compute_k_sets_cont(S, k:k)
 console.log k_sets
+
+
+zonoid = compute_zonoid(S, k:k)
+
+for k in [0..k_sets.length - 1]
+  console.log "\nk-set number: ", k
+  for p in k_sets[k]
+    console.log p
+
+console.log "ZONOID: ", zonoid
 

@@ -2,7 +2,7 @@
 # UTILITIES #######################
 ###################################
 
-class Point
+class exports.Point
     x: 0.0
     y: 0.0
     constructor: (@x, @y) ->
@@ -10,7 +10,7 @@ class Point
     toString: ->
         return "Point(" + this.x + ", " + this.y + ")\n"
 
-class KSetElem extends Point
+class exports.KSetElem extends exports.Point
     constructor: (@x, @y, @weight) ->
         super(@x, @y)
     
@@ -20,12 +20,12 @@ class KSetElem extends Point
 
 
 
-swap = (list, index_1, index_2) ->
+exports.swap = (list, index_1, index_2) ->
     temp = list[index_1]
     list[index_1] = list[index_2]
     list[index_2] = temp
 
-squared_distance = (a, b) ->
+exports.squared_distance = (a, b) ->
     (a.x - b.x) ** 2 + (a.y - b.y) ** 2
 
 
@@ -35,7 +35,7 @@ squared_distance = (a, b) ->
 # of the line passing for points "p" and "q".
 # Based on "http://dccg.upc.edu/people/vera/wp-content/uploads/2013/06/GeoC-OrientationTests.pdf",
 # pages 5-6.
-orientation_test = (p, q, r) ->
+exports.orientation_test = (p, q, r) ->
     #console.log p, q, r
     determinant = (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x)
     # determinant == 0: p, q, r are on the same line
@@ -52,7 +52,7 @@ orientation_test = (p, q, r) ->
 # If the points, translated w.r.t. the anchor, span multiple quadrants of the plane,
 # they are sorted by taking the positive x semi-axis as starting point.
 # Inspired by "http://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order"
-radial_sort = (points, anchor, cw) ->
+exports.radial_sort = (points, anchor, cw) ->
     if points.length == 0
         return []
     
