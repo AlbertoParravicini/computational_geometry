@@ -1,7 +1,9 @@
 input_points = [new Point(300, 200), new Point(423, 100), new Point(100, 300), new Point(200, 400), new Point(100, 400), new Point(240, 320), new Point(280, 150)];
+
 convex_hull = []
 setup = () ->
-    createCanvas(640, 480)
+    canvas = createCanvas(640, 480)
+    canvas.parent("sketch-holder")
     fill('black')
 
 draw = () -> 

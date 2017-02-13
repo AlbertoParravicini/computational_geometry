@@ -10,7 +10,8 @@ w= 1200
 h = 800
 
 setup = () ->
-    createCanvas(w, h)
+    canvas = createCanvas(w, h)
+    canvas.parent('sketch-holder')
     fill('black') 
 
 draw = () -> 
