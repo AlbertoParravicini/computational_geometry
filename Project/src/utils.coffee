@@ -88,3 +88,36 @@ radial_sort = (points, {anchor, cw} = {}) ->
     points.reverse()
     
   return points
+
+
+# Check if the horizontal ray at the given height intersect the line passing through p_1 and p_2.
+# Inspired by https://rosettacode.org/wiki/Ray-casting_algorithm#CoffeeScript
+check_horizontal_intersection = (p_1, p_2, query_point) ->
+  # Make sure that a is always the bottom point.
+  [a,b] = if p_1.y < p_2.y
+              [p_1,p_2]
+          else
+              [p_2,p_1]
+  # If the query point lies at the same height of a vertex, move it sightly above.
+  # This is coherent with the hypothesis of strict inclusion.
+  if query_point.y == a.y or query_point.y == a.y
+      query_point.y += Number.MIN_VALUE
+ 
+  if (a.y - query_point.y) * (b.y - query_point.y) < 0 and orientation_test(a, b, query_point) < 0
+    return true
+  else return false
+
+# Check if the given query point is included in the given simple polygon.
+check_inclusion_in_polygon = (input_simple_polygon, query_point) ->
+  if input_simple_polygon.length < 3
+    throw(new Error("the size of the input polygon is ", input_simple_polygon.length))
+  points = input_simple_polygon.slice()
+
+  intersection_count = 0
+  for i in [1..points.length]
+    p_1 = points[i - 1]
+    p_2 = points[i %% points.length]
+ 
+    if check_horizontal_intersection(p_1, p_2, query_point)
+        intersection_count += 1
+  return intersection_count %% 2 != 0 

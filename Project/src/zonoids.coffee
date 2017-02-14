@@ -40,7 +40,7 @@ set_equal = (A, B) ->
       return false
   return true
 
-compute_k_sets = (S, {k} = {}) ->
+compute_k_sets_disc = (S, {k} = {}) ->
   k ?= 1
 
   n_points = S.length
@@ -62,19 +62,19 @@ compute_k_sets = (S, {k} = {}) ->
         # Set containing the points on the left of i-j. 
         temp_set = []
 
-        console.log "----------------\n\n"
-        console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
+        # console.log "----------------\n\n"
+        # console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
 
         for n in [0..n_points - 1]
           # Test the position of every other point w.r.t. the line passing thourgh i and j,
           # and put the point in the temp_set if it falls on the left of the line. 
           if (n != i) and (n != j) 
-            pos = utils.orientation_test(S[i], S[j], S[n])
+            pos = orientation_test(S[i], S[j], S[n])
             if pos > 0
               temp_set.push(new KSetElem(S[n].x, S[n].y, 1 / k))
-            console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
+        #     console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
         
-        console.log "temp_set: ", temp_set, "\n"
+        # console.log "temp_set: ", temp_set, "\n"
 
         # Process temp_set
         if temp_set.length > 0
@@ -84,7 +84,7 @@ compute_k_sets = (S, {k} = {}) ->
             for p in S             
               if (p.x != temp_set[0].x) or (p.y != temp_set[0].y)
                 n_minus_1_set.push(new KSetElem(p.x, p.y, 1 / k))
-              else console.log "rejected:", p
+              # else console.log "rejected:", p
             # If the k_set hasn't been seen yet, add it to the list.
             if !in_set(n_minus_1_set, k_sets)
               k_sets.push(n_minus_1_set)
@@ -117,7 +117,7 @@ compute_k_sets_cont = (S, {k} = {}) ->
         # Set containing the points on the left of i-j. 
         temp_set = []
 
-        #console.log "----------------\n\n"
+        # console.log "----------------\n\n"
         # console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
 
         for n in [0..n_points - 1]
@@ -160,10 +160,14 @@ compute_k_sets_cont = (S, {k} = {}) ->
               k_sets.push(temp_set_2)
   return k_sets 
         
-compute_zonoid = (S, {k} = {}) ->
+compute_zonoid = (S, {k, discrete} = {}) ->
   k ?= 1
-
-  k_sets = compute_k_sets_cont(S, k:k)
+  discrete ?= false
+  
+  if discrete 
+    k_sets = compute_k_sets_disc(S, k:k)
+  else
+    k_sets = compute_k_sets_cont(S, k:k)
 
   zonoid = []
 
@@ -177,34 +181,35 @@ compute_zonoid = (S, {k} = {}) ->
     zonoid.push(new Point(v_x, v_y))
   return zonoid    
 
-S = [
-  new Point(1, 3),
-  new Point(4, 2),
-  new Point(8, 2),
-  new Point(9, 4),
-  new Point(2, 5),
-  new Point(4, 3),
-  new Point(6, 4)
-]
+# Compute the (discrete!) zonoid depth of a given point.
+compute_zonoid_depth = (S, query_point, {return_zonoid} = {}) ->
+  
+  return_zonoid ?= false
+  old_zonoid = []
+  zonoid = []
+  for k in [1..S.length - 1]
+    old_zonoid = zonoid
+    zonoid = compute_zonoid(S, k:k, discrete:true)
+    res = check_inclusion_in_polygon(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true), query_point)
+    if !res
+      if return_zonoid
+        return [old_zonoid, k - 1]
+      else
+        return k - 1
+  # If the point is exactly the mean
+  mean_zonoid = compute_zonoid(S, k:S.length, discrete:true)
+  approx_mean = new Point(Math.floor(mean_zonoid[0].x), Math.floor(mean_zonoid[0].y))
+  if _.isEqual(approx_mean, query_point)
+    if return_zonoid
+      return [mean_zonoid, S.length]
+    else
+      return S.length
+  # The query point is in the (n-1)zonoid
+  else 
+    if return_zonoid
+      return [zonoid, S.length - 1]
+    else
+      return S.length - 1
 
 
-
-console.log S
- 
-k = 4.3
-
-
-
-k_sets = compute_k_sets_cont(S, k:k)
-console.log k_sets
-
-
-zonoid = compute_zonoid(S, k:k)
-
-# for k in [0..k_sets.length - 1]
-#   console.log "\nk-set number: ", k
-#   for p in k_sets[k]
-#     console.log p
-
-# console.log "ZONOID: ", zonoid
 
