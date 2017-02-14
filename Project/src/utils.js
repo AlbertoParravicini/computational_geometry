@@ -56,7 +56,9 @@ orientation_test = function(p, q, r) {
   return determinant;
 };
 
-radial_sort = function(points, anchor, cw) {
+radial_sort = function(points, arg) {
+  var anchor, cw, ref;
+  ref = arg != null ? arg : {}, anchor = ref.anchor, cw = ref.cw;
   if (points.length === 0) {
     return [];
   }
@@ -94,19 +96,19 @@ radial_sort = function(points, anchor, cw) {
           return -1;
         }
       }
-      orientation = orientation_test(anchor, a, b);
-      if (orientation === 0) {
-        if (squared_distance(anchor, a) >= squared_distance(anchor, b)) {
-          return 1;
-        } else {
-          return -1;
-        }
+    }
+    orientation = orientation_test(anchor, a, b);
+    if (orientation === 0) {
+      if (squared_distance(anchor, a) >= squared_distance(anchor, b)) {
+        return 1;
       } else {
-        if (orientation > 0) {
-          return 1;
-        } else {
-          return -1;
-        }
+        return -1;
+      }
+    } else {
+      if (orientation > 0) {
+        return 1;
+      } else {
+        return -1;
       }
     }
   });

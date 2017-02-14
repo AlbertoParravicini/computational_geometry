@@ -130,7 +130,7 @@ S
 
 #S = matrix(rnorm(100, mean = c(0,0)), ncol = 2, byrow = T)
 
-k = 3
+k = 6
 
 plot(S, col = "blue", cex = 1)
 

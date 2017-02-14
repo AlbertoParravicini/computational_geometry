@@ -52,39 +52,39 @@ orientation_test = (p, q, r) ->
 # If the points, translated w.r.t. the anchor, span multiple quadrants of the plane,
 # they are sorted by taking the positive x semi-axis as starting point.
 # Inspired by "http://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order"
-radial_sort = (points, anchor, cw) ->
-    if points.length == 0
-        return []
+radial_sort = (points, {anchor, cw} = {}) ->
+  if points.length == 0
+    return []
     
-    anchor ?= new Point(points[0].x, points[0].y)
-    cw ?= true
+  anchor ?= new Point(points[0].x, points[0].y)
+  cw ?= true
+  
+  points.sort((a, b) ->
     
-    points.sort((a, b) ->
-        
-        if a.x - anchor.x == 0 and a.y - anchor.y == 0 and b.x - anchor.x != 0 and b.y - anchor.y != 0
-            return -1
-        if a.x - anchor.x != 0 and a.y - anchor.y != 0 and b.x - anchor.x == 0 and b.y - anchor.y == 0
-            return 1
-        if a.x - anchor.x >= 0 and b.x - anchor.x < 0
-            return  -1
-        if a.x - anchor.x < 0 and b.x - anchor.x >= 0
-            return  1
-        if a.x - anchor.x == 0 and b.x - anchor.x == 0
-            if a.y - anchor.y < 0 and b.y - anchor.y < 0
-                return if a.y < b.y then 1 else -1
-            else 
-                return if a.y > b.y then 1 else -1
-            # Check the position of b wrt the line defined by the anchor and a.
-            # b has greater angle than a if it lies on the left of the line.
-            orientation = orientation_test(anchor, a, b)
-            # if orientation < 0, anchor-a is bigger than anchor-b, as we have a right turn.
-            if orientation == 0 
-                return if squared_distance(anchor, a) >= squared_distance(anchor, b) then 1 else -1
-            else 
-                return if orientation > 0 then 1 else -1
-            )
+    if a.x - anchor.x == 0 and a.y - anchor.y == 0 and b.x - anchor.x != 0 and b.y - anchor.y != 0
+      return -1
+    if a.x - anchor.x != 0 and a.y - anchor.y != 0 and b.x - anchor.x == 0 and b.y - anchor.y == 0
+      return 1
+    if a.x - anchor.x >= 0 and b.x - anchor.x < 0
+      return  -1
+    if a.x - anchor.x < 0 and b.x - anchor.x >= 0
+      return  1
+    if a.x - anchor.x == 0 and b.x - anchor.x == 0
+      if a.y - anchor.y < 0 and b.y - anchor.y < 0
+        return if a.y < b.y then 1 else -1
+      else 
+        return if a.y > b.y then 1 else -1
+    # Check the position of b wrt the line defined by the anchor and a.
+    # b has greater angle than a if it lies on the left of the line.
+    orientation = orientation_test(anchor, a, b)
+    # if orientation < 0, anchor-a is bigger than anchor-b, as we have a right turn.
+    if orientation == 0 
+      return if squared_distance(anchor, a) >= squared_distance(anchor, b) then 1 else -1
+    else 
+      return if orientation > 0 then 1 else -1
+    )
 
-    if !cw 
-        points.reverse()
-        
-    return points
+  if !cw 
+    points.reverse()
+    
+  return points
