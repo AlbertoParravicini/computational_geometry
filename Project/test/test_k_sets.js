@@ -29,7 +29,8 @@ q_sep = false;
 
 setup = function() {
   createCanvas(w, h);
-  return fill('red');
+  fill('red');
+  return frameRate(10);
 };
 
 draw = function() {

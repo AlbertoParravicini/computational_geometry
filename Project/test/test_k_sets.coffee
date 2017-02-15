@@ -27,6 +27,7 @@ q_sep = false
 setup = () ->
   createCanvas(w, h)
   fill('red')   
+  frameRate(10);
 
 draw = () -> 
   background(255, 251, 234)
@@ -57,6 +58,8 @@ draw = () ->
     stroke(16, 74, 34, 255)
     ellipse(k_sets[k_set_num].mean_point.x, k_sets[k_set_num].mean_point.y, 10, 10)
     ellipse(k_sets[k_set_num].mean_point.x, k_sets[k_set_num].mean_point.y, 20, 20)
+
+
     
     
 
@@ -75,6 +78,7 @@ keyPressed = () ->
     sep_p2 = k_sets[k_set_num].separator[1]
     m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
     q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
+    
 
 
 
