@@ -94,6 +94,73 @@ compute_k_sets_disc = (S, {k} = {}) ->
             k_sets.push(temp_set)
   return k_sets
 
+# Compute the k-sets for discrete k,
+# and return them as a list of KSet objects insted that as a list of lists of points.
+# The KSet object contains the mean point of the k-set,
+# and the points that separate the k-set from the other points.
+compute_k_sets_disc_2 = (S, {k} = {}) ->
+  k ?= 1
+
+  n_points = S.length
+  k_sets = []
+
+  # Handle case where n_points == k 
+  if n_points == k
+    n_set = new KSet()
+    for p in S 
+      n_set.elem_list.push(new KSetElem(p.x, p.y, 1 / k))
+    n_set.compute_mean()
+    k_sets.push(n_set)
+    return k_sets
+
+  # If n_points != k, consider the line passing every pair of points
+  for i in [0..n_points - 1]
+    for j in [0..n_points - 1]
+      if i != j
+
+        # Set containing the points on the left of i-j. 
+        temp_set = []
+
+        # console.log "----------------\n\n"
+        # console.log "considering line i: ", S[i], " -- j; ", S[j], "\n"
+
+        for n in [0..n_points - 1]
+          # Test the position of every other point w.r.t. the line passing thourgh i and j,
+          # and put the point in the temp_set if it falls on the left of the line. 
+          if (n != i) and (n != j) 
+            pos = orientation_test(S[i], S[j], S[n])
+            if pos > 0
+              temp_set.push(new KSetElem(S[n].x, S[n].y, 1 / k))
+        #     console.log "evaluating point n: ", S[n], "  ", "position: ", pos, " -- ", (if pos > 0 then "left" else "right"), "\n"
+        
+        # console.log "temp_set: ", temp_set, "\n"
+
+        # Process temp_set
+        if temp_set.length > 0
+          # Handle case with k = n_points - 1, add to the k-set every points except the 1-set 
+          if (k == n_points - 1) and (temp_set.length == 1)
+            n_minus_1_set = []
+            for p in S             
+              if (p.x != temp_set[0].x) or (p.y != temp_set[0].y)
+                n_minus_1_set.push(new KSetElem(p.x, p.y, 1 / k))
+              # else console.log "rejected:", p
+            # If the k_set hasn't been seen yet, add it to the list.
+            if !in_set(n_minus_1_set, k_sets)
+              k_set = new KSet()
+              k_set.elem_list = n_minus_1_set
+              k_set.compute_mean()
+              k_set.separator = [S[i], S[j]]
+              k_sets.push(k_set)
+
+          # Case where the set has the desired length
+          else if (temp_set.length == k) and !(in_set(temp_set, k_sets))
+            k_set = new KSet()
+            k_set.elem_list = temp_set
+            k_set.compute_mean()
+            k_set.separator = [S[i], S[j]]
+            k_sets.push(k_set)
+  return k_sets
+
 
 compute_k_sets_cont = (S, {k} = {}) ->
   k ?= 1

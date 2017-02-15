@@ -14,7 +14,15 @@ w = 640
 
 k = 1
 
+k_set_num = 0
+
 zonoid = []
+k_sets = false
+
+sep_p1 = false
+sep_p2 = false
+m_sep = false
+q_sep = false
 
 setup = () ->
   createCanvas(w, h)
@@ -26,44 +34,65 @@ draw = () ->
   fill(85, 185, 102, 60);
   stroke(17, 74, 27, 180);
 
+
   for p_i in input_points
     ellipse(p_i.x, p_i.y, 10, 10)
 
+  if k_sets
+    # Draw the separator
+    strokeWeight(5)
+    stroke(255, 251, 234);
+    line(0, q_sep, w, m_sep * w + q_sep)
+    stroke(17, 74, 27, 180);
+    strokeWeight(2)
+    line(0, q_sep, w, m_sep * w + q_sep)
+    strokeWeight(1)
+    for p_i in k_sets[k_set_num].elem_list
+      fill(255, 123, 136, 180)
+      stroke(130, 65, 104, 255)
+      ellipse(p_i.x, p_i.y, 10, 10)
+      ellipse(p_i.x, p_i.y, 14, 14)
 
-  for z_i in zonoid
     fill(16, 74, 34, 180)
     stroke(16, 74, 34, 255)
-    ellipse(z_i.x, z_i.y, 20, 20)
-    ellipse(z_i.x, z_i.y, 10, 10)
-  if zonoid.length > 0
-    draw_poly(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true))
-    draw_poly(zonoid, fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+    ellipse(k_sets[k_set_num].mean_point.x, k_sets[k_set_num].mean_point.y, 10, 10)
+    ellipse(k_sets[k_set_num].mean_point.x, k_sets[k_set_num].mean_point.y, 20, 20)
+    
+    
 
 
 keyPressed = () -> 
-    if keyCode == LEFT_ARROW
-      k -= 1
-        
-    else if keyCode == RIGHT_ARROW
-      k += 1
-    if k < 1
-      k = 1
-    if k > input_points.length
-      k = input_points.length
-    zonoid = compute_zonoid(input_points, k:k)
+    if keyCode == UP_ARROW
+      k_set_num += 1
+    else if keyCode == DOWN_ARROW
+      k_set_num -= 1
+
+    if k_set_num < 0
+      k_set_num = 0
+    if k_set_num >= k_sets.length
+      k_set_num = k_sets.length - 1
+    sep_p1 = k_sets[k_set_num].separator[0]
+    sep_p2 = k_sets[k_set_num].separator[1]
+    m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
+    q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
 
 
 
 mouseWheel = (event) ->
   if event.delta > 0
-    k -= 0.1
+    k -= 1
   else if event.delta < 0
-    k += 0.1
+    k += 1
   if k < 1
     k = 1
   if k > input_points.length
     k = input_points.length
-  zonoid = compute_zonoid(input_points, k:k)
+  k_sets = compute_k_sets_disc_2(input_points, k:k)
+  k_set_num = 0
+  sep_p1 = k_sets[k_set_num].separator[0]
+  sep_p2 = k_sets[k_set_num].separator[1]
+  m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
+  q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
 
 
 

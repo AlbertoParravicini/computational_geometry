@@ -17,7 +17,24 @@ class KSetElem extends Point
     toString: ->
         return "KSetElem(" + this.x + ", " + this.y + ", -- weight: " + this.weight +")\n"
 
+class KSet 
+    constructor: () ->
+      @elem_list = []
+      @mean_point = new Point(0, 0)
+      @separator = [new Point(0, 0), new Point(0, 0)]
+      
+    compute_mean: ->
+        for p in @elem_list
+            @mean_point.x += p.x
+            @mean_point.y += p.y
+        @mean_point.x /= @elem_list.length
+        @mean_point.y /= @elem_list.length
 
+    toString: ->
+        return "KSet(" + this.elem_list + "\n" + "MEAN: " + this.mean_point + ", -- separator: " + this.separator[0] + ", " + this.separator[1] + ")\n" 
+
+a = new KSet
+console.log a.separator
 
 
 swap = (list, index_1, index_2) ->
