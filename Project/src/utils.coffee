@@ -2,6 +2,18 @@
 # UTILITIES #######################
 ###################################
 
+
+# Size of the canvas
+w= 640
+h = 480
+
+# Small constant to avoid division by 0
+epsilon = 0.000001
+
+# Absolute smallest difference between two horizontal coordinates
+# for a line to be considered vertical.
+vertical_coeff = 1 
+
 class Point
     x: 0.0
     y: 0.0
@@ -9,6 +21,12 @@ class Point
 
     toString: ->
         return "Point(" + this.x + ", " + this.y + ")\n"
+
+class Line 
+    constructor: (@start, @end, @m, @q) ->
+
+    toString: -> 
+      return "Line( start: " + @start + " -- end: " + @end + " -- m: " + @m + " -- q: " + @q + ")\n"
 
 class KSetElem extends Point
     constructor: (@x, @y, @weight) ->
@@ -138,3 +156,86 @@ check_inclusion_in_polygon = (input_simple_polygon, query_point) ->
     if check_horizontal_intersection(p_1, p_2, query_point)
         intersection_count += 1
   return intersection_count %% 2 != 0 
+
+
+
+###################################
+# Given the parameters m, q, 
+# return a line y = m * x + q 
+# spanning the entire canvas.
+create_line_from_m_q = (m, q) ->
+  # Numerical approximation
+  if Math.abs(q) <= 0.1
+    q = 0
+
+  if m == 0
+    return new Line(new Point(0, q), new Point(w, q), m, q)
+  # Find the two extreme points of the line.
+  start_y = q
+  end_y = m * w + q 
+
+  if start_y >= 0 and start_y <= h 
+    
+    if end_y >= 0 and end_y <= h
+      return new Line(new Point(0, start_y), new Point(w, end_y), m, q)
+    else if end_y < 0
+      return new Line(new Point(0, start_y), new Point(-q / (m + epsilon), 0), m, q)
+    else
+      return new Line(new Point(0, start_y), new Point((h-q) / (m + epsilon), h), m, q)
+
+  if start_y < 0
+
+    if end_y >= 0 and end_y <= h
+      return new Line(new Point(-q / (m + epsilon), 0), new Point(w, end_y), m, q)
+    else if end_y > 0
+      return new Line(new Point(-q / (m + epsilon), 0), new Point((h-q) / (m + epsilon), h), m, q)
+    else   
+      console.log "ERROR!"
+    
+  else
+
+    if end_y >= 0 and end_y <= h
+      return new Line(new Point((h-q) / (m + epsilon), h), new Point(w, end_y), m, q)
+    else if end_y < 0
+      return new Line(new Point((h-q) / (m + epsilon), h), new Point(-q / (m + epsilon), 0), m, q)
+    else   
+      console.log "ERROR!"
+
+
+###################################
+# Given two points, return a line 
+# spanning the entire canvas.
+create_line = (p_1, p_2) ->
+
+  # Given p_1 and p_2,
+  # express the line as y = m*x + q
+  m = (p_2.y - p_1.y) / (p_2.x - p_1.x)
+  q = (p_1.y * p_2.x - p_2.y * p_1.x) / (p_2.x - p_1.x)
+
+  return create_line_from_m_q(m, q)
+
+
+
+###################################
+# Given a set of lines and a point, 
+# Translate the lines 
+# so that the point becomes the origin
+translate_to_origin = (input_lines, point) ->
+  lines = []
+  for l in input_lines
+    lines.push(create_line(new Point(l.start.x - point.x, l.start.y - point.y), new Point(l.end.x - point.x, l.end.y - point.y)))
+
+  return lines
+
+
+
+###################################
+# Given a set of lines and a point
+# which is currently the origin, 
+# translate the lines back.
+translate_back = (input_lines, point) ->
+  lines = []
+  for l in input_lines
+    lines.push(create_line(new Point(l.start.x + point.x, l.start.y + point.y), new Point(l.end.x + point.x, l.end.y + point.y)))
+
+  return lines
