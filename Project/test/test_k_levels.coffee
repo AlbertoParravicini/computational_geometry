@@ -21,7 +21,7 @@ input_points = [
   # new Point(240, 320), 
   # new Point(280, 450)]
 
-default_color = [121, 204, 147, 40]
+default_color = [121, 204, 147, 200]
 
 num_input_points = 15
 
@@ -58,15 +58,16 @@ draw = () ->
   stroke("black");
 
   for l in dual_lines
+    stroke(default_color)
     strokeWeight(2)
     line(l.start.x, l.start.y, l.end.x, l.end.y)
     
-  fill("red")  
-  stroke("red");
-  strokeWeight(3)
+  fill(143, 27, 10, 200)  
+  stroke(231, 120, 58, 200);
   for p in k_level[1..k_level.length - 1]
-    ellipse(p.x, p.y, 14, 14)
+    ellipse(p.x, p.y, 20, 20)
   for i in [1..k_level.length - 1]
+    strokeWeight(6)
     line(k_level[i - 1].x, k_level[i - 1].y, k_level[i].x, k_level[i].y)
   strokeWeight(1)
 

@@ -3,7 +3,7 @@ var default_color, draw, dual_lines, h, input_points, k, k_level, mouseWheel, nu
 
 input_points = [new Point(2, -2), new Point(-0.8, 4.2), new Point(1, 3), new Point(0.1, 0.6), new Point(0.4, 1.2), new Point(-0.2, 2.2), new Point(1.4, 0.3), new Point(-0.3, 4.8)];
 
-default_color = [121, 204, 147, 40];
+default_color = [121, 204, 147, 200];
 
 num_input_points = 15;
 
@@ -39,18 +39,19 @@ draw = function() {
   stroke("black");
   for (j = 0, len = dual_lines.length; j < len; j++) {
     l = dual_lines[j];
+    stroke(default_color);
     strokeWeight(2);
     line(l.start.x, l.start.y, l.end.x, l.end.y);
   }
-  fill("red");
-  stroke("red");
-  strokeWeight(3);
+  fill(143, 27, 10, 200);
+  stroke(231, 120, 58, 200);
   ref = k_level.slice(1, +(k_level.length - 1) + 1 || 9e9);
   for (m = 0, len1 = ref.length; m < len1; m++) {
     p = ref[m];
-    ellipse(p.x, p.y, 14, 14);
+    ellipse(p.x, p.y, 20, 20);
   }
   for (i = n = 1, ref1 = k_level.length - 1; 1 <= ref1 ? n <= ref1 : n >= ref1; i = 1 <= ref1 ? ++n : --n) {
+    strokeWeight(6);
     line(k_level[i - 1].x, k_level[i - 1].y, k_level[i].x, k_level[i].y);
   }
   return strokeWeight(1);
