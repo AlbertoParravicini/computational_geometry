@@ -1,5 +1,5 @@
 input_points = [
-  new Point(0.6, 1.9),
+  new Point(2, -2),
   new Point(-0.8, 4.2),
   new Point(1, 3),
   new Point(0.1, 0.6),
@@ -58,14 +58,13 @@ draw = () ->
   stroke("black");
 
   for l in dual_lines
-    ellipse(l.start.x, l.start.y, 8, 8)
-    ellipse(l.end.x, l.end.y, 8, 8)
+    strokeWeight(2)
     line(l.start.x, l.start.y, l.end.x, l.end.y)
     
   fill("red")  
   stroke("red");
   strokeWeight(3)
-  for p in k_level
+  for p in k_level[1..k_level.length - 1]
     ellipse(p.x, p.y, 14, 14)
   for i in [1..k_level.length - 1]
     line(k_level[i - 1].x, k_level[i - 1].y, k_level[i].x, k_level[i].y)
