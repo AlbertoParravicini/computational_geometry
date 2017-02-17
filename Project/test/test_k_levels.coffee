@@ -37,6 +37,9 @@ dual_lines = []
 k = 5
 k_level = []
 
+reflex_vertices = []
+zonoid_vertices = []
+
 setup = () ->
   createCanvas(w, h)
   fill('red')   
@@ -47,6 +50,8 @@ setup = () ->
     dual_lines.push(create_line_from_m_q(p.x, p.y * scale_factor))
 
   k_level = compute_k_level(dual_lines, k)
+  reflex_vertices = compute_reflex_vertices(k_level)
+  zonoid_vertices = compute_zonoid_vertices_from_reflex(reflex_vertices, dual_lines)
   console.log k_level
 
 
@@ -71,6 +76,19 @@ draw = () ->
     line(k_level[i - 1].x, k_level[i - 1].y, k_level[i].x, k_level[i].y)
   strokeWeight(1)
 
+  fill(98, 122, 161, 200)  
+  stroke(21, 32, 50, 200);
+  for p in reflex_vertices
+    ellipse(p.x, p.y, 20, 20)
+
+  fill(98, 122, 161, 200)  
+  stroke(21, 32, 50, 200);
+  for p in zonoid_vertices
+    ellipse(p.x, p.y, 20, 20)
+
+  draw_poly(radial_sort(zonoid_vertices, anchor: leftmost_point(zonoid_vertices), cw: true), fill_color:[16, 74, 34, 100], stroke_color:[16, 74, 34, 255])
+
+
 
 mouseWheel = (event) ->
   if event.delta > 0
@@ -82,6 +100,28 @@ mouseWheel = (event) ->
   if k > dual_lines.length
     k = dual_lines.length
   k_level = compute_k_level(dual_lines, k)
+  reflex_vertices = compute_reflex_vertices(k_level)
+  zonoid_vertices = compute_zonoid_vertices_from_reflex(reflex_vertices, dual_lines)
   console.log "K: ", k
     
     
+
+draw_poly = (points, {fill_color, stroke_color} = {}) ->
+
+  fill_color ?= default_color
+  stroke_color ?= default_color
+  fill(fill_color[0], fill_color[1], fill_color[2], fill_color[3])
+  stroke(stroke_color[0], stroke_color[1], stroke_color[2], stroke_color[3])
+  beginShape()
+  for p_i in points 
+    vertex(p_i.x, p_i.y)
+  endShape(CLOSE)
+   
+
+
+leftmost_point = (S) ->
+  leftmost_p = S[0]
+  for p in S[1..S.length - 1]
+   if p.x < leftmost_p.x 
+    leftmost_p = p 
+  return leftmost_p

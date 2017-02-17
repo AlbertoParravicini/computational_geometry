@@ -56,3 +56,36 @@ compute_k_level = (input_lines, k) ->
   return k_level_points
   
 
+# Find the vertices of the k-level such that
+# k - 2 lines are above them, instead of k - 1.
+# In practice, a vertex is reflex if the k-level makes a left turn in that vertex.
+compute_reflex_vertices = (k_level) ->
+  reflex_vertices = []
+  for i in [1..k_level.length - 2]
+    res = orientation_test(k_level[i - 1], k_level[i], k_level[i + 1])
+    if res > 0
+      reflex_vertices.push(k_level[i])
+  return reflex_vertices
+
+
+compute_zonoid_vertices_from_reflex = (reflex_vertices, lines) ->
+  zonoid_vertices = []
+
+  for r_i in reflex_vertices 
+    intersections = []
+    # Find intersections with the vertical ray in the reflex vertex, and above the k-level
+    for l_i in lines
+      vertical_intersection = l_i.m * r_i.x + l_i.q
+      if vertical_intersection < r_i.y 
+        intersections.push(new Point(r_i.x, vertical_intersection))
+    # Compute the mean of those intersections 
+    zonoid_vertex = new Point(0, 0)
+    for p_i in intersections
+      zonoid_vertex.x += p_i.x
+      zonoid_vertex.y += p_i.y 
+    zonoid_vertex.x /= intersections.length
+    zonoid_vertex.y /= intersections.length
+    zonoid_vertices.push(zonoid_vertex)
+  
+  return zonoid_vertices
+
