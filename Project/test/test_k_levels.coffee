@@ -30,7 +30,7 @@ num_input_points = 15
 scale_factor = 100
 
 h = 480
-w = 640
+w = 1200
 
 dual_lines = []
 
@@ -82,5 +82,6 @@ mouseWheel = (event) ->
   if k > dual_lines.length
     k = dual_lines.length
   k_level = compute_k_level(dual_lines, k)
+  console.log "K: ", k
     
     

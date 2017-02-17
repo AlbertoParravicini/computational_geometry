@@ -11,7 +11,7 @@ scale_factor = 100;
 
 h = 480;
 
-w = 640;
+w = 1200;
 
 dual_lines = [];
 
@@ -68,5 +68,6 @@ mouseWheel = function(event) {
   if (k > dual_lines.length) {
     k = dual_lines.length;
   }
-  return k_level = compute_k_level(dual_lines, k);
+  k_level = compute_k_level(dual_lines, k);
+  return console.log("K: ", k);
 };
