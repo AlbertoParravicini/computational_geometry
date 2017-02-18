@@ -3,7 +3,7 @@ var compute_k_level, compute_reflex_vertices, compute_zonoid_vertices_from_refle
 
 w = 1200;
 
-h = 480;
+h = 700;
 
 compute_k_level = function(input_lines, k) {
   var best_so_far, current_line, first_intersection, i, intersections, j, k_level_points, l, l_i, len, lines, ref, x_i, y_i;
@@ -11,9 +11,9 @@ compute_k_level = function(input_lines, k) {
   lines = input_lines.slice();
   k_level_points = [];
   lines.sort(function(a, b) {
-    if (a.q > b.q) {
+    if (a.m * -10000 + a.q > b.m * -10000 + b.q) {
       return 1;
-    } else if (a.q < b.q) {
+    } else if (a.m * -10000 + a.q < b.m * -10000 + b.q) {
       return -1;
     } else {
       return 0;
@@ -21,7 +21,7 @@ compute_k_level = function(input_lines, k) {
   });
   console.log("\n\nSORTED:\n" + lines);
   current_line = lines[k - 1];
-  k_level_points.push(new Point(0, current_line.q));
+  k_level_points.push(new Point(-10000, current_line.m * -10000 + current_line.q));
   while (true) {
     intersections = [];
     for (j = 0, len = lines.length; j < len; j++) {
@@ -54,28 +54,38 @@ compute_k_level = function(input_lines, k) {
   return k_level_points;
 };
 
-compute_reflex_vertices = function(k_level) {
-  var i, j, ref, reflex_vertices, res;
+compute_reflex_vertices = function(k_level, arg) {
+  var i, j, ref, reflex_vertices, res, up;
+  up = (arg != null ? arg : {}).up;
+  if (up == null) {
+    up = false;
+  }
   reflex_vertices = [];
   for (i = j = 1, ref = k_level.length - 2; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
     res = orientation_test(k_level[i - 1], k_level[i], k_level[i + 1]);
-    if (res > 0) {
+    if ((res < 0 && !up) || (res > 0 && up)) {
       reflex_vertices.push(k_level[i]);
     }
   }
   return reflex_vertices;
 };
 
-compute_zonoid_vertices_from_reflex = function(reflex_vertices, lines) {
-  var intersections, j, l, l_i, len, len1, len2, m, p_i, r_i, vertical_intersection, zonoid_vertex, zonoid_vertices;
+compute_zonoid_vertices_from_reflex = function(reflex_vertices, lines, arg) {
+  var intersections, j, l, l_i, len, len1, len2, m, p_i, r_i, up, vertical_intersection, zonoid_vertex, zonoid_vertices;
+  up = (arg != null ? arg : {}).up;
+  if (up == null) {
+    up = false;
+  }
   zonoid_vertices = [];
   for (j = 0, len = reflex_vertices.length; j < len; j++) {
     r_i = reflex_vertices[j];
     intersections = [];
+    intersections.push(r_i);
+    intersections.push(r_i);
     for (l = 0, len1 = lines.length; l < len1; l++) {
       l_i = lines[l];
       vertical_intersection = l_i.m * r_i.x + l_i.q;
-      if (vertical_intersection < r_i.y) {
+      if ((vertical_intersection < r_i.y - 0.000001 && up) || (vertical_intersection > r_i.y - 0.000001 && !up)) {
         intersections.push(new Point(r_i.x, vertical_intersection));
       }
     }

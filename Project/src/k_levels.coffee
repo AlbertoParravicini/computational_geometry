@@ -1,5 +1,5 @@
 w = 1200
-h = 480
+h = 700
 
 compute_k_level = (input_lines, k) ->
   console.log input_lines
@@ -11,9 +11,9 @@ compute_k_level = (input_lines, k) ->
   # Find the k-th line starting from the bottom 
   # Sort the lines based on the value of q, then pick the k-th one.
   lines.sort((a, b) ->
-            if a.q > b.q
+            if a.m * -10000 + a.q > b.m * -10000 + b.q
               return 1
-            else if a.q < b.q
+            else if a.m * -10000 + a.q < b.m * -10000 + b.q
               return -1
             else return 0
             )
@@ -21,7 +21,7 @@ compute_k_level = (input_lines, k) ->
 
   # Store the current line of the k_set
   current_line = lines[k - 1]
-  k_level_points.push(new Point(0, current_line.q))
+  k_level_points.push(new Point(-10000, current_line.m * -10000 + current_line.q))
 
   while true
     # Compute the intersection of the current line with all the other lines.
@@ -59,27 +59,38 @@ compute_k_level = (input_lines, k) ->
 # Find the vertices of the k-level such that
 # k - 2 lines are above them, instead of k - 1.
 # In practice, a vertex is reflex if the k-level makes a left turn in that vertex.
-compute_reflex_vertices = (k_level) ->
+# up: if true, compute vertices with k - 2 lines ABOVE them
+# if false, compute vertices with k - 2 lines BELOW them
+compute_reflex_vertices = (k_level, {up} = {}) ->
+  up ?= false
   reflex_vertices = []
   for i in [1..k_level.length - 2]
     res = orientation_test(k_level[i - 1], k_level[i], k_level[i + 1])
-    if res > 0
+    if (res < 0 and !up) or (res > 0 and up)
       reflex_vertices.push(k_level[i])
   return reflex_vertices
 
+# up: if true, compute the UPPER half of the zonoid
+# if false, compute the LOWER half of the zonoid
+compute_zonoid_vertices_from_reflex = (reflex_vertices, lines, {up} = {}) ->
+  up ?= false
 
-compute_zonoid_vertices_from_reflex = (reflex_vertices, lines) ->
   zonoid_vertices = []
 
   for r_i in reflex_vertices 
     intersections = []
+    # Push twice the reflex vertex, as it corresponds to 2 points in the primal k-sets
+    intersections.push(r_i)
+    intersections.push(r_i)
     # Find intersections with the vertical ray in the reflex vertex, and above the k-level
     for l_i in lines
       vertical_intersection = l_i.m * r_i.x + l_i.q
-      if vertical_intersection < r_i.y 
+      # Need a small constant to take care of numerical imprecisions.
+      if (vertical_intersection < r_i.y - 0.000001 and up) or (vertical_intersection > r_i.y - 0.000001 and !up)
         intersections.push(new Point(r_i.x, vertical_intersection))
     # Compute the mean of those intersections 
     zonoid_vertex = new Point(0, 0)
+
     for p_i in intersections
       zonoid_vertex.x += p_i.x
       zonoid_vertex.y += p_i.y 

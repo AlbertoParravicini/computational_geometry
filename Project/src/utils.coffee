@@ -239,3 +239,53 @@ translate_back = (input_lines, point) ->
     lines.push(create_line(new Point(l.start.x + point.x, l.start.y + point.y), new Point(l.end.x + point.x, l.end.y + point.y)))
 
   return lines
+
+
+###################################
+# CONVEX HULL #####################
+###################################
+
+# Compute the convex hull of the given list of points by using Graham scan
+# Inspired by "http://www.geeksforgeeks.org/convex-hull-set-2-graham-scan/"
+convex_hull_graham_scan = (input_points) ->
+  points = input_points.slice()
+  convex_hull = []
+  # Find the point with the smalles x.
+  smallest_x_point_index = 0
+  for i in [0..points.length - 1]
+    if ((points[i].x < points[smallest_x_point_index].x) ||
+        ((points[i].x == points[smallest_x_point_index].x) && (points[i].y < points[smallest_x_point_index].y)))
+      smallest_x_point_index = i
+  # Put the point with smallest x at the beginning of the list.
+  swap(points, 0, smallest_x_point_index)
+
+  # Order the list with respect to the angle that each point forms 
+  # with the anchor. Given two points a, b, in the output a is before b
+  # if the polar angle of a w.r.t the anchor is bigger than the one of b,
+  # in counter-clockwise direction.
+  anchor = new Point(points[0].x, points[0].y)
+  points = [anchor].concat(radial_sort(points[1..], anchor, cw = false))
+  # If more points have the same angle w.r.t. the anchor, keep only the farthest one.
+  i = 1
+  while i < points.length-1 and (orientation_test(anchor, points[i], points[i+1]) == 0)
+    points.splice(i, 1)
+
+  # If there are fewer than 3 points, it isn't possible to build a convex hull.
+  if points.length < 3
+    return []
+
+  # Add the first 3 points to the convex hull.
+  # The first 2 will be for sure part of the hull.
+  convex_hull.push(new Point(points[0].x, points[0].y))
+  convex_hull.push(new Point(points[1].x, points[1].y))
+  convex_hull.push(new Point(points[2].x, points[2].y))
+
+  for i in [3..points.length - 1]
+    # While the i-th point forms a non-left turn with the last 2 elements of the convex hull...
+    while orientation_test(convex_hull[convex_hull.length - 2], convex_hull[convex_hull.length - 1], points[i]) <= 0
+      # Delete from the convex hull the point that causes a right turn.
+      convex_hull.pop()  
+    # Once no new right turns are found, add the point that gives a left turn.   
+    convex_hull.push(new Point(points[i].x, points[i].y))
+
+  return convex_hull

@@ -1,7 +1,17 @@
-input_points = [new Point(100, 10), new Point(300, 200), new Point(423, 200), new Point(100, 300), new Point(500, 120), 
-    new Point(200, 320), new Point(50, 40),new Point(51, 350), new Point(150, 350),
-    new Point(220, 400), new Point(240, 320), new Point(280, 450)];
-
+input_points = [
+  new Point(100, 10),
+  new Point(300, 200), 
+  new Point(423, 200), 
+  new Point(100, 300), 
+  new Point(500, 120), 
+  new Point(200, 320),
+  new Point(50, 40),
+  new Point(51, 350), 
+  new Point(150, 350),
+  new Point(220, 400),
+  new Point(240, 320), 
+  new Point(280, 450)]
+  
 default_color = [121, 204, 147, 40]
 
 num_input_points = 15
