@@ -1,29 +1,42 @@
-# input_points = [
-#   new Point(2, -2),
-#   new Point(-0.8, 4.2),
-#   new Point(1, 3),
-#   new Point(0.1, 0.6),
-#   new Point(0.4, 1.2),
-#   new Point(-0.2, 2.2),
-#   new Point(1.4, 0.3),
-#   new Point(-0.3, 4.8),
-#   new Point(-0.2, 6),
-#   new Point(3, -10)
-# ]
+input_points = [
+  new Point(2, -2),
+  new Point(-0.8, 4.2),
+  new Point(1, 3),
+  new Point(0.1, 0.6),
+  new Point(0.4, 1.2),
+  new Point(-0.2, 2.2),
+  new Point(1.4, 0.3),
+  new Point(-0.3, 4.8),
+  new Point(-0.2, 6),
+  new Point(3, -10)
+]
 
 input_points = [
-  new Point(100, 10),
-  new Point(300, 200), 
-  new Point(423, 200), 
-  new Point(100, 300), 
-  new Point(500, 120), 
-  new Point(200, 320),
-  new Point(50, 40),
-  new Point(51, 350), 
-  new Point(150, 350),
-  new Point(220, 400),
-  new Point(240, 320), 
-  new Point(280, 450)]
+  new Point(0.31, 3),
+  new Point(0.1, 0.6),
+  new Point(0.4, 1.2),
+  new Point(-0.4, 4.2),
+  new Point(-0.3, 5),
+  new Point(0.9, 0.3),
+  new Point(0.8, -0.6),
+  new Point(-0.8, 6),
+  new Point(0.05, 2)
+]
+
+# input_points = [
+#   new Point(100, 10),
+#   new Point(300, 200), 
+#   new Point(423, 200), 
+#   new Point(100, 300), 
+#   new Point(500, 120), 
+#   new Point(200, 320),
+#   new Point(50, 40),
+#   new Point(51, 350), 
+#   new Point(150, 350),
+#   new Point(220, 400),
+#   new Point(240, 320), 
+#   new Point(280, 450)
+# ]
 
 
 default_color = [121, 204, 147, 200]
@@ -32,14 +45,14 @@ num_input_points = 15
 
 # Input points need to be rescaled to have dual lines that can be visualized.
 # The scale factor says by how much each coordinate is divided.
-scale_factor = 1
+scale_factor = 100
 
 w = 1200
 h = 700
 
 dual_lines = []
 
-k = 5
+k = 4
 
 k_level_u = []
 reflex_vertices_u = []
@@ -75,8 +88,6 @@ setup = () ->
   zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
   for p_i in zonoid_dual_vertices
     zonoid_lines.push(new Line(new Point(-10000, p_i.x * -10000 + p_i.y), new Point(10000, p_i.x * 10000 + p_i.y), p_i.x, p_i.y))
-
-  
 
 draw = () -> 
   background(255, 251, 234)
@@ -167,18 +178,18 @@ draw = () ->
   #   draw_poly(radial_sort(zonoid_slice_u, anchor: leftmost_point(zonoid_slice_u), cw: true), fill_color:[16, 74, 34, 100], stroke_color:[16, 74, 34, 255])
 
 
-  for l_i in zonoid_lines
-    line(l_i.start.x + 500, l_i.start.y, l_i.end.x + 500, l_i.end.y)
+  # for l_i in zonoid_lines
+  #   line(l_i.start.x + 500, l_i.start.y, l_i.end.x + 500, l_i.end.y)
 
 
-  for z_i in zonoid
-    fill(16, 74, 34, 180)
-    stroke(16, 74, 34, 255)
-    ellipse(z_i.x, z_i.y, 20, 20)
-    ellipse(z_i.x, z_i.y, 10, 10)
-  if zonoid.length > 0
-    draw_poly(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true))
-    draw_poly(zonoid, fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+  # for z_i in zonoid
+  #   fill(16, 74, 34, 180)
+  #   stroke(16, 74, 34, 255)
+  #   ellipse(z_i.x, z_i.y, 20, 20)
+  #   ellipse(z_i.x, z_i.y, 10, 10)
+  # if zonoid.length > 0
+  #   draw_poly(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true))
+  #   draw_poly(zonoid, fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
 
 
 mouseWheel = (event) ->
@@ -186,10 +197,10 @@ mouseWheel = (event) ->
     k -= 1
   else if event.delta < 0
     k += 1
-  if k < 1
+  if k < 2
     k = 1
-  if k > dual_lines.length
-    k = dual_lines.length
+  if k > dual_lines.length 
+    k = dual_lines.length 
   k_level_u = compute_k_level(dual_lines, k)
   reflex_vertices_u = compute_reflex_vertices(k_level_u, up:true)
   zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:true)
