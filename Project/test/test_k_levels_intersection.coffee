@@ -65,7 +65,7 @@ zonoid = []
 setup = () ->
   createCanvas(w, h)
   fill('red')   
-  frameRate(10)
+  frameRate(20)
   console.log "K:", k
 
 
@@ -105,7 +105,7 @@ draw = () ->
     line(l[0].x, l[0].y, l[1].x, l[1].y)
 
 
-  # # DRAW K-LEVEL UPPER   
+  # DRAW K-LEVEL UPPER   
   fill(143, 27, 10, 200)  
   stroke(231, 120, 58, 200)
   k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
@@ -144,7 +144,7 @@ draw = () ->
   if zonoid_vertices_u_temp.length > 1
     for i in [1..zonoid_vertices_u_temp.length - 1]
       zonoid_slice_u = [zonoid_vertices_u_temp[i - 1], zonoid_vertices_u_temp[i], new Point(zonoid_vertices_u_temp[i].x, 10000), new Point(zonoid_vertices_u_temp[i - 1].x, 10000)]
-      draw_poly(radial_sort(zonoid_slice_u, anchor: leftmost_point(zonoid_slice_u), cw: true), fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
+      draw_poly(zonoid_slice_u, fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
 
 
 
@@ -172,7 +172,7 @@ draw = () ->
       ellipse(p.x, y, 2, 2)
       y -= 10
 
-  # # DRAW ZONOID LOWER  
+  # DRAW ZONOID LOWER  
   fill(98, 122, 161, 200)  
   stroke(21, 32, 50, 200); 
   strokeWeight(6)
@@ -188,7 +188,7 @@ draw = () ->
   if zonoid_vertices_d_temp.length > 1
     for i in [1..zonoid_vertices_d_temp.length - 1]
       zonoid_slice_d = [zonoid_vertices_d_temp[i - 1], zonoid_vertices_d_temp[i], new Point(zonoid_vertices_d_temp[i].x, -10000), new Point(zonoid_vertices_d_temp[i - 1].x, -10000)]
-      draw_poly(radial_sort(zonoid_slice_d, anchor: leftmost_point(zonoid_slice_d), cw: true), fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
+      draw_poly(zonoid_slice_d, fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
 
 
   # DRAW THE PRIMAL ON THE RIGHT SIDE
@@ -203,24 +203,55 @@ draw = () ->
   stroke(17, 74, 27, 180);
   for p in input_points.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
     ellipse(p.x, p.y, 10, 10)
+  stroke(143, 114, 93, 200)
+  #DRAW THE ZONOID COMPUTED THROUGH KSETS
+  zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+  for z_i in zonoid_temp
+    fill(16, 74, 34, 180)
+    stroke(16, 74, 34, 255)
+    ellipse(z_i.x, z_i.y, 20, 20)
+    ellipse(z_i.x, z_i.y, 10, 10)
+  res = false
+  if zonoid_temp.length > 0
+    res = check_inclusion_in_polygon(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), new Point(mouseX, mouseY))
+  if zonoid_temp.length > 0 and res
+    draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+  else if zonoid_temp.length > 0 and !res
+    draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 40], stroke_color:[16, 74, 34, 255])
 
-    
-  # stroke(143, 114, 93, 200)
-  # for l_i in zonoid_lines.map((l) -> return [
-  #     new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
-  #     new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
-  #     ])
-  #   line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
-     
-  # #DRAW THE ZONOID COMPUTED THROUGH KSETS
-  # zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
-  # for z_i in zonoid_temp
-  #   fill(16, 74, 34, 180)
-  #   stroke(16, 74, 34, 255)
-  #   ellipse(z_i.x, z_i.y, 20, 20)
-  #   ellipse(z_i.x, z_i.y, 10, 10)
-  # if zonoid_temp.length > 0
-  #   draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+  # DRAW ZONOID BASED ON THE DUAL REFLEX VERTICES
+  for l_i in zonoid_lines.map((l) -> return [
+      new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
+      new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
+      ])
+    line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
+
+  # DRAW QUERY POINT
+  fill(255, 121, 113, 180)
+  stroke(130, 65, 85);
+  line(0, mouseY, w, mouseY)
+  line(mouseX, 0, mouseX, h)
+  ellipse(mouseX, mouseY, 15, 15)
+  fill("black");
+  stroke("black");
+
+
+  # DRAW DUAL OF QUERY POINT
+  if res
+    stroke(78, 185, 120, 200)
+  else 
+    stroke(78, 185, 120, 80)
+  strokeWeight(8)
+  [p_x, p_y] = [(mouseX - 0.75 * w) / (2 * scale_factor), (mouseY - 100) / scale_factor]
+
+  line(0, p_y * scale_factor, w / 2, p_x * w / 2 + p_y * scale_factor)
+
+  if res 
+    strokeWeight(4)
+    stroke(20, 50, 45, 100)
+    line(0, p_y * scale_factor, w / 2, p_x * w / 2 + p_y * scale_factor)
+  strokeWeight(1)
+
 
 
 
@@ -281,5 +312,3 @@ rightmost_point = (S) ->
   return rightmost_p
 
 
-translate_p = (p) -> 
-  return new Point(p.x * scale_factor + w / 2, p.y * scale_factor)

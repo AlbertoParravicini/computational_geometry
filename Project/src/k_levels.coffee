@@ -72,14 +72,14 @@ compute_reflex_vertices = (k_level, {up} = {}) ->
 
   
   # Add points at -Inf and + Inf, so we get 2 convex sets
-  #reflex_vertices.push(k_level[0])
+  reflex_vertices.push(k_level[0])
 
   for i in [1..k_level.length - 2]
     res = orientation_test(k_level[i - 1], k_level[i], k_level[i + 1])
     if (res < 0 and !up) or (res > 0 and up)
       reflex_vertices.push(k_level[i])
 
-  #reflex_vertices.push(k_level[k_level.length - 1])
+  reflex_vertices.push(k_level[k_level.length - 1])
   return reflex_vertices
 
 # up: if true, compute the UPPER half of the zonoid
@@ -94,9 +94,8 @@ compute_zonoid_vertices_from_reflex = (reflex_vertices, lines, {up} = {}) ->
     # Push twice the reflex vertex, as it corresponds to 2 points in the primal k-sets.
     # Don't do it when considering the points at infinity!
     intersections.push(r_i)
-    #if i > 0 and i < reflex_vertices.length - 1
-
-    intersections.push(r_i)
+    if i > 0 and i < reflex_vertices.length - 1
+      intersections.push(r_i)
     # Find intersections with the vertical ray in the reflex vertex, and above the k-level
     for l_i in lines
       vertical_intersection = l_i.m * r_i.x + l_i.q

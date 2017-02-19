@@ -66,12 +66,14 @@ compute_reflex_vertices = function(k_level, arg) {
     up = false;
   }
   reflex_vertices = [];
+  reflex_vertices.push(k_level[0]);
   for (i = j = 1, ref = k_level.length - 2; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
     res = orientation_test(k_level[i - 1], k_level[i], k_level[i + 1]);
     if ((res < 0 && !up) || (res > 0 && up)) {
       reflex_vertices.push(k_level[i]);
     }
   }
+  reflex_vertices.push(k_level[k_level.length - 1]);
   return reflex_vertices;
 };
 
@@ -86,7 +88,9 @@ compute_zonoid_vertices_from_reflex = function(reflex_vertices, lines, arg) {
     r_i = reflex_vertices[i];
     intersections = [];
     intersections.push(r_i);
-    intersections.push(r_i);
+    if (i > 0 && i < reflex_vertices.length - 1) {
+      intersections.push(r_i);
+    }
     for (l = 0, len1 = lines.length; l < len1; l++) {
       l_i = lines[l];
       vertical_intersection = l_i.m * r_i.x + l_i.q;
