@@ -36,8 +36,7 @@ draw = () ->
     ellipse(z_i.x, z_i.y, 20, 20)
     ellipse(z_i.x, z_i.y, 10, 10)
   if zonoid.length > 0
-    draw_poly(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true))
-    draw_poly(zonoid, fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+    draw_poly(radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true), fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
 
 
 keyPressed = () -> 

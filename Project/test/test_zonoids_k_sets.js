@@ -37,11 +37,10 @@ draw = function() {
     ellipse(z_i.x, z_i.y, 10, 10);
   }
   if (zonoid.length > 0) {
-    draw_poly(radial_sort(zonoid, {
+    return draw_poly(radial_sort(zonoid, {
       anchor: leftmost_point(zonoid),
       cw: true
-    }));
-    return draw_poly(zonoid, {
+    }), {
       fill_color: [78, 185, 120, 160],
       stroke_color: [16, 74, 34, 255]
     });
