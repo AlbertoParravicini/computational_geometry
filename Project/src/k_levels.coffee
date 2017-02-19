@@ -1,8 +1,13 @@
 w = 1200
-h = 700
+h = 600
 
-compute_k_level = (input_lines, k) ->
-  console.log input_lines
+# reverse = true computes the n - k + 1 level, used to display the k-level
+# ona vertically flipped canvas.
+compute_k_level = (input_lines, k, {reverse} = {}) ->
+
+  reverse ?= false
+  if reverse
+    k = input_lines.length - k + 1
   lines = input_lines.slice()
 
   # Store the points that will compose the k-level
@@ -17,7 +22,7 @@ compute_k_level = (input_lines, k) ->
               return -1
             else return 0
             )
-  console.log "\n\nSORTED:\n" + lines
+  # console.log "\n\nSORTED:\n" + lines
 
   # Store the current line of the k_set
   current_line = lines[k - 1]

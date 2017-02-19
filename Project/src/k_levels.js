@@ -5,9 +5,15 @@ w = 1200;
 
 h = 700;
 
-compute_k_level = function(input_lines, k) {
-  var best_so_far, current_line, first_intersection, i, intersections, j, k_level_points, l, l_i, len, lines, ref, x_i, y_i;
-  console.log(input_lines);
+compute_k_level = function(input_lines, k, arg) {
+  var best_so_far, current_line, first_intersection, i, intersections, j, k_level_points, l, l_i, len, lines, ref, reverse, x_i, y_i;
+  reverse = (arg != null ? arg : {}).reverse;
+  if (reverse == null) {
+    reverse = false;
+  }
+  if (reverse) {
+    k = input_lines.length - k + 1;
+  }
   lines = input_lines.slice();
   k_level_points = [];
   lines.sort(function(a, b) {
@@ -19,7 +25,6 @@ compute_k_level = function(input_lines, k) {
       return 0;
     }
   });
-  console.log("\n\nSORTED:\n" + lines);
   current_line = lines[k - 1];
   k_level_points.push(new Point(-10000, current_line.m * -10000 + current_line.q));
   while (true) {
