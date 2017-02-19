@@ -214,6 +214,13 @@ create_line = (p_1, p_2) ->
 
   return create_line_from_m_q(m, q)
 
+###################################
+# Given two points, compute
+# m and q of the line passing though them.
+compute_m_q_of_line = (p_1, p_2) -> 
+  m = (p_2.y - p_1.y) / (p_2.x - p_1.x)
+  q = (p_1.y * p_2.x - p_2.y * p_1.x) / (p_2.x - p_1.x)
+  return [m, q]
 
 
 ###################################

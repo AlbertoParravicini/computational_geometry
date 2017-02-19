@@ -3,7 +3,7 @@ var compute_k_level, compute_reflex_vertices, compute_zonoid_vertices_from_refle
 
 w = 1200;
 
-h = 700;
+h = 600;
 
 compute_k_level = function(input_lines, k, arg) {
   var best_so_far, current_line, first_intersection, i, intersections, j, k_level_points, l, l_i, len, lines, ref, reverse, x_i, y_i;
@@ -76,14 +76,14 @@ compute_reflex_vertices = function(k_level, arg) {
 };
 
 compute_zonoid_vertices_from_reflex = function(reflex_vertices, lines, arg) {
-  var intersections, j, l, l_i, len, len1, len2, m, p_i, r_i, up, vertical_intersection, zonoid_vertex, zonoid_vertices;
+  var i, intersections, j, l, l_i, len, len1, len2, m, p_i, r_i, up, vertical_intersection, zonoid_vertex, zonoid_vertices;
   up = (arg != null ? arg : {}).up;
   if (up == null) {
     up = false;
   }
   zonoid_vertices = [];
-  for (j = 0, len = reflex_vertices.length; j < len; j++) {
-    r_i = reflex_vertices[j];
+  for (i = j = 0, len = reflex_vertices.length; j < len; i = ++j) {
+    r_i = reflex_vertices[i];
     intersections = [];
     intersections.push(r_i);
     intersections.push(r_i);

@@ -46,7 +46,7 @@ canvas_bound_original = 5
 
 dual_lines = []
 
-k = 1
+k = 2
 
 k_level_u = []
 reflex_vertices_u = []
@@ -65,7 +65,7 @@ zonoid = []
 setup = () ->
   createCanvas(w, h)
   fill('red')   
-  frameRate(3)
+  frameRate(10)
   console.log "K:", k
 
 
@@ -144,7 +144,7 @@ draw = () ->
   if zonoid_vertices_u_temp.length > 1
     for i in [1..zonoid_vertices_u_temp.length - 1]
       zonoid_slice_u = [zonoid_vertices_u_temp[i - 1], zonoid_vertices_u_temp[i], new Point(zonoid_vertices_u_temp[i].x, 10000), new Point(zonoid_vertices_u_temp[i - 1].x, 10000)]
-      draw_poly(zonoid_slice_u, fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
+      draw_poly(radial_sort(zonoid_slice_u, anchor: leftmost_point(zonoid_slice_u), cw: true), fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
 
 
 
@@ -188,7 +188,7 @@ draw = () ->
   if zonoid_vertices_d_temp.length > 1
     for i in [1..zonoid_vertices_d_temp.length - 1]
       zonoid_slice_d = [zonoid_vertices_d_temp[i - 1], zonoid_vertices_d_temp[i], new Point(zonoid_vertices_d_temp[i].x, -10000), new Point(zonoid_vertices_d_temp[i - 1].x, -10000)]
-      draw_poly(zonoid_slice_d, fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
+      draw_poly(radial_sort(zonoid_slice_d, anchor: leftmost_point(zonoid_slice_d), cw: true), fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
 
 
   # DRAW THE PRIMAL ON THE RIGHT SIDE
@@ -203,33 +203,24 @@ draw = () ->
   stroke(17, 74, 27, 180);
   for p in input_points.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
     ellipse(p.x, p.y, 10, 10)
-  stroke(143, 114, 93, 200)
-  # DRAW ZONOID BASED ON THE DUAL REFLEX VERTICES
-  for l_i in zonoid_lines.map((l) -> return [
-      new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
-      new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
-      ])
-    line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
 
-  #DRAW ZONOID BASED ON THE DUAL LINES
-  # if zonoid_vertices_u.length > 1 and zonoid_vertices_d.length > 1
-  #   for i in [1..zonoid_vertices_u.length - 1]
-  #     [m, q] = compute_m_q_of_line(zonoid_vertices_u[i - 1], zonoid_vertices_u[i])
-  #     ellipse(m * (scale_factor * 2) + w * 0.75, q * scale_factor + 100, 20, 20)
-
-  #   for i in [1..zonoid_vertices_d.length - 1]
-  #     [m, q] = compute_m_q_of_line(zonoid_vertices_d[i - 1], zonoid_vertices_d[i])
-  #     ellipse(m * (scale_factor * 2) + w * 0.75, q * scale_factor + 100, 20, 20)
-  
-  #DRAW THE ZONOID COMPUTED THROUGH KSETS
-  zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
-  for z_i in zonoid_temp
-    fill(16, 74, 34, 180)
-    stroke(16, 74, 34, 255)
-    ellipse(z_i.x, z_i.y, 20, 20)
-    ellipse(z_i.x, z_i.y, 10, 10)
-  if zonoid_temp.length > 0
-    draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
+    
+  # stroke(143, 114, 93, 200)
+  # for l_i in zonoid_lines.map((l) -> return [
+  #     new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
+  #     new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
+  #     ])
+  #   line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
+     
+  # #DRAW THE ZONOID COMPUTED THROUGH KSETS
+  # zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+  # for z_i in zonoid_temp
+  #   fill(16, 74, 34, 180)
+  #   stroke(16, 74, 34, 255)
+  #   ellipse(z_i.x, z_i.y, 20, 20)
+  #   ellipse(z_i.x, z_i.y, 10, 10)
+  # if zonoid_temp.length > 0
+  #   draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
 
 
 
@@ -290,3 +281,5 @@ rightmost_point = (S) ->
   return rightmost_p
 
 
+translate_p = (p) -> 
+  return new Point(p.x * scale_factor + w / 2, p.y * scale_factor)
