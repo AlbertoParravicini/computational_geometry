@@ -63,7 +63,8 @@ zonoid = []
 
 
 setup = () ->
-  createCanvas(w, h)
+  canvas = createCanvas(w, h)
+  canvas.parent('sketch-holder')
   fill('red')   
   frameRate(20)
   console.log "K:", k

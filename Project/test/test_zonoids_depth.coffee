@@ -3,7 +3,7 @@ input_points = [new Point(100, 10), new Point(300, 200), new Point(423, 200), ne
     new Point(220, 400), new Point(240, 320), new Point(280, 450)];
 
 
-num_input_points =  14
+num_input_points =  18
 
 query_point = false
 
@@ -13,8 +13,8 @@ default_color = [121, 204, 147, 40]
 h = 480
 w = 640
 
-# for i in [0..num_input_points - 1]
-#   input_points.push(new Point(Math.floor(Math.random() * w), Math.floor(Math.random() * h)))
+for i in [0..num_input_points - 1]
+   input_points.push(new Point(Math.floor(Math.random() * w), Math.floor(Math.random() * h)))
 
 zonoid = []
 

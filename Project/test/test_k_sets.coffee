@@ -2,7 +2,7 @@ input_points = [
   new Point(100, 10),
   new Point(300, 200), 
   new Point(423, 200), 
-  new Point(100, 300), 
+  new Point(101, 300), 
   new Point(500, 120), 
   new Point(200, 320),
   new Point(50, 40),
@@ -34,10 +34,16 @@ sep_p2 = false
 m_sep = false
 q_sep = false
 
+canvas = false
+
+
 setup = () ->
-  createCanvas(w, h)
+  canvas = createCanvas(w, h)
+  canvas.parent('test-k-sets-canvas')
   fill('red')   
-  frameRate(10);
+  frameRate(10)
+
+  canvas.mouseWheel(canvas_mouseWheel)
 
 draw = () -> 
   background(255, 251, 234)
@@ -70,8 +76,7 @@ draw = () ->
     ellipse(k_sets[k_set_num].mean_point.x, k_sets[k_set_num].mean_point.y, 20, 20)
 
 
-    
-    
+      
 
 
 keyPressed = () -> 
@@ -81,21 +86,20 @@ keyPressed = () ->
       k_set_num -= 1
 
     if k_set_num < 0
-      k_set_num = 0
-    if k_set_num >= k_sets.length
       k_set_num = k_sets.length - 1
+    if k_set_num >= k_sets.length
+      k_set_num = 0
     sep_p1 = k_sets[k_set_num].separator[0]
     sep_p2 = k_sets[k_set_num].separator[1]
-    m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
-    q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
+    m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x + 0.00001) 
+    q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x + 0.00001)
     
 
-
-
-mouseWheel = (event) ->
-  if event.delta > 0
+    
+canvas_mouseWheel = (event) ->
+  if event.deltaY > 0
     k -= 1
-  else if event.delta < 0
+  else if event.deltaY < 0
     k += 1
   if k < 1
     k = 1
@@ -105,8 +109,8 @@ mouseWheel = (event) ->
   k_set_num = 0
   sep_p1 = k_sets[k_set_num].separator[0]
   sep_p2 = k_sets[k_set_num].separator[1]
-  m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
-  q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
+  m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x + 0.00001)
+  q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x + 0.00001)
 
 
 

@@ -36,8 +36,9 @@ zonoid_lines = [];
 zonoid = [];
 
 setup = function() {
-  var j, len, len1, m, p, p_i, zonoid_dual_vertices;
-  createCanvas(w, h);
+  var canvas, j, len, len1, m, p, p_i, zonoid_dual_vertices;
+  canvas = createCanvas(w, h);
+  canvas.parent('sketch-holder');
   fill('red');
   frameRate(20);
   console.log("K:", k);

@@ -16,3 +16,4 @@
 [0218/183958.610:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: È in corso la chiusura della pipe. (0xE8)
 [0219/160811.088:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: È in corso la chiusura della pipe. (0xE8)
 [0219/184700.482:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: È in corso la chiusura della pipe. (0xE8)
+[0220/155604.941:ERROR:exception_handler_server.cc(524)] ConnectNamedPipe: È in corso la chiusura della pipe. (0xE8)
