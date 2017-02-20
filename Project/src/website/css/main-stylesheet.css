@@ -114,7 +114,6 @@ footer {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	min-height: 360px;
 	z-index: 999;
 	background-size: cover;
 	background-attachment: fixed;
@@ -155,4 +154,8 @@ a.splash-arrow {
 a.splash-arrow:hover {
 	text-decoration: none;
 	bottom: 40px;
+}
+
+#main-content {
+    overflow: hidden;
 }

@@ -80,19 +80,21 @@ draw = () ->
 
 
 keyPressed = () -> 
-    if keyCode == UP_ARROW
-      k_set_num += 1
-    else if keyCode == DOWN_ARROW
-      k_set_num -= 1
+    # Only if the mouse is over the canvas
+    if mouseX >= 0 and mouseX <= w and mouseY >= 0 and mouseY <= h
+      if keyCode == UP_ARROW
+        k_set_num += 1
+      else if keyCode == DOWN_ARROW
+        k_set_num -= 1
 
-    if k_set_num < 0
-      k_set_num = k_sets.length - 1
-    if k_set_num >= k_sets.length
-      k_set_num = 0
-    sep_p1 = k_sets[k_set_num].separator[0]
-    sep_p2 = k_sets[k_set_num].separator[1]
-    m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x + 0.00001) 
-    q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x + 0.00001)
+      if k_set_num < 0
+        k_set_num = k_sets.length - 1
+      if k_set_num >= k_sets.length
+        k_set_num = 0
+      sep_p1 = k_sets[k_set_num].separator[0]
+      sep_p2 = k_sets[k_set_num].separator[1]
+      m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x + 0.00001) 
+      q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x + 0.00001)
     
 
     
