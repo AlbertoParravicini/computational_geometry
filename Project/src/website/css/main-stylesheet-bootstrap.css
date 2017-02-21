@@ -1,0 +1,64 @@
+.chapter-header {
+  background-color: #d4d4d2;
+  padding: 1em 1em;
+  border-radius: 0px;
+  margin-bottom: 0px;
+
+  animation-duration: 1.5s;
+}
+
+.background-light {
+  margin: auto;
+  width: 90%;
+  background-color: rgb(255, 250, 245);
+}
+
+.chapter-title {
+  display:inline-block;
+  background-color: rgb(255, 250, 245);
+  color: rgb(78, 77, 74);
+  padding: 10px 10px 10px 10px;
+  font-size: 4em;
+  margin-left: 1em;
+}
+
+.chapter-subtitle {
+  display:inline-block;
+  background-color: rgb(255, 250, 245);
+  color: rgb(78, 77, 74);
+  padding: 10px 10px 10px 10px;
+  margin-left: 1em;
+}
+
+body {
+  background-color: rgb(78, 77, 74);
+  color: rgb(78, 77, 74);
+  font-size: 1.15em;
+}
+
+.content-block {
+  margin-top: 1rem;
+  width: 100%;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  margin-top: 0em;
+  background: rgba(220,240,240,0.2);
+}
+
+.list-elem {
+  margin-bottom: 3px;
+}
+
+#zonoid-example-1 {
+  max-width:640px;
+  max-height:auto;
+}
+
+#zonoid-example-2 {
+  max-width:640px;
+  max-height:auto;
+}
+
+.fade-in-object {
+  opacity: 0;
+}
