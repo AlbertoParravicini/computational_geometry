@@ -3,39 +3,41 @@ $(document).ready(function () {
   /* Every time the window is scrolled ... */
   $(window).scroll(function () {
     if ($(".splash").is(":visible")) {
-      $(window).off("scroll");
+      $(window).off("slide");
       $(".splash").slideUp(1000, function () {
         $(".wrapper").css({ "display": "block" })
         $(".wrapper").css("opacity", "1");
         $('.wrapper').addClass("animated fadeInUp");
-        $("html, body").animate({ "scrollTop": "0px" }, 100);
+        $(".splash").css({ "display": "hidden" })
+        window.scrollTo(0, 0);
       });
     }
-
     /* Check the location of each desired element */
-    $('.fade-in-object').each(function (i) {
+    else {
+      $(window).on("scroll", function () {
+        $('.fade-in-object').each(function (i) {
+          var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+          var bottom_of_window = $(window).scrollTop() + $(window).height();
 
-      console.log("sadasdadas");
+          /* Adjust the "300" to either have a delay or that the content starts fading a bit before you reach it  */
+          bottom_of_window = bottom_of_window + 300;
 
-      var bottom_of_object = $(this).offset().top + $(this).outerHeight();
-      var bottom_of_window = $(window).scrollTop() + $(window).height();
+          /* If the object is completely visible in the window, fade it it */
+          if (bottom_of_window > bottom_of_object) {
+            if ($(this).hasClass("fade-on")) {
+              $(this).animate({ 'opacity': '1' }, 2000);
+            }
+            else if ($(this).hasClass("fade-left")) {
+              $(this).addClass('animated fadeInLeft');
+            }
+            else if ($(this).hasClass("fade-right")) {
+              $(this).addClass('animated fadeInRight');
+            }
+          }
+        });
+      })
+    }
 
-      /* Adjust the "300" to either have a delay or that the content starts fading a bit before you reach it  */
-      bottom_of_window = bottom_of_window + 300;
-
-      /* If the object is completely visible in the window, fade it it */
-      if (bottom_of_window > bottom_of_object) {
-        if ($(this).hasClass("fade-on")) {
-          $(this).animate({ 'opacity': '1' }, 2000);
-        }
-        else if ($(this).hasClass("fade-left")) {
-          $(this).addClass('animated fadeInLeft');
-        }
-        else if ($(this).hasClass("fade-right")) {
-          $(this).addClass('animated fadeInRight');
-        }
-      }
-    });
   });
 
 
@@ -52,12 +54,10 @@ $(document).ready(function () {
     });
   });
 
-
-  document.querySelector(".splash-arrow").addEventListener("webkitAnimationEnd", function (e) {
+  $(".splash-arrow").on("webkitAnimationEnd", function (e) {
     $("#splash-arrow-stack").addClass('animated infinite rubberBand');
     $(".splash-arrow").css({ 'opacity': '1' });
-
-  }, false);
+  });
 });
 
 
