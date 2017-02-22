@@ -296,3 +296,12 @@ convex_hull_graham_scan = (input_points) ->
     convex_hull.push(new Point(points[i].x, points[i].y))
 
   return convex_hull
+
+
+# Find the leftmost point in a set of points.
+leftmost_point = (S) ->
+  leftmost_p = S[0]
+  for p in S[1..S.length - 1]
+    if p.x < leftmost_p.x 
+      leftmost_p = p 
+  return leftmost_p

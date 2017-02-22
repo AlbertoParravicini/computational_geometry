@@ -18,12 +18,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, showMathMenu: false});
+  </script>
+  <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
   <link rel="stylesheet" type="text/css" href="./css/main-stylesheet-bootstrap.css" />
-  <!--<script type="text/javascript" src="../utils.js"></script>
-  <script type="text/javascript" src="../zonoids.js"></script>
-  <script type="text/javascript" src="../k_levels.js"></script>
-  <script type="text/javascript" src="../../test/test_k_sets.js"></script>-->
+
+  <!--Include the interactive demos-->
+  <script type="text/javascript" src="../zonoids-code/utils.js"></script>
+  <script type="text/javascript" src="../zonoids-code/zonoids.js"></script>
+  <script type="text/javascript" src="../zonoids-code/k_levels.js"></script>
+  <script type="text/javascript" src="./js/demos/test_zonoids_k_sets.js"></script>
+  <script type="text/javascript" src="./js/demos/test_zonoids_depth.js"></script>
 </head>
 
 
@@ -40,6 +48,7 @@
   <!-- END OF SPLASH -->
 
   <div class="wrapper">
+
     <div id="chapter1" class="chapter-header jumbotron">
       <h1 class="chapter-title">Chapter 1</h1>
       <br/>
@@ -50,9 +59,10 @@
     <div class="background-light">
       <div class="container-fluid content-block">
         <div class="row">
-          <div class="col-8">
-            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
-              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
+          <div id="zonoid-intro" class="col-8">
+            <p> When `a \ne 0`, there are two solutions to \(ax^2 + bx + c = 0\) and they are $$x = {-b \pm \sqrt{b^2-4ac} \over
+              2a}.$$ Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed
+              to the previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
               the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
               size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
               types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
@@ -60,7 +70,7 @@
               screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
               large desktop screens. The following table summarizes some of the key features of the new grid system</p>
           </div>
-          <div class="col-4">
+          <div id="zonoid_algo" class="col-4">
             <section>
               <h3 class="text-center">Useful algorithms:</h3>
               <ul>
@@ -94,13 +104,16 @@
         </section>
       </div>
 
-     <hr class="content-divider">
+      <hr class="content-divider">
 
       <div class="container-fluid content-block ">
         <div class="row">
-          <div class="col fade-in-object fade-on"><img src="./img/zonoid_cover.jpg" id="zonoid-example-1"></div>
-          <div class="col fade-in-object fade-right">
+          <div class="col fade-in-object fade-on">
+            <div class="interactive-canvas" id="demo-zonoid-k-sets-canvas"></div>
+            <!--DEMO 1: ZONOID K-SETS DRAWING-->
+          </div>
 
+          <div class="col fade-in-object fade-right">
             <section>
               <h3 class="text-center">ZONOID DRAWING DEMO</h3>
               <ul>
@@ -120,9 +133,12 @@
 
       <div class="container-fluid content-block">
         <div class="row">
-          <div class="col fade-in-object fade-on"><img src="./img/zonoid_cover.jpg" id="zonoid-example-2"></div>
-          <div class="col fade-in-object fade-right">
+          <div class="col fade-in-object fade-on">
+            <div class="interactive-canvas" id="demo-zonoid-depth-canvas"></div>
+            <!--DEMO 2: ZONOID DEPTH-->
+          </div>
 
+          <div class="col fade-in-object fade-right">
             <section>
               <h3 class="text-center">ZONOID DEPTH DEMO</h3>
               <ul>
@@ -134,10 +150,8 @@
             </section>
           </div>
         </div>
-
       </div>
       <!-- END OF DEMO 2 -->
-
     </div>>
     <!-- END OF CHAPTER 1 -->
 
@@ -174,13 +188,85 @@
           </div>
         </div>
       </div>
-      <!--END OF CHAPTER 2-->
-
-
-
-      <footer id="footer" class="chapter-header jumbotron">
-      </footer>
     </div>
+    <!--END OF CHAPTER 2-->
+
+
+    <div id="chapter3" class="chapter-header jumbotron fade-in-object fade-left">
+      <h1 class="chapter-title">Chapter 3</h1>
+      <br/>
+      <h2 class="chapter-subtitle">Zonoids and K-Levels</h2>
+    </div>
+
+
+    <div class="background-light">
+      <div class="container-fluid content-block">
+        <div class="row">
+          <div class="col-8  fade-in-object fade-left">
+            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
+              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
+              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
+              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
+              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
+              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
+              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
+              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+          </div>
+          <div class="col-4 fade-in-object fade-right">
+            <section>
+              <h3 class="text-center">Useful algorithms:</h3>
+              <ul>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END OF CHAPTER 3-->
+
+
+    <div id="chapter4" class="chapter-header jumbotron fade-in-object fade-left">
+      <h1 class="chapter-title">Chapter 4</h1>
+      <br/>
+      <h2 class="chapter-subtitle">Applications of Zonoids</h2>
+    </div>
+
+
+    <div class="background-light">
+      <div class="container-fluid content-block">
+        <div class="row">
+          <div class="col-8  fade-in-object fade-left">
+            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
+              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
+              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
+              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
+              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
+              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
+              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
+              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+          </div>
+          <div class="col-4 fade-in-object fade-right">
+            <section>
+              <h3 class="text-center">Useful algorithms:</h3>
+              <ul>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END OF CHAPTER 4-->
+
+    <footer id="footer" class="chapter-header jumbotron">
+    </footer>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="

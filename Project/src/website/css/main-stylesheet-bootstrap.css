@@ -61,23 +61,22 @@ html, body {
   padding-top: 2em;
   padding-bottom: 2em;
   margin-top: 0em;
-  background: rgba(220,240,240,0.2);
+  /*background: rgba(220,240,240,0.2);*/
 }
 
 .list-elem {
   margin-bottom: 3px;
 }
 
-#zonoid-example-1 {
-  max-width:640px;
-  max-height:auto;
+#demo-zonoid-k-sets-canvas {
+    width: 640px;
+    height: 480px;
 }
 
-#zonoid-example-2 {
-  max-width:640px;
-  max-height:auto;
+#demo-zonoid-depth {
+    width: 640px;
+    height: 480px;
 }
-
 .fade-in-object {
   opacity: 0;
 }
@@ -184,3 +183,6 @@ a.splash-arrow:hover {
 	bottom: 40px;
 }
 
+/*.interactive-canvas {
+    outline: black 3px solid;
+}*/
