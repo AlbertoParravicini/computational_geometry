@@ -90,9 +90,9 @@ zonoids_k_sets_demo = (p_o) ->
 
   canvas_mouseWheel = (event) ->
     if event.deltaY > 0
-      k += 0.1
-    else if event.deltaY < 0
       k -= 0.1
+    else if event.deltaY < 0
+      k += 0.1
     if k < 1
       k = 1
     if k > input_points.length
