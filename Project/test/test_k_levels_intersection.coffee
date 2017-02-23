@@ -64,7 +64,6 @@ zonoid = []
 
 setup = () ->
   canvas = createCanvas(w, h)
-  canvas.parent('sketch-holder')
   fill('red')   
   frameRate(20)
   console.log "K:", k
@@ -221,6 +220,7 @@ draw = () ->
     draw_poly(radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true), fill_color:[78, 185, 120, 40], stroke_color:[16, 74, 34, 255])
 
   # DRAW ZONOID BASED ON THE DUAL REFLEX VERTICES
+  stroke(143, 114, 93, 120)
   for l_i in zonoid_lines.map((l) -> return [
       new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
       new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)

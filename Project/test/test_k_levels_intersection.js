@@ -38,7 +38,6 @@ zonoid = [];
 setup = function() {
   var canvas, j, len, len1, m, p, p_i, zonoid_dual_vertices;
   canvas = createCanvas(w, h);
-  canvas.parent('sketch-holder');
   fill('red');
   frameRate(20);
   console.log("K:", k);
@@ -246,6 +245,7 @@ draw = function() {
       stroke_color: [16, 74, 34, 255]
     });
   }
+  stroke(143, 114, 93, 120);
   ref10 = zonoid_lines.map(function(l) {
     return [new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100), new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)];
   });

@@ -1,4 +1,4 @@
-zonoids_k_level_intersection_demo = (p_o) ->
+k_level_base_demo = (p_o) ->
   input_points = [
     new Point(0.31, 3),
     new Point(0.1, 0.6),
@@ -37,12 +37,11 @@ zonoids_k_level_intersection_demo = (p_o) ->
   # The scale factor says by how much each coordinate is divided.
   scale_factor = 80
 
-  w = 1200
-  h = 600
+  w = 640
+  h = 480
 
   # Size of half axis in the original canvas
   canvas_bound_original = 5
-
 
   dual_lines = []
 
@@ -58,14 +57,13 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
   zonoid_lines = []
 
-
   zonoid = []
 
 
   p_o.setup = () ->
     canvas = p_o.createCanvas(w, h)
     p_o.fill('red')   
-    p_o.frameRate(10)
+    p_o.frameRate(3)
 
     canvas.mouseWheel(canvas_mouseWheel)
 
@@ -147,7 +145,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
 
 
-    # # DRAW K-LEVEL LOWER   
+    # DRAW K-LEVEL LOWER   
     p_o.fill(98, 122, 161, 200)  
     p_o.stroke(21, 32, 50, 200); 
     k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
@@ -157,7 +155,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.strokeWeight(2)
 
 
-    # # DRAW REFLEX VERTICES LOWER
+    # DRAW REFLEX VERTICES LOWER
     for p in reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
       p_o.fill(98, 122, 161, 200)  
       p_o.stroke(21, 32, 50, 200); 
@@ -188,79 +186,6 @@ zonoids_k_level_intersection_demo = (p_o) ->
       for i in [1..zonoid_vertices_d_temp.length - 1]
         zonoid_slice_d = [zonoid_vertices_d_temp[i - 1], zonoid_vertices_d_temp[i], new Point(zonoid_vertices_d_temp[i].x, -10000), new Point(zonoid_vertices_d_temp[i - 1].x, -10000)]
         draw_poly(p_o, zonoid_slice_d, fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
-
-
-    # DRAW THE PRIMAL ON THE RIGHT SIDE
-    draw_poly(p_o, [new Point(w / 2, 0), new Point(w, 0), new Point(w, h), new Point(w / 2, h)], fill_color:[253, 253, 253, 255], stroke_color:[0,0,0,0])
-    p_o.stroke(143, 114, 93, 120)
-    p_o.strokeWeight(6)
-    p_o.line(w / 2, 0, w / 2, h)
-    p_o.stroke("black")
-    p_o.strokeWeight(1)
-
-    p_o.fill(85, 185, 102, 60);
-    p_o.stroke(17, 74, 27, 180);
-    for p in input_points.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
-      p_o.ellipse(p.x, p.y, 10, 10)
-    p_o.stroke(143, 114, 93, 200)
-
-    #DRAW THE ZONOID COMPUTED THROUGH KSETS
-    zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
-    zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
-    for z_i in zonoid_temp
-      p_o.fill(16, 74, 34, 180)
-      p_o.stroke(16, 74, 34, 255)
-      p_o.ellipse(z_i.x, z_i.y, 20, 20)
-      p_o.ellipse(z_i.x, z_i.y, 10, 10)
-
-    res = false
-    if p_o.mouseX >= 0 and p_o.mouseX <= w and p_o.mouseY >= 0 and p_o.mouseY <= h
-
-      if zonoid_temp.length > 0
-        res = check_inclusion_in_polygon(zonoid_temp, new Point(p_o.mouseX, p_o.mouseY))
-        if res
-          draw_poly(p_o, zonoid_temp, fill_color:[78, 185, 120, 160], stroke_color:[16, 74, 34, 255])
-        else 
-          draw_poly(p_o, zonoid_temp, fill_color:[78, 185, 120, 40], stroke_color:[16, 74, 34, 255])       
-    else if zonoid_temp.length > 0
-      draw_poly(p_o, zonoid_temp, fill_color:[78, 185, 120, 40], stroke_color:[16, 74, 34, 255])
-
-    # DRAW ZONOID BASED ON THE DUAL REFLEX VERTICES
-    p_o.stroke(143, 114, 93, 120)
-    for l_i in zonoid_lines.map((l) -> return [
-        new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
-        new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
-        ])
-      p_o.line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
-
-    # DRAW QUERY POINT AND DUAL
-    if p_o.mouseX >= 0 and p_o.mouseX <= w and p_o.mouseY >= 0 and p_o.mouseY <= h
-      # DRAW QUERY POINT
-      p_o.fill(255, 121, 113, 180)
-      p_o.stroke(130, 65, 85);
-      p_o.line(0, p_o.mouseY, w, p_o.mouseY)
-      p_o.line(p_o.mouseX, 0, p_o.mouseX, h)
-      p_o.ellipse(p_o.mouseX, p_o.mouseY, 15, 15)
-      p_o.fill("black");
-      p_o.stroke("black");
-
-      # DRAW DUAL OF QUERY POINT
-      if res
-        p_o.stroke(78, 185, 120, 200)
-      else 
-        p_o.stroke(78, 185, 120, 80)
-      p_o.strokeWeight(8)
-      [p_x, p_y] = [(p_o.mouseX - 0.75 * w) / (2 * scale_factor), (p_o.mouseY - 100) / scale_factor]
-
-      p_o.line(0, p_y * scale_factor, w / 2, p_x * w / 2 + p_y * scale_factor)
-
-      if res 
-        p_o.strokeWeight(4)
-        p_o.stroke(20, 50, 45, 100)
-        p_o.line(0, p_y * scale_factor, w / 2, p_x * w / 2 + p_y * scale_factor)
-      p_o.strokeWeight(1)
-
-
 
 
   canvas_mouseWheel = (event) ->
@@ -303,5 +228,5 @@ zonoids_k_level_intersection_demo = (p_o) ->
     
 
 # Instantiate a local variable for p5
-zonoid_k_levels_intersection_p5 = new p5(zonoids_k_level_intersection_demo, "demo-zonoid-k-levels-intersection-canvas")
+k_levels_base_p5 = new p5(k_level_base_demo, "demo-k-levels-base-canvas")
 

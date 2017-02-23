@@ -74,9 +74,9 @@ zonoids_k_sets_demo = (p_o) ->
 
   p_o.keyPressed = () -> 
     if p_o.mouseX >= 0 and p_o.mouseX <= w and p_o.mouseY >= 0 and p_o.mouseY <= h
-      if p.keyCode == DOWN_ARROW
+      if p_o.keyCode == p_o.DOWN_ARROW
         k -= 1      
-      else if p.keyCode == UP_ARROW
+      else if p_o.keyCode == p_o.UP_ARROW
         k += 1
       if k < 1
         k = 1

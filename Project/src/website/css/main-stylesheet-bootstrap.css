@@ -77,6 +77,31 @@ html, body {
     width: 640px;
     height: 480px;
 }
+
+#demo-zonoid-k-sets-anim-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#demo-k-levels-base-canvas {
+    width: 640px;
+    height: 480px;
+}
+
+#demo-zonoid-k-levels-canvas {
+    margin-left: -10px;
+    width: 1200px;
+    height: 600px;
+    overflow: hidden;
+}
+
+#demo-zonoid-k-levels-intersection-canvas {
+    margin-left: -10px;
+    width: 1200px;
+    height: 600px;
+    overflow: hidden;
+}
+
 .fade-in-object {
   opacity: 0;
 }
