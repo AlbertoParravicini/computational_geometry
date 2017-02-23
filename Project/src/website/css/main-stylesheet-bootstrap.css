@@ -24,7 +24,7 @@
 
 .chapter-header {
   background-color: #d4d4d2;
-  padding: 1em 1em;
+  padding: 4em 4em;
   border-radius: 0px;
   margin-bottom: 0px;
   animation-duration: 1.5s;
@@ -80,7 +80,7 @@ html, body {
 }
 
 .list-elem {
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 #demo-zonoid-k-sets-canvas {
@@ -138,6 +138,8 @@ html, body {
   -webkit-animation-duration: 1.5s;
   animation-delay: 0s;
   -webkit-animation-delay: 0s;
+  /*for parallax scrolling*/
+  width: 100%
 }
 
 hr {
@@ -226,9 +228,7 @@ a.splash-arrow:hover {
 }
 
 
-/*.interactive-canvas {
-    outline: black 3px solid;
-}*/
+
 
 .equation-card {
   margin: 1em auto;
@@ -255,4 +255,28 @@ margin-bottom: 1em;
 
 #zonoid-example {
   max-width: 100%;
+}
+
+#zonoid-properties {
+  padding-bottom: 0;
+}
+
+#zonoid-depth-definition {
+  padding-top: 0;
+}
+
+.parallax {
+    /* The image used */
+    background-image: url('../img/zonoid_cover.jpg');
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    position: relative;
 }

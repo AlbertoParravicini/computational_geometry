@@ -54,7 +54,7 @@
 
   <div class="wrapper">
 
-    <div id="chapter1" class="chapter-header jumbotron">
+    <div id="chapter1" class="chapter-header jumbotron parallax">
       <h1 class="chapter-title">Chapter 1</h1>
       <br/>
       <h2 class="chapter-subtitle">A gentle introduction to zonoids</h2>
@@ -91,8 +91,7 @@
                 \(\mathbb{R}^2\)). Working in 2 dimensions makes visualization much easier, but most of the properties of
                 zonoids apply to any kind of dimensionality.
                 <br/>
-                <br/>
-                 Even better, we'll see how zonoids are used in applications with extremely high dimensionality, and
+                <br/> Even better, we'll see how zonoids are used in applications with extremely high dimensionality, and
                 why their structure makes them suitable for such tasks!
               </div>
             </div>
@@ -128,22 +127,36 @@
       <hr class="content-divider">
 
       <div class="container-fluid content-block col-8 fade-in-object fade-right" id="zonoid-properties">
-        <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the previous
-          Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces the responsive
-          mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport size increases.
-          Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different types of devices like
-          cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-* class to create grid columns
-          for extra small devices like cell phones</p>
-        <section>
-          <h3 class="text-center">Interesting facts about zonoids:</h3>
-          <ul>
-            <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-            <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-            <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-            <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-          </ul>
-        </section>
+        <div class="card">
+          <div class="card-block">
+            <h3 class="card-title">Interesting facts about zonoids</h3>
+            <div class="card-text">
+              Immediately from the definition of zonoids, we can see some remarkable properties:
+              <br/>
+              <br/>
+              <ul>
+                <li class="list-elem">\(k\) can be a real or integer value, and also \(1\leq k \leq n\).</li>
+                <li class="list-elem">For \(k = 1\), we get the convex hull of our points, as \(0\leq\lambda_i\leq 1\), and so \(Z_1(S) = CH(S)\).</li>
+                <li class="list-elem">For \(k = n\), where \(|S| = n\), we find the mean point of \(S\), as \(\forall i\ \lambda_i = \frac{1}{n}\).</li>
+                <li class="list-elem">\(\forall k,\ Z_k(S)\) is a <b>convex</b> polygon.</li>
+                <li class="list-elem">If \(k_1 > k_2\), then \(Z_{k_1} \subseteq Z_{k_2}\).</li>
+                <li class="list-elem">From the previous 2 properties, \(Z_1(S),\ Z_2(S),\ \ldots,\ Z_n(S)\) is a sequence of nested convex polygons.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div class="container-fluid content-block col-8 fade-in-object fade-right" id="zonoid-depth-definition">
+        <div class="card equation-card">
+          <h4 class="card-title">Zonoid depth</h4>
+          <div class="card-block equation-block">Given a point \(x\), and a set of points \(S\), we say that the <b>zonoid depth</b> of \(x\) with respect to \(S\)
+            is the maximum value of \(k\) such that \(x \in Z_k(S)\). More formally $$depth(x, S) = \left\{\begin{array}{ll}
+            max\{k\ : \ x \in Z_k(S)\},\ if\ x \in CH(S) \\ 0,\ otherwise \end{array}\right.$$
+          </div>
+        </div>
+      </div>
+
 
       <hr class="content-divider">
 
@@ -155,15 +168,22 @@
           </div>
 
           <div class="col fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">ZONOID DRAWING DEMO</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to</li>
-                <li class="list-elem">Bootstrap grid system provides ive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid sysite layouts.</li>
-              </ul>
-            </section>
+            <div class="card">
+              <div class="card-block">
+                <h3 class="card-title">ZONOID DRAWING DEMO</h3>
+                <div class="card-text">
+                  On the left, we are given a set of points, and we can see how the zonoids look like, for different values of \(k\).
+                  <br/>
+                  <ul>
+                    <li class="list-elem">By scrolling with the mouse wheel, compute the zonoids for continuous values of \(k\) (technically, the
+                      increments are by \(0.1\)).</li>
+                    <li class="list-elem">By pressing <b>UP-ARROW</b> and <b>DOWN-ARROW</b>, change by 1 the value of \(k\).</li>
+                    <li class="list-elem">To know more about how the zonoids were computed, keep reading!</li>
+                  </ul>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -196,7 +216,7 @@
     </div>>
     <!-- END OF CHAPTER 1 -->
 
-    <div id="chapter2" class="chapter-header jumbotron fade-in-object fade-left">
+    <div id="chapter2" class="chapter-header jumbotron fade-in-object fade-left parallax">
       <h1 class="chapter-title">Chapter 2</h1>
       <br/>
       <h2 class="chapter-subtitle">Zonoids and K-Sets</h2>
@@ -258,7 +278,7 @@
     <!--END OF CHAPTER 2-->
 
 
-    <div id="chapter3" class="chapter-header jumbotron fade-in-object fade-left">
+    <div id="chapter3" class="chapter-header jumbotron fade-in-object fade-left parallax">
       <h1 class="chapter-title">Chapter 3</h1>
       <br/>
       <h2 class="chapter-subtitle">Zonoids and K-Levels</h2>
@@ -343,7 +363,7 @@
     <!--END OF CHAPTER 3-->
 
 
-    <div id="chapter4" class="chapter-header jumbotron fade-in-object fade-left">
+    <div id="chapter4" class="chapter-header jumbotron fade-in-object fade-left parallax">
       <h1 class="chapter-title">Chapter 4</h1>
       <br/>
       <h2 class="chapter-subtitle">Applications of Zonoids</h2>
