@@ -65,27 +65,63 @@
       <div class="container-fluid content-block">
         <div class="row">
           <div id="zonoid-intro" class="col-8">
-            <p> When `a \ne 0`, there are two solutions to \(ax^2 + bx + c = 0\) and they are $$x = {-b \pm \sqrt{b^2-4ac} \over
-              2a}.$$ Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed
-              to the previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
-              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
-              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
-              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
-              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
-              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
-              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+            <div class="card">
+              <div class="card-block">
+                Given a set of points \(S = \{p_1,\ p_2,\ \ldots,\ p_n\} \subset \mathbb{R}^d\), we all know what is the <b>convex hull</b>                of \(S\), right?
+                <br/> In case you don't remember, we say that:
+                <div class="card equation-card w-75">
+                  <h4 class="card-title">Convex Hull</h4>
+                  <div class="card-block equation-block">$$CH(S) = \left \{ \sum_{i=1}^{n}{\lambda_ip_i:\ 0\leq\lambda_i\leq 1}, \sum_{i=1}^{n}{\lambda_i=1} \right
+                    \}$$
+                  </div>
+                </div>
+
+                We can imagine to extend this definition by adding a constraint on the maximum value of \(\lambda_i\): given a real number
+                \(k \in [1,\ \ldots, n]\), we define the <b>k-zonoid</b> of \(S\) as:
+                <div class="card equation-card w-75">
+                  <h4 class="card-title">K-Zonoid</h4>
+                  <div class="card-block equation-block">$$Z_k(S) = \left \{ \sum_{i=1}^{n}{\lambda_ip_i:\ 0\leq\lambda_i\leq\frac{1}{k}}, \sum_{i=1}^{n}{\lambda_i=1}
+                    \right \}$$</div>
+                </div>
+
+                Note that the value of \(k\) doesn't necessarily have to be integer! However we'll see how restraining \(k\) to integer values
+                will allow us to exploit interesting properties related to the geometrical structure of zonoids.
+                <br/>
+                <br/> Also, unless otherwise specified, we'll assume that our points are bidimensional, i.e. belonging to
+                \(\mathbb{R}^2\)). Working in 2 dimensions makes visualization much easier, but most of the properties of
+                zonoids apply to any kind of dimensionality.
+                <br/>
+                <br/>
+                 Even better, we'll see how zonoids are used in applications with extremely high dimensionality, and
+                why their structure makes them suitable for such tasks!
+              </div>
+            </div>
           </div>
-          <div id="zonoid_algo" class="col-4">
-            <section>
-              <h3 class="text-center">Useful algorithms:</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-              </ul>
-            </section>
+
+          <!--Right column of the first section-->
+          <div class="col-4">
+            <div class="card-column">
+              <div class="card" id="zonoid-algo">
+                <div class="card-block">
+                  <h4 class="card-title">What can we do with zonoids?</h4>
+                  <ul>
+                    <li>Compute the <b>contour</b> of the zonoid \(Z_k(S)\).</li>
+                    <li>Compute the <b>depth-map</b> of \(S\), i.e. \(Z_1(S),\ \ldots,\ Z_n(S)\).</li>
+                    <li>Check if a point \(x \in Z_k(S)\), for a given \(k\).</li>
+                    <li>Test the <b>depth</b> of a point \(x\), i.e. the maximum \(k\) s.t. \(x \in Z_k(S)\).</li>
+                  </ul>
+                  But why would we want to do that? See <a href="#chapter4"><b>Chapter 4</b></a> to know more!
+                </div>
+              </div>
+              <!--END OF ZONOID ALGO-->
+              <div class="card">
+                <img src="./img/3-zonoid-example.png" alt="" class="card-img-top" id="zonoid-example">
+                <div class="card-footer">A 3-zonoid of a set of points.</div>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </div>
 

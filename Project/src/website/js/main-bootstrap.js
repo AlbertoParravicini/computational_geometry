@@ -10,6 +10,8 @@ $(document).ready(function () {
         $('.wrapper').addClass("animated fadeInUp");
         $(".splash").css({ "display": "hidden" })
         $('#chapter1').addClass("animated fadeInLeft");
+        $('#zonoid-intro').addClass("animated fadeInLeft");
+        $('#zonoid-algo').addClass("animated fadeInRight");
         window.scrollTo(0, 0);
       });
     }
@@ -38,7 +40,6 @@ $(document).ready(function () {
         });
       })
     }
-
   });
 
 
