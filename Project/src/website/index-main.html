@@ -51,6 +51,11 @@
     </a>
   </div>
   <!-- END OF SPLASH -->
+  <!-- END OF CHAPTER 1 -->
+  <!-- ############################################################ -->
+  <!-- ############################################################ -->
+  <!-- ############################################################ -->
+  <!-- ############################################################ -->
 
   <div class="wrapper">
 
@@ -242,6 +247,13 @@
       <!-- END OF DEMO 2 -->
     </div>>
     <!-- END OF CHAPTER 1 -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+
+
+
 
     <div id="chapter2" class="chapter-header jumbotron fade-in-object fade-left parallax">
       <h1 class="chapter-title">Chapter 2</h1>
@@ -309,6 +321,13 @@
                   most extreme points!
                   <br/>
                   <br/> In other words, take the \(k\) most extreme points in a given direction, and compute their mean!
+                </div>
+              </div>
+            </div>
+            <!--END OF CARD-->
+            <div class="card fade-in-object fade-left" id="k-set-def-pt2">
+              <div class="card-block" id="k-set-def-pt2-block">
+                <div class="card-text">
                   <br/> More formally, given a direction \(p\), the k-zonoid vertex \(x\) in that direction will be given
                   by:
                 </div>
@@ -330,6 +349,7 @@
                   <br/>
                   <br/> In the continuous case, a vertex \(x\) in a direction \(p\) will be given by
                 </div>
+                <!--END OF TEXT 2-->
                 <div class="card equation-card" id="zonoid-continuous">
                   <div class="card-block equation-block">
                     <h4 class="card-title">Zonoids with continuous k</h4>
@@ -350,13 +370,13 @@
       <div class="container-fluid content-block" id="k-sets-paragraph">
         <div class="row justify-content-start">
           <div class="col-10">
-            <div class="card fade-in-object fade-right">
+            <div class="card fade-in-object fade-left" id="k-sets-paragraph-pt1">
               <div class="card-block">
                 <h3 class="card-title">K-Sets</h3>
                 <div class="card-text">
                   The previous paragraph gave us an intuition of how zonoids can be built, but in practice we can't still do much! <br/>                  Trying all possible directions to find the zonoid vertices is certainly out of the question, but what could
                   we do instead?
-                  <br/> We can exploit a geometric structure called <b>k-sets</b>
+                  <br/> We can exploit a geometric structure called <b>k-sets</b>.
 
                   <div class="card equation-card" id="k-set-definition">
                     <div class="card-block equation-block">
@@ -365,19 +385,66 @@
                         Given a set of points \(S\) in general position (no 3 points are <i>collinear</i>) and an integer
                         \(k \in [1,\ n]\), a set \(S' \subseteq S\) is a <b>k-set</b> of \(S\) if \(|S'| = k\) and \(\exists\)
                         a closed halfplane \(h\) such that \(h \cap S = S'\).
-                        <br/>
-                        In 2 dimensions, it means that exists a straight line that separates \(S'\) can be
-                        from \(S\setminus S'\).
+                        <br/> In 2 dimensions, it means that exists a straight line that separates \(S'\) can be from \(S\setminus
+                        S'\).
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-text">
+                    It turns out that exists a very strong relationship between zonoids and k-sets:
+                  </div>
+                  <div class="card equation-card" id="k-set-lemma">
+                    <div class="card-block equation-block">
+                      <h4 class="card-title">Lemma</h4>
+                      <div class="card-text">
+                        Given a set of points \(S\) and an integer \(k \in [1,\ n]\), there is a <b>bijection</b> between
+                        the vertices of \(Z_k(S)\) and the k-sets of \(S\).
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!--END OF CARD-->
+            <div class="card fade-in-object fade-left" id="k-set-paragraph-pt2">
+              <div class="card-block">
+                <div class="card-text">
+                  How can we construct the k-sets?
+                  <br/> A very simple approach is to consider all pairs of points of \(S\), and for each pair, the line that
+                  crosses the 2 points.
+                  <br/> Then we can check if \(k\) points lie on any of the 2 sides of the line: if so, we have found a k-set,
+                  and the line is the separator that defines the k-set.
+                  <br/> Each <b>1-set</b> contains only 1 point. The set of 1-sets will give the convex hull of \(S\).
+                  <br/>
+                  <br/> The above approach won't work for \(k = n\) and \(k = n-1\), but we can easily overcome the issue:
+                  <section>
+                    <ul>
+                      <li>For \(k=n\), we can simply take every point in \(S\), and get the unique k-set of size \(n\).</li>
+                      <li>For \(k = n-1\), we can compute the k-set for \(k=n-3\), and then add to every k-set the 2 points that
+                        define the separating line.</li>
+                    </ul>
+                  </section>
+                  <br/> Then, for each k-set, we compute its mean and find the zonoid vertices.
+                  <br/>
+                  <br/>
+                  <div class="card equation-card" id="k-set-cont-note">
+                    <div class="card-block equation-block">
+                      <h4 class="card-title">What about continuous k-sets?</h4>
+                      <div class="card-text">
+                        <br/> We can compute the k-set for \(\lfloor k \rfloor\) and give to each point a weight of \(\frac{1}{k}\),
+                        then add to the k-set one of the points on the separating line, with a weight of \(1 - \frac{\lfloor
+                        k \rfloor}{k}\).
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--END OF CARD-->
           </div>
         </div>
       </div>
-
+      <!--END OF K-SETS PARAGRAPH-->
 
       <hr class="content-divider">
 
@@ -406,6 +473,12 @@
     </div>
 
     <!--END OF CHAPTER 2-->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+
+
 
 
     <div id="chapter3" class="chapter-header jumbotron fade-in-object fade-left parallax">
@@ -491,6 +564,13 @@
       <!-- END OF DEMO 6 -->
     </div>
     <!--END OF CHAPTER 3-->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+
+
+
 
 
     <div id="chapter4" class="chapter-header jumbotron fade-in-object fade-left parallax">
@@ -532,6 +612,10 @@
 
     </div>
     <!--END OF CHAPTER 4-->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
+    <!-- ############################################################ -->
 
     <footer id="footer" class="chapter-header jumbotron">
     </footer>
