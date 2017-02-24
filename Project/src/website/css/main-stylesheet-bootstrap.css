@@ -263,6 +263,11 @@ margin-bottom: 1em;
 
 #zonoid-depth-definition {
   padding-top: 0;
+  padding-bottom: 0;
+}
+
+#depth-properties {
+  padding-top: 0;
 }
 
 .parallax {

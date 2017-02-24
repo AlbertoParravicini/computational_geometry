@@ -151,8 +151,29 @@
         <div class="card equation-card">
           <h4 class="card-title">Zonoid depth</h4>
           <div class="card-block equation-block">Given a point \(x\), and a set of points \(S\), we say that the <b>zonoid depth</b> of \(x\) with respect to \(S\)
-            is the maximum value of \(k\) such that \(x \in Z_k(S)\). More formally $$depth(x, S) = \left\{\begin{array}{ll}
-            max\{k\ : \ x \in Z_k(S)\},\ if\ x \in CH(S) \\ 0,\ otherwise \end{array}\right.$$
+            is the maximum value of \(k\) such that \(x \in Z_k(S)\). More formally $$D(x, S) = \left\{\begin{array}{ll}
+            max\{k\ | \ x \in Z_k(S)\},\ if\ x \in CH(S) \\ 0,\ otherwise \end{array}\right.$$
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid content-block col-8 fade-in-object fade-right" id="depth-properties">
+        <div class="card">
+          <div class="card-block">
+            <h3 class="card-title">Properties of zonoid depth</h3>
+            <div class="card-text">
+              <ul>
+                <li class="list-elem"><b>Translation invariant:</b> \(D(x + b, S + b) = D(x, S),\ \forall b \in \mathbb{R}^d\).<br/> Informally, translating all our points by the same amount won't change the depth.</li>
+                <li class="list-elem"><b>Linear invariant:</b> \(D(Ax, AS) = D(x, S),\ \forall\) bijective linear transformations  \(A:\mathbb{R}^d\ \rightarrow  \mathbb{R}^d\).<br/> Rescaling our points by the same amount won't change the depth.</li>
+                <li class="list-elem">By combining the previous 2 properties, we can say that zonoid depth is invariant to <b>affine transformations</b>.</li>
+                <li class="list-elem"><b>Zero at infinity:</b> \(\lim_{\|x\| \rightarrow \infty}{D(x, S)} = 0\).
+                <br/>If we take a point arbitrarily far away from \(S\), its depth will be \(0\). Actually, any point outside of \(CH(S)\) will have depth \(0\).</li>
+                <li class="list-elem"><b>Upper semi-continuous:</b> the set \(\{x \in \mathbb{R}^d | d(x, S) \geq \alpha\}\) is closed \(\forall \alpha \leq |S|\). 
+                <br/>In a sense, we can say that the region of space with depth \(\geq \alpha\) is finite.</li>
+                <li class="list-elem"><b>Quasi-concave:</b> \(D(\lambda x + (1-\lambda)y, S) \leq max\{D(x, S), D(y, S)\}, \forall \lambda \in [0, 1]\). 
+                <br/> If we take 2 points and draw a segment that joins them, the depth of any 2 points in the segment will be \(\leq\) than the maximum of the depth of the extreme points of the segment.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
