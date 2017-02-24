@@ -32,8 +32,8 @@
   <script type="text/javascript" src="../zonoids-code/k_levels.js"></script>
   <script type="text/javascript" src="./js/demos/test_zonoids_k_sets.js"></script>
   <script type="text/javascript" src="./js/demos/test_zonoids_depth.js"></script>
-  <!--<script type="text/javascript" src="./js/demos/test_k_sets_animation.js"></script>
-  <script type="text/javascript" src="./js/demos/test_k_levels_base.js"></script>
+  <script type="text/javascript" src="./js/demos/test_k_sets_animation.js"></script>
+  <!--<script type="text/javascript" src="./js/demos/test_k_levels_base.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_levels.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_levels_intersection.js"></script>-->
 
@@ -51,7 +51,6 @@
     </a>
   </div>
   <!-- END OF SPLASH -->
-  <!-- END OF CHAPTER 1 -->
   <!-- ############################################################ -->
   <!-- ############################################################ -->
   <!-- ############################################################ -->
@@ -66,7 +65,7 @@
     </div>
 
 
-    <div class="background-light">
+    <div class="background-light" id="chapter-1-background">
       <div class="container-fluid content-block">
         <div class="row">
           <div id="zonoid-intro" class="col-8">
@@ -192,6 +191,7 @@
 
       <hr class="content-divider">
 
+      <!--DEMO 1-->
       <div class="container-fluid content-block ">
         <div class="row">
           <div class="col fade-in-object fade-on">
@@ -223,6 +223,8 @@
 
       <hr class="content-divider">
 
+
+      <!--DEMO 2-->
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
@@ -262,7 +264,7 @@
     </div>
 
 
-    <div class="background-light">
+    <div class="background-light" id="chapter-2-background">
       <div class="container-fluid content-block" id="chapter-2-intro">
         <div class="row">
           <div class="col-8">
@@ -408,8 +410,8 @@
             <!--END OF CARD-->
             <div class="card fade-in-object fade-left" id="k-set-paragraph-pt2">
               <div class="card-block">
-                <div class="card-text">
-                  How can we construct the k-sets?
+                <h4 class="card-title">How can we construct the k-sets?</h4>
+                <div class="card-text">              
                   <br/> A very simple approach is to consider all pairs of points of \(S\), and for each pair, the line that
                   crosses the 2 points.
                   <br/> Then we can check if \(k\) points lie on any of the 2 sides of the line: if so, we have found a k-set,
@@ -456,16 +458,21 @@
             <!--DEMO 3: ZONOID K-SETS ANIMATION-->
           </div>
 
-          <div class="col fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">BUILDING ZONOIDS FROM K-SETS</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to</li>
-                <li class="list-elem">Bootstrap grid system provides ive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid sysite layouts.</li>
-              </ul>
-            </section>
+             <div class="col fade-in-object fade-right">
+            <div class="card">
+              <div class="card-block">
+                <h3 class="card-title">BUILDING ZONOIDS FROM K-SETS</h3>
+                <div class="card-text">
+                  On the left, we can see how each vertex of a zonoid is found from a single k-set.
+                  <br/>
+                  <ul>
+                    <li class="list-elem">We compute a k-set, then the mean of the points in the k-set will give a zonoid vertex.</li>
+                    <li class="list-elem">Repeat the process for every zonoid to build the entire zonoid.</li>
+                    <li class="list-elem">By scrolling with the mouse wheel, change the value of \(k\) and see different zonoids!</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -488,7 +495,7 @@
     </div>
 
 
-    <div class="background-light">
+    <div class="background-light" id="chapter-3-background">
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col-8 fade-in-object fade-left">
@@ -580,7 +587,7 @@
     </div>
 
 
-    <div class="background-light">
+    <div class="background-light" id="chapter-4-background">
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col-8  fade-in-object fade-left">
