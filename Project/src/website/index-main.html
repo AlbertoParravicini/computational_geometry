@@ -78,7 +78,7 @@
 
                 We can imagine to extend this definition by adding a constraint on the maximum value of \(\lambda_i\): given a real number
                 \(k \in [1,\ \ldots, n]\), we define the <b>k-zonoid</b> of \(S\) as:
-                <div class="card equation-card w-75">
+                <div class="card equation-card w-75" id="zonoid-definition">
                   <h4 class="card-title">K-Zonoid</h4>
                   <div class="card-block equation-block">$$Z_k(S) = \left \{ \sum_{i=1}^{n}{\lambda_ip_i:\ 0\leq\lambda_i\leq\frac{1}{k}}, \sum_{i=1}^{n}{\lambda_i=1}
                     \right \}$$</div>
@@ -163,15 +163,21 @@
             <h3 class="card-title">Properties of zonoid depth</h3>
             <div class="card-text">
               <ul>
-                <li class="list-elem"><b>Translation invariant:</b> \(D(x + b, S + b) = D(x, S),\ \forall b \in \mathbb{R}^d\).<br/> Informally, translating all our points by the same amount won't change the depth.</li>
-                <li class="list-elem"><b>Linear invariant:</b> \(D(Ax, AS) = D(x, S),\ \forall\) bijective linear transformations  \(A:\mathbb{R}^d\ \rightarrow  \mathbb{R}^d\).<br/> Rescaling our points by the same amount won't change the depth.</li>
+                <li class="list-elem"><b>Translation invariant:</b> \(D(x + b, S + b) = D(x, S),\ \forall b \in \mathbb{R}^d\).<br/> Informally,
+                  translating all our points by the same amount won't change the depth.</li>
+                <li class="list-elem"><b>Linear invariant:</b> \(D(Ax, AS) = D(x, S),\ \forall\) bijective linear transformations \(A:\mathbb{R}^d\
+                  \rightarrow \mathbb{R}^d\).<br/> Rescaling our points by the same amount won't change the depth.</li>
                 <li class="list-elem">By combining the previous 2 properties, we can say that zonoid depth is invariant to <b>affine transformations</b>.</li>
                 <li class="list-elem"><b>Zero at infinity:</b> \(\lim_{\|x\| \rightarrow \infty}{D(x, S)} = 0\).
-                <br/>If we take a point arbitrarily far away from \(S\), its depth will be \(0\). Actually, any point outside of \(CH(S)\) will have depth \(0\).</li>
-                <li class="list-elem"><b>Upper semi-continuous:</b> the set \(\{x \in \mathbb{R}^d | d(x, S) \geq \alpha\}\) is closed \(\forall \alpha \leq |S|\). 
-                <br/>In a sense, we can say that the region of space with depth \(\geq \alpha\) is finite.</li>
-                <li class="list-elem"><b>Quasi-concave:</b> \(D(\lambda x + (1-\lambda)y, S) \leq max\{D(x, S), D(y, S)\}, \forall \lambda \in [0, 1]\). 
-                <br/> If we take 2 points and draw a segment that joins them, the depth of any 2 points in the segment will be \(\leq\) than the maximum of the depth of the extreme points of the segment.</li>
+                  <br/>If we take a point arbitrarily far away from \(S\), its depth will be \(0\). Actually, any point outside
+                  of \(CH(S)\) will have depth \(0\).</li>
+                <li class="list-elem"><b>Upper semi-continuous:</b> the set \(\{x \in \mathbb{R}^d | d(x, S) \geq \alpha\}\) is closed \(\forall
+                  \alpha \leq |S|\).
+                  <br/>In a sense, we can say that the region of space with depth \(\geq \alpha\) is finite.</li>
+                <li class="list-elem"><b>Quasi-concave:</b> \(D(\lambda x + (1-\lambda)y, S) \leq max\{D(x, S), D(y, S)\}, \forall \lambda \in
+                  [0, 1]\).
+                  <br/> If we take 2 points and draw a segment that joins them, the depth of any 2 points in the segment
+                  will be \(\leq\) than the maximum of the depth of the extreme points of the segment.</li>
               </ul>
             </div>
           </div>
@@ -224,9 +230,9 @@
               <div class="card-block">
                 <h3 class="card-title">ZONOID DEPTH DEMO</h3>
                 <div class="card-text">
-                  In this demo, it is displayed the <b>depth-map</b> of a set of points, i.e. all its zonoids, for integer values of \(k\).
-                  <br/>
-                  Move your mouse over the zonoids to see the depth of different points!
+                  In this demo, it is displayed the <b>depth-map</b> of a set of points, i.e. all its zonoids, for integer
+                  values of \(k\).
+                  <br/> Move your mouse over the zonoids to see the depth of different points!
                 </div>
               </div>
             </div>
@@ -245,28 +251,129 @@
 
 
     <div class="background-light">
-      <div class="container-fluid content-block">
+      <div class="container-fluid content-block" id="chapter-2-intro">
         <div class="row">
-          <div class="col-8  fade-in-object fade-left">
-            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
-              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
-              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
-              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
-              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
-              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
-              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
-              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+          <div class="col-8">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block">
+                <div class="card-text">
+                  The <a href="#zonoid-definition">definition</a> of zonoids that we have seen in Chapter 1 gives some insights
+                  about their properties, but it doesn't really tell much about how to compute the boundary of a zonoid,
+                  or its vertices!
+                  <br/>
+                  <br/> In this chapter, it will be introduced a technique that allows us to easily draw zonoids, and how
+                  to apply it in practice by exploiting the so-called <b>k-sets</b>.
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-4 fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">Useful algorithms:</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-              </ul>
-            </section>
+
+          <!--Right column of the first section-->
+          <div class="col-4">
+            <div class="card fade-in-object fade-right" id="chapter-2-summary">
+              <div class="card-block">
+                <h4 class="card-title">In this chapter:</h4>
+                <ul>
+                  <li>How to find the vertices of a zonoid</li>
+                  <li>K-sets</li>
+                  <li>Exploiting k-sets to draw zonoids</li>
+                  <li>An animated demo that shows how a zonoid is built from the k-sets!</li>
+                </ul>
+              </div>
+            </div>
+            <!--END OF CHAPTER SUMMARY-->
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid content-block" id="k-sets-intro">
+        <div class="row justify-content-end">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block">
+                <div class="card-text">
+                  Let's first think about how can we build a convex hull for a set of points \(S\): the vertices of the hull are the <i>most extreme</i>                  points of \(S\) in any given direction.
+                  <br/> One can imagine of picking a direction and following it until it finds the last point of \(S\): that
+                  point will be a vertex of the convex hull; then repeat the process <i>for all possible directions</i> to
+                  get all the vertices!
+                  <br/> Clearly, trying all directions isn't really feasible in practice, and we'll see later how to address
+                  the issue.
+                  <br/>
+                  <br/> For now, let's try to generalize this approach so that it works with zonoids:
+                  <br/>picking the most extreme point in a given direction can be seen as taking a linear combination of
+                  the points in \(S\), where the extreme point has a weight of \(\lambda = 1\), and all the others have weight
+                  \(\lambda = 0\) (note that, without loss of generality, the sum of the weight must be \(1\)).
+                  <br/>
+                  <br/> But in a k-zonoid we can assign to each point a weight of at most \(\lambda = \frac{1}{k}\), so instead
+                  of giving a weight \(=1\) to the most extreme point, we can give a weight \(= \frac{1}{k}\) to the \(k\)
+                  most extreme points!
+                  <br/>
+                  <br/> In other words, take the \(k\) most extreme points in a given direction, and compute their mean!
+                  <br/> More formally, given a direction \(p\), the k-zonoid vertex \(x\) in that direction will be given
+                  by:
+                </div>
+                <!--END OF TEXT-->
+                <div class="card equation-card" id="zonoid-vertex-formula">
+                  <div class="card-block equation-block">
+                    <div class="card-text">
+                      \(\operatorname*{arg\,max}_x \{p\cdot x\ |\ x \in Z_k(S)\} = \left ( \sum_{i=1}^{k}{\frac{1}{k}S_i^p} \right ) \)
+                    </div>
+                  </div>
+                </div>
+                <div class="card-text">
+                  Where \(S^p\) is the set of the most extreme point of \(S\) in direction \(p\). Basically we are taking a feasible point
+                  \(x \in Z_k(S)\) that optimize the gradient given by \(p\).
+                  <br/>
+                  <br/> This approach works also for continuous values of \(k\), with a few modifications: in this case,
+                  assign the maximum allowed coefficient \(\frac{1}{k}\) to the most extreme \(\lfloor k \rfloor\) points,
+                  and the remaining \(1 - \frac{\lfloor k \rfloor}{k}\) to the next most extreme point in the given direction.
+                  <br/>
+                  <br/> In the continuous case, a vertex \(x\) in a direction \(p\) will be given by
+                </div>
+                <div class="card equation-card" id="zonoid-continuous">
+                  <div class="card-block equation-block">
+                    <h4 class="card-title">Zonoids with continuous k</h4>
+                    <div class="card-text">
+                      $$\operatorname*{arg\,max}_x \{p\cdot x\ |\ x \in Z_k(S)\} = \left ( \sum_{i=1}^{\lfloor k \rfloor}{\frac{1}{k}S_i^p} \right
+                      ) + (1 - \frac{\lfloor k \rfloor}{k})S_{\lceil k \rceil}^p$$
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
+      <!--END OF K-SETS INTRO-->
+
+      <div class="container-fluid content-block" id="k-sets-paragraph">
+        <div class="row justify-content-start">
+          <div class="col-10">
+            <div class="card fade-in-object fade-right">
+              <div class="card-block">
+                <h3 class="card-title">K-Sets</h3>
+                <div class="card-text">
+                  The previous paragraph gave us an intuition of how zonoids can be built, but in practice we can't still do much! <br/>                  Trying all possible directions to find the zonoid vertices is certainly out of the question, but what could
+                  we do instead?
+                  <br/> We can exploit a geometric structure called <b>k-sets</b>
+
+                  <div class="card equation-card" id="k-set-definition">
+                    <div class="card-block equation-block">
+                      <h4 class="card-title">K-Set</h4>
+                      <div class="card-text">
+                        Given a set of points \(S\) in general position (no 3 points are <i>collinear</i>) and an integer
+                        \(k \in [1,\ n]\), a set \(S' \subseteq S\) is a <b>k-set</b> of \(S\) if \(|S'| = k\) and \(\exists\)
+                        a closed halfplane \(h\) such that \(h \cap S = S'\).
+                        <br/>
+                        In 2 dimensions, it means that exists a straight line that separates \(S'\) can be
+                        from \(S\setminus S'\).
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -274,6 +381,7 @@
 
       <hr class="content-divider">
 
+      <!--DEMO 3-->
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
@@ -294,8 +402,9 @@
           </div>
         </div>
       </div>
-      <!-- END OF DEMO 2 -->
+      <!-- END OF DEMO 3 -->
     </div>
+
     <!--END OF CHAPTER 2-->
 
 
