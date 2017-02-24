@@ -1,4 +1,4 @@
-k_level_base_demo = (p_o) ->
+k_level_1_demo = (p_o) ->
   input_points = [
     new Point(0.31, 3),
     new Point(0.1, 0.6),
@@ -45,7 +45,7 @@ k_level_base_demo = (p_o) ->
 
   dual_lines = []
 
-  k = 3
+  k = 1
 
   k_level_u = []
   reflex_vertices_u = []
@@ -63,7 +63,7 @@ k_level_base_demo = (p_o) ->
   p_o.setup = () ->
     canvas = p_o.createCanvas(w, h)
     p_o.fill('red')   
-    p_o.frameRate(3)
+    p_o.frameRate(6)
 
     canvas.mouseWheel(canvas_mouseWheel)
 
@@ -75,9 +75,9 @@ k_level_base_demo = (p_o) ->
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
     zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
 
-    k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
-    reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
-    zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
+    # k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
+    # reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
+    # zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
 
     # zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
     # for p_i in zonoid_dual_vertices
@@ -118,74 +118,74 @@ k_level_base_demo = (p_o) ->
       p_o.stroke(231, 120, 58, 200)
       p_o.ellipse(p.x, p.y, 20, 20)
 
-      y = p.y + 15
-      p_o.fill(default_color)  
-      p_o.stroke(default_color) 
-      p_o.strokeWeight(2)
-      while y < h
-        p_o.ellipse(p.x, y, 2, 2)
-        y += 10
+    #   y = p.y + 15
+    #   p_o.fill(default_color)  
+    #   p_o.stroke(default_color) 
+    #   p_o.strokeWeight(2)
+    #   while y < h
+    #     p_o.ellipse(p.x, y, 2, 2)
+    #     y += 10
       
-    # DRAW ZONOID UPPER  
-    p_o.fill(143, 27, 10, 200)  
-    p_o.stroke(231, 120, 58, 200);
-    p_o.strokeWeight(6)
-    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
-    if zonoid_vertices_u_temp.length > 1
-      for i in [1..zonoid_vertices_u_temp.length - 1]
-        p_o.line(zonoid_vertices_u_temp[i - 1].x, zonoid_vertices_u_temp[i - 1].y, zonoid_vertices_u_temp[i].x, zonoid_vertices_u_temp[i].y)
-    p_o.strokeWeight(2)
-    for p in zonoid_vertices_u_temp
-      p_o.ellipse(p.x, p.y, 20, 20)
+    # # DRAW ZONOID UPPER  
+    # p_o.fill(143, 27, 10, 200)  
+    # p_o.stroke(231, 120, 58, 200);
+    # p_o.strokeWeight(6)
+    # zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    # if zonoid_vertices_u_temp.length > 1
+    #   for i in [1..zonoid_vertices_u_temp.length - 1]
+    #     p_o.line(zonoid_vertices_u_temp[i - 1].x, zonoid_vertices_u_temp[i - 1].y, zonoid_vertices_u_temp[i].x, zonoid_vertices_u_temp[i].y)
+    # p_o.strokeWeight(2)
+    # for p in zonoid_vertices_u_temp
+    #   p_o.ellipse(p.x, p.y, 20, 20)
 
-    if zonoid_vertices_u_temp.length > 1
-      for i in [1..zonoid_vertices_u_temp.length - 1]
-        zonoid_slice_u = [zonoid_vertices_u_temp[i - 1], zonoid_vertices_u_temp[i], new Point(zonoid_vertices_u_temp[i].x, 10000), new Point(zonoid_vertices_u_temp[i - 1].x, 10000)]
-        draw_poly(p_o, zonoid_slice_u, fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
-
-
-
-    # DRAW K-LEVEL LOWER   
-    p_o.fill(98, 122, 161, 200)  
-    p_o.stroke(21, 32, 50, 200); 
-    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
-    for i in [1..k_level_d_temp.length - 1]
-      p_o.strokeWeight(6)
-      p_o.line(k_level_d_temp[i - 1].x, k_level_d_temp[i - 1].y, k_level_d_temp[i].x, k_level_d_temp[i].y)
-    p_o.strokeWeight(2)
+    # if zonoid_vertices_u_temp.length > 1
+    #   for i in [1..zonoid_vertices_u_temp.length - 1]
+    #     zonoid_slice_u = [zonoid_vertices_u_temp[i - 1], zonoid_vertices_u_temp[i], new Point(zonoid_vertices_u_temp[i].x, 10000), new Point(zonoid_vertices_u_temp[i - 1].x, 10000)]
+    #     draw_poly(p_o, zonoid_slice_u, fill_color:[231, 120, 58, 40], stroke_color:[16, 74, 34, 0])
 
 
-    # DRAW REFLEX VERTICES LOWER
-    for p in reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
-      p_o.fill(98, 122, 161, 200)  
-      p_o.stroke(21, 32, 50, 200); 
-      p_o.ellipse(p.x, p.y, 20, 20)
 
-      y = p.y - 15
-      p_o.fill(default_color)  
-      p_o.stroke(default_color) 
-      p_o.strokeWeight(2)
-      while y > 0
-        p_o.ellipse(p.x, y, 2, 2)
-        y -= 10
+    # # DRAW K-LEVEL LOWER   
+    # p_o.fill(98, 122, 161, 200)  
+    # p_o.stroke(21, 32, 50, 200); 
+    # k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    # for i in [1..k_level_d_temp.length - 1]
+    #   p_o.strokeWeight(6)
+    #   p_o.line(k_level_d_temp[i - 1].x, k_level_d_temp[i - 1].y, k_level_d_temp[i].x, k_level_d_temp[i].y)
+    # p_o.strokeWeight(2)
 
-    # DRAW ZONOID LOWER  
-    p_o.fill(98, 122, 161, 200)  
-    p_o.stroke(21, 32, 50, 200); 
-    p_o.strokeWeight(6)
-    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
-    if zonoid_vertices_d_temp.length > 1
-      for i in [1..zonoid_vertices_d_temp.length - 1]
-        p_o.line(zonoid_vertices_d_temp[i - 1].x, zonoid_vertices_d_temp[i - 1].y, zonoid_vertices_d_temp[i].x, zonoid_vertices_d_temp[i].y)
-    p_o.strokeWeight(2)
-    for p in zonoid_vertices_d_temp
-      p_o.ellipse(p.x, p.y, 20, 20)
+
+    # # DRAW REFLEX VERTICES LOWER
+    # for p in reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    #   p_o.fill(98, 122, 161, 200)  
+    #   p_o.stroke(21, 32, 50, 200); 
+    #   p_o.ellipse(p.x, p.y, 20, 20)
+
+    #   y = p.y - 15
+    #   p_o.fill(default_color)  
+    #   p_o.stroke(default_color) 
+    #   p_o.strokeWeight(2)
+    #   while y > 0
+    #     p_o.ellipse(p.x, y, 2, 2)
+    #     y -= 10
+
+    # # DRAW ZONOID LOWER  
+    # p_o.fill(98, 122, 161, 200)  
+    # p_o.stroke(21, 32, 50, 200); 
+    # p_o.strokeWeight(6)
+    # zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    # if zonoid_vertices_d_temp.length > 1
+    #   for i in [1..zonoid_vertices_d_temp.length - 1]
+    #     p_o.line(zonoid_vertices_d_temp[i - 1].x, zonoid_vertices_d_temp[i - 1].y, zonoid_vertices_d_temp[i].x, zonoid_vertices_d_temp[i].y)
+    # p_o.strokeWeight(2)
+    # for p in zonoid_vertices_d_temp
+    #   p_o.ellipse(p.x, p.y, 20, 20)
 
     
-    if zonoid_vertices_d_temp.length > 1
-      for i in [1..zonoid_vertices_d_temp.length - 1]
-        zonoid_slice_d = [zonoid_vertices_d_temp[i - 1], zonoid_vertices_d_temp[i], new Point(zonoid_vertices_d_temp[i].x, -10000), new Point(zonoid_vertices_d_temp[i - 1].x, -10000)]
-        draw_poly(p_o, zonoid_slice_d, fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
+    # if zonoid_vertices_d_temp.length > 1
+    #   for i in [1..zonoid_vertices_d_temp.length - 1]
+    #     zonoid_slice_d = [zonoid_vertices_d_temp[i - 1], zonoid_vertices_d_temp[i], new Point(zonoid_vertices_d_temp[i].x, -10000), new Point(zonoid_vertices_d_temp[i - 1].x, -10000)]
+    #     draw_poly(p_o, zonoid_slice_d, fill_color:[21, 32, 50, 40], stroke_color:[16, 74, 34, 0])
 
 
   canvas_mouseWheel = (event) ->
@@ -193,17 +193,17 @@ k_level_base_demo = (p_o) ->
       k -= 1
     else if event.deltaY < 0
       k += 1
-    if k < 2
-      k = 2
+    if k < 1
+      k = 1
     if k > dual_lines.length 
       k = dual_lines.length 
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
-    zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
+    # zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
 
-    k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
-    reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
-    zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
+    # k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
+    # reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
+    # zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
 
     # zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
     # zonoid_lines = []
@@ -228,5 +228,5 @@ k_level_base_demo = (p_o) ->
     
 
 # Instantiate a local variable for p5
-k_levels_base_p5 = new p5(k_level_base_demo, "demo-k-levels-base-canvas")
+k_levels_1_p5 = new p5(k_level_1_demo, "demo-k-levels-1-canvas")
 

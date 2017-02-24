@@ -33,8 +33,9 @@
   <script type="text/javascript" src="./js/demos/test_zonoids_k_sets.js"></script>
   <script type="text/javascript" src="./js/demos/test_zonoids_depth.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_sets_animation.js"></script>
-  <!--<script type="text/javascript" src="./js/demos/test_k_levels_base.js"></script>
-  <script type="text/javascript" src="./js/demos/test_k_levels.js"></script>
+  <script type="text/javascript" src="./js/demos/test_k_levels_1.js"></script>
+  <script type="text/javascript" src="./js/demos/test_k_levels_base.js"></script>
+  <!--<script type="text/javascript" src="./js/demos/test_k_levels.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_levels_intersection.js"></script>-->
 
 </head>
@@ -411,7 +412,7 @@
             <div class="card fade-in-object fade-left" id="k-set-paragraph-pt2">
               <div class="card-block">
                 <h4 class="card-title">How can we construct the k-sets?</h4>
-                <div class="card-text">              
+                <div class="card-text">
                   <br/> A very simple approach is to consider all pairs of points of \(S\), and for each pair, the line that
                   crosses the 2 points.
                   <br/> Then we can check if \(k\) points lie on any of the 2 sides of the line: if so, we have found a k-set,
@@ -458,7 +459,7 @@
             <!--DEMO 3: ZONOID K-SETS ANIMATION-->
           </div>
 
-             <div class="col fade-in-object fade-right">
+          <div class="col fade-in-object fade-right">
             <div class="card">
               <div class="card-block">
                 <h3 class="card-title">BUILDING ZONOIDS FROM K-SETS</h3>
@@ -522,13 +523,48 @@
         </div>
       </div>
 
+
+      <!--DEMO 4: K-LEVELS -->
       <hr class="content-divider">
 
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
-            <div class="interactive-canvas" id="demo-k-levels-base-canvas"></div>
+            <div class="interactive-canvas" id="demo-k-levels-1-canvas"></div>
             <!--DEMO 4: K-LEVELS -->
+          </div>
+          <div class="col fade-in-object fade-right">
+            <div class="card">
+              <div class="card-block">
+                <h3 class="card-title">DRAWING K-LEVELS</h3>
+                <div class="card-text">In this demo, it is visualized the k-level of a set of dual lines.
+                  <ul>
+                    <li>Scroll the mouse wheel to visualize the k-level for different values of \(k\)</li>
+                  </ul>
+                  A simple, but inefficient, way to compute the k-level is to start from the k-th line at \(-\infty\), then compute the intersection
+                  of that line with the other lines. 
+                  <br/>
+                  <br/>
+                  The next line to be followed in the k-level is the one with the leftmost
+                  intersection.
+                  <br/>
+                  <br/>
+                   Repeat this step until no intersections are found!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END OF DEMO 4 -->
+
+      <hr class="content-divider">
+      <!--DEMO 5: K-LEVELS DUALITY-->
+      <div class="container-fluid content-block">
+        <div class="row">
+          <div class="col fade-in-object fade-on">
+            <div class="interactive-canvas" id="demo-k-levels-base-canvas"></div>
+            <!--DEMO 5: K-LEVELS DUALITY-->
           </div>
 
           <div class="col fade-in-object fade-right">
@@ -545,18 +581,19 @@
         </div>
 
       </div>
-      <!-- END OF DEMO 3 -->
-      <hr class="content-divider">
+      <!-- END OF DEMO 5 -->
 
+      <hr class="content-divider">
+      <!--DEMO 6: K-LEVELS ZONOID -->
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
             <div class="interactive-canvas" id="demo-zonoid-k-levels-canvas"></div>
-            <!--DEMO 5: K-LEVELS ZONOID -->
+            <!--DEMO 6: K-LEVELS ZONOID -->
           </div>
         </div>
       </div>
-      <!-- END OF DEMO 5 -->
+      <!-- END OF DEMO 6 -->
 
       <hr class="content-divider">
 
