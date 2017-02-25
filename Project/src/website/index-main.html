@@ -497,36 +497,96 @@
 
 
     <div class="background-light" id="chapter-3-background">
-      <div class="container-fluid content-block">
+      <div class="container-fluid content-block" id="chapter-3-intro">
         <div class="row">
-          <div class="col-8 fade-in-object fade-left">
-            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
-              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
-              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
-              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
-              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
-              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
-              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
-              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+          <div class="col-8">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block">
+                <div class="card-text">
+                  In the previous chapter we have seen how it is possible to compute zonoids by exploiting their relationship with k-levels.
+                  <br/> But that's the end of the story! In fact, zonoids are linked to even more powerful geometrical structures,
+                  called <b>k-levels</b>.
+                  <br/>
+                  <br/> K-levels are related to point-line duality, and they play a crucial role in the efficient computation
+                  of zonoids and zonoid depth.
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-4 fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">Useful algorithms:</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-              </ul>
-            </section>
+
+          <!--Right column of the first section-->
+          <div class="col-4">
+            <div class="card fade-in-object fade-right" id="chapter-2-summary">
+              <div class="card-block">
+                <h4 class="card-title">In this chapter:</h4>
+                <ul>
+                  <li>Recap of point-line duality</li>
+                  <li>Definition and properties of k-levels</li>
+                  <li>Duality between zonoids and k-levels</li>
+                  <li>Zonoid depth and k-levels</li>
+                </ul>
+              </div>
+            </div>
+            <!--END OF CHAPTER SUMMARY-->
           </div>
         </div>
       </div>
 
+      <div class="container-fluid content-block" id="k-levels-intro">
+        <div class="row justify-content-end">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block">
+                <div class="card-text">
+                  Before delving deep in the definition of k-levels, let's revise the notion of point-line duality:
+                  <div class="card equation-card" id="point-line-duality">
+                    <div class="card-block equation-block">
+                      <h4 class="card-title">Point-line duality</h4>
+                      <div class="card-text">
+                        Given a point \(p = (p_1, p_2)\), the dual of \(p\) is the line \(p* = \{(x,y):y=p_1x - p_2\}\). Viceversa, the dual of a
+                        line \(l = \{(x,y):y=ax + b\}\) is the point \(l^*=(a, -b)\).
+                        <br/>
+                        <br/> Point-line duality has the following properties:
+                        <section>
+                          <ul>
+                            <li>It is <i>incidence preserving</i>: \(p \in l\) if and only if \(l^* \in p^*\).</li>
+                            <li>It is <i>order preserving</i>: \(p\) lies above \(l\) if and only if \(l^*\) lies above \(p^*\).</li>
+                          </ul>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--END OF CARD-->
+
+            <div class="card fade-in-object fade-left" id="k-level-def-pt2">
+              <div class="card-block" id="k-level-def-pt2-block">
+                <div class="card-text">
+                  <br/> Now, let's finally look at k-levels:
+                </div>
+                <!--END OF TEXT-->
+                <div class="card equation-card" id="zonoid-vertex-formula">
+                  <div class="card-block equation-block">
+                    <h3 class="card-title">K-Level</h3>
+                    <div class="card-text">
+                      Given a set \(L\) of \(n\) lines, the <b>k-level</b> of \(L\) is the closure of the set of all points
+                      that lie on exactly one line of \(L\) and strictly <b>above</b> \(k-1\) lines.
+                      <br/>
+                      <br/> The <i>reflex vertices</i> of the k-level are points on the k-level that are found at the intersection
+                      of 2 lines, and are above \(k-2\) lines (hence the need to have the closuse of the set).
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
 
       <!--DEMO 4: K-LEVELS -->
-      <hr class="content-divider">
-
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
@@ -537,26 +597,78 @@
             <div class="card">
               <div class="card-block">
                 <h3 class="card-title">DRAWING K-LEVELS</h3>
-                <div class="card-text">In this demo, it is visualized the k-level of a set of dual lines.
+                <div class="card-text">In this demo, it is visualized the k-level of a set of dual lines, and its reflex vertices.
                   <ul>
                     <li>Scroll the mouse wheel to visualize the k-level for different values of \(k\)</li>
                   </ul>
-                  A simple, but inefficient, way to compute the k-level is to start from the k-th line at \(-\infty\), then compute the intersection
-                  of that line with the other lines. 
+                  The simplest way to compute the k-level is to start from the k-th line at \(-\infty\), then compute the intersection of that
+                  line with the other lines.
                   <br/>
+                  <br/> The next line to be followed in the k-level is the one with the leftmost intersection.
                   <br/>
-                  The next line to be followed in the k-level is the one with the leftmost
-                  intersection.
-                  <br/>
-                  <br/>
-                   Repeat this step until no intersections are found!
+                  <br/> Repeat this step until no intersections are found!
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <hr class="content-divider">
       <!-- END OF DEMO 4 -->
+
+      <div class="container-fluid content-block" id="zonoids-k-level">
+        <div class="row justify-content-start">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block" id="zonoids-k-level-block">
+                <h3 class="card-title">Zonoids and k-levels</h3>
+                <div class="card-text">
+                  Now that we have defined what k-levels are, we can ask ourselves what's the link between them and zonoids! Let's look at
+                  <i>reflex vertices</i>: they are points in the k-level that in the dual plane are above \(k-2\) other lines.
+                  <br/>If we take these \(k-2\) lines, and add to this set the 2 lines that define the reflex vertex, we
+                  get a set of \(k\) lines, and a point which is above them in the dual plane.
+                  <br/>
+                  <br/> As we have seen, the point-line duality is <i>order preserving</i>: if we go back to the primal plane,
+                  the \(k\) lines will become \(k\) points, and the reflex vertex will become a line which is still <b>above</b>                  them. In short, we have found a <b>k-set</b>, where the separator is given by the reflex vertex!
+                  <br/>
+                </div>
+              </div>
+            </div>
+
+            <div class="card fade-in-object fade-left" id="zonoids-k-level-2">
+              <div class="card-block" id="zonoids-k-level-block-2">
+                <div class="card-text">
+                  Think for a moment how we can put together this new property with what we have seen in Chapter 2.
+                  <div class="card equation-card" id="point-line-duality">
+                    <div class="card-block equation-block">
+                      <div class="card-text">
+                        We can draw a vertical ray from the reflex vertex, and compute the intersections between this ray and the line below the
+                        k-level.
+                        <br/> Then, we compute the mean y-coordinate of the intersections.
+                        <br/> Repeat the procedure for every reflex vertex, and join the mean points. This will give a convex
+                        envelope in the dual plane, which represents the dual of the upper boundary of the zonoid!
+                        <br/>
+                        <br/> Indeed, the vertices of this envelope are dual to the edges of the zonoid in the primal plane,
+                        and the edges of the envelope are dual to the vertices of the zonoid!
+                        <br/>
+                        <br/> In a symmetric fashion, we can repeat the procedure for the \((n-k)\)-level: this time the
+                        reflex vertices will be below \(k-2\) lines, and the vertical rays will be traced upwards.
+                        <br/> In this way we can build another envelope, that represents the dual lower boundary of the zonoid!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--END OF TEXT -->
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
+
+
+
 
       <hr class="content-divider">
       <!--DEMO 5: K-LEVELS DUALITY-->
@@ -568,22 +680,47 @@
           </div>
 
           <div class="col fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">K-LEVELS</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to</li>
-                <li class="list-elem">Bootstrap grid system provides ive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid sysite layouts.</li>
-              </ul>
-            </section>
+            <div class="card">
+              <div class="card-block">
+                <h3 class="card-title">K-LEVELS AND ZONOIDS - PART 1</h3>
+                <div class="card-text">In this demo are displayed the \(k\)-level and the \((n-k)\)-level of a set of points.
+                  <ul>
+                    <li>The \(k\) level is orange, the \((n-k)\)-level is blue.</li>
+                    <li>For every reflex vertex, it is visualized the upward/downward ray.</li>
+                    <li>Then we compute the mean of the intersections of every ray, and join the mean points</li>
+                    <li>This will result in 2 envelopes, that are shaded in orange/blue</li>
+                    <li>These envelopes are the dual of the zonoid boundary!</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
+      <hr class="content-divider">
       <!-- END OF DEMO 5 -->
 
-      <hr class="content-divider">
+
+      <!--DEMO 6 INTRODUCTION-->
+      <div class="container-fluid content-block" id="zonoids-k-level-demo-6">
+        <div class="row justify-content-start">
+          <div class="col-8">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block" id="zonoids-k-level-demo-6-block">
+                <h3 class="card-title">K-LEVELS AND ZONOIDS - PART 2</h3>
+                <div class="card-text">
+                  After computing the 2 envelopes, we can go back to the primal plane and visualize the zonoid!
+                  <br/>
+                  <ul>
+                    <li>Scroll with the mouse wheel to visualize different k-zonoids.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--DEMO 6: K-LEVELS ZONOID -->
       <div class="container-fluid content-block">
         <div class="row">
@@ -593,19 +730,71 @@
           </div>
         </div>
       </div>
+      <hr class="content-divider">
       <!-- END OF DEMO 6 -->
 
-      <hr class="content-divider">
-
+      <div class="container-fluid content-block" id="zonoids-k-level-intersection">
+        <div class="row justify-content-start">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block" id="zonoids-k-level-block">
+                <h3 class="card-title">Zonoid point intersection and k-levels</h3>
+                <div class="card-text">
+                  The links between zonoids and k-levels don't stop here: let's now focus on checking wheter a point in the primal plane is
+                  inside or outside a given k-zonoid. The point in question will become a line in the dual plane: if the
+                  dual line doesn't intersect any of the 2 envelopes (the dual of the zonoid vertices), then the point is
+                  inside the zonoid.
+                  <br/>
+                  <br/> This happens because point/line duality is <i>order preserving</i>: if a point in the primal is outside
+                  the zonoid, it is above (or below) 2 different edges of the zonoid.
+                  <br/>In the dual plane, the dual line will be above the duals of those 2 edges, which in this case will
+                  be points on the 2 envelopes.
+                  <div class="card equation-card" id="zonoids-k-level-note">
+                    <div class="card-block equation-block">
+                      <h4 class="card-title">Important remark</h4>
+                      <div class="card-text">
+                        Note that the \((n-k)\)-level is computed symmetrically, so in this case the dual line will be <b>below</b>                        the upper envelope.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END OF ZONOID KLEVEL INTERSECTION -->
+      <!--DEMO 7 INTRODUCTION-->
+      <div class="container-fluid content-block" id="zonoids-k-level-demo-7">
+        <div class="row justify-content-end">
+          <div class="col-8">
+            <div class="card fade-in-object fade-right">
+              <div class="card-block" id="zonoids-k-level-demo-7-block">
+                <h3 class="card-title">K-LEVELS AND ZONOIDS - POINT INTERSECTION</h3>
+                <div class="card-text">
+                  Here we can see how the intersection between a point and a zonoid can be interpreted in the dual plane.
+                  <br/>
+                  <ul>
+                    <li>Move a point in the primal plane (on the right) to see the how the dual of the point behaves!</li>
+                    <li>If the point is inside the zonoid, the shaded regions are not intersected by the dual of the point.</li>
+                    <li>Scroll with the mouse wheel to display different zonoids.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--DEMO 7: K-LEVELS INTERSECTION -->
       <div class="container-fluid content-block">
         <div class="row">
           <div class="col fade-in-object fade-on">
             <div class="interactive-canvas" id="demo-zonoid-k-levels-intersection-canvas"></div>
-            <!--DEMO 6: K-LEVELS INTERSECTION -->
+            <!--DEMO 7: K-LEVELS INTERSECTION -->
           </div>
         </div>
       </div>
-      <!-- END OF DEMO 6 -->
+      <!-- END OF DEMO 7 -->
     </div>
     <!--END OF CHAPTER 3-->
     <!-- ############################################################ -->
