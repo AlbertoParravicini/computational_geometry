@@ -862,15 +862,19 @@
                   In this chapter we'll no longer work with bidimensional points, but we'll assume that our points have arbitrary dimensionality.
                   <br/> In the fields of statistics and machine learning points usually represent individuals, and their
                   coordinates are the values that the individuals have with respect to certain metrics.
-                   <div class="card" id="data-example">
+                  <div class="card" id="data-example">
                     <div class="card-block">
                       <div class="card-text">
-                        As a simple example, we can have 3D points in which each point represents a person, and each of the 3 axes represents the person's height, weight and salary.
-                        <br/>In this case, a set of points (also referred to as <i>data-cloud</i> or <i>point-cloud</i>) would represent a sample population. 
+                        As a simple example, we can have 3D points in which each point represents a person, and each of the 3 axes represents the
+                        person's height, weight and salary.
+                        <br/>In this case, a set of points (also referred to as <i>data-cloud</i> or <i>point-cloud</i>)
+                        would represent a sample population.
                       </div>
                     </div>
                   </div>
-                  It's not uncommon to deal with individuals with dozens, or even hundreds, of dimensions. As a consequence it emerges the need to have tools capable of addressing this high dimensionality, both in terms of robustness and computational speed.
+                  It's not uncommon to deal with individuals with dozens, or even hundreds, of dimensions. As a consequence it emerges the
+                  need to have tools capable of addressing this high dimensionality, both in terms of robustness and computational
+                  speed.
                 </div>
               </div>
             </div>
@@ -878,14 +882,17 @@
             <div class="card fade-in-object fade-left" id="zonoid-depth-app-intro-2">
               <div class="card-block" id="zonoid-depth-app-intro-2-block">
                 <div class="card-text">
-                  In statistics, it is often asked how <i>central</i>, or <i>deep</i>, a given point is with respect to a data-cloud. A variety of <b>depth measures</b> have been invented or employed: 
-                  in this context, we can look at the zonoid depth of a point as a measure of <i>how deep</i> the point is with respect to a data-cloud.
+                  In statistics, it is often asked how <i>central</i>, or <i>deep</i>, a given point is with respect to a
+                  data-cloud. A variety of <b>depth measures</b> have been invented or employed: in this context, we can
+                  look at the zonoid depth of a point as a measure of <i>how deep</i> the point is with respect to a data-cloud.
                   <br/>Intuitively, the higher the depth, the closer a point is to the <i>average</i> point in the cloud.
                   <br/>
-                  <br/>
-                  An attractive feature of zonoid depth is that is it <b>non-parametric</b>, which means that it doesn't assume any underlying distribution for the data-cloud.
-                  <br/>Not assuming an underlying distribution for the data (for example, a multivariate gaussian), makes zonoid depth a robust and versatile depth measure.
-                  <br/>Instead, zonoid depth characterize an empirical distribution by <b>trimmed regions</b>, sets of points with equal zonoid depth.
+                  <br/> An attractive feature of zonoid depth is that is it <b>non-parametric</b>, which means that it doesn't
+                  assume any underlying distribution for the data-cloud.
+                  <br/>Not assuming an underlying distribution for the data (for example, a multivariate gaussian), makes
+                  zonoid depth a robust and versatile depth measure.
+                  <br/>Instead, zonoid depth characterize an empirical distribution by <b>trimmed regions</b>, sets of points
+                  with equal zonoid depth.
                 </div>
                 <!--END OF TEXT -->
               </div>
@@ -896,7 +903,59 @@
       </div>
 
 
+      <hr class="content-divider">
+      <!--CLASSIFICATION WITH ZONOIDS-->
+      <div class="container-fluid content-block" id="classification">
+        <div class="row justify-content-end">
+          <div class="col-10">
+            <div class="card fade-in-object fade-right" id="classification-1">
+              <div class="card-block" id="classification-1-block">
+                <h3 class="card-title">Classification with zonoids</h3>
+                <div class="card-text">
+                  A common task in machine learning is the so-called <b>classification</b>: we are given a set of n-dimensional
+                  points, and each point has a <b>class</b>,; multiple points could belong to the same class (often, we deal
+                  with just 2 classes, and talk of <i>binary classification</i>). These points are referred to as <i>labelled</i>.
+                  <br/>
+                  <br/> Given a new unlabelled point (i.e. without a class), the goal of classification is to assign the
+                  most appropriate class to this point.
+                  <br/>Intuitively, we can say that each class should contain points that are somehow similar, and we want
+                  to assign the new point to the class that contains points that are the most similar to our unlabelled point.
+                  <br/>
 
+                  <div class="card" id="data-example">
+                    <div class="card-block">
+                      <div class="card-text">
+                        Consider again the 3D space where the axes represent one person's height, weight and salary. We can imagine that each point
+                        (i.e. each person) is assigned a label that represents its sex.
+                        <br/>Our assumption is that persons with the same sex will have similar characteristics in terms
+                        of height, weight and salary: given a new person with unknown sex, the idea is that it will be possible
+                        to accurately guess its sex just by knowing its height, weight and salary.
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="card fade-in-object fade-right" id="classification-2">
+              <div class="card-block" id="zclassification-2-block">
+                <div class="card-text">
+                  Zonoid depth can be used for classification in a quite natural way.
+                  <br/> The set of points that forms the data-cloud can be partitioned according to the class of each point.
+                  Given a new point, we can compute its zonoid depth with respect to each class, i.e. to each partition of
+                  the data-cloud. Then, the point will be assigned to the class with <i>highest depth</i>.
+                  <br/>
+                  <br/> When dealing with real data, having non-parametric classification rules such as the zonoid depth
+                  can be very useful, as we are not assuming any distribution relatively to our data.
+                </div>
+                <!--END OF TEXT -->
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
 
 
 
