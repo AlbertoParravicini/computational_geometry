@@ -227,9 +227,6 @@ a.splash-arrow:hover {
   bottom: 40px;
 }
 
-
-
-
 .equation-card {
   margin: 1em auto;
   border-left: 4px solid rgb(169, 53, 58);
@@ -244,13 +241,14 @@ a.splash-arrow:hover {
 #zonoid-intro.animated {
   animation-duration: 2s;
 }
+
 #zonoid-algo.animated {
   animation-duration: 2s;
 }
 
 #zonoid-algo {
   background-color: rgb(255, 250, 245);
-margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 #zonoid-example {
@@ -271,23 +269,24 @@ margin-bottom: 1em;
 }
 
 .parallax {
-    /* The image used */
-    background-image: url('../img/zonoid_cover.jpg');
-
-    /* Full height */
-    height: 100%; 
-
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    position: relative;
+  /* The image used */
+  background-image: url('../img/zonoid_cover.jpg');
+  /* Full height */
+  height: 100%;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
 }
 
 #chapter-2-intro {
   padding-bottom: 0.5em;
+}
+
+#chapter-2-summary, #chapter-3-summary, #chapter-4-summary {
+  background-color: rgb(255, 250, 245);
 }
 
 #k-sets-intro {
@@ -320,4 +319,13 @@ margin-bottom: 1em;
 
 #zonoids-k-level-2 {
   margin-top: 1.5em;
+}
+
+#data-example {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#zonoid-depth-app-intro-1 {
+  margin-bottom: 1.5em;
 }

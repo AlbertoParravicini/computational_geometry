@@ -814,31 +814,88 @@
 
 
     <div class="background-light" id="chapter-4-background">
-      <div class="container-fluid content-block">
+      <div class="container-fluid content-block" id="chapter-4-intro">
         <div class="row">
-          <div class="col-8  fade-in-object fade-left">
-            <p> Bootstrap grid system provides the quick and easy way to create responsive website layouts. As opposed to the
-              previous Bootstrap 2.x grid system which is fixed by default, the new version, i.e. Bootstrap 3 introduces
-              the responsive mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport
-              size increases. Bootstrap 3 includes predefined grid classes for quickly making grid layouts for different
-              types of devices like cell phones, tablets, laptops and desktops, etc. For example, you can use the .col-xs-*
-              class to create grid columns for extra small devices like cell phones, similarly the .col-sm-* class for small
-              screen devices like tablets, the .col-md-* class for medium size devices like desktops and the .col-lg-* for
-              large desktop screens. The following table summarizes some of the key features of the new grid system</p>
+          <div class="col-8">
+            <div class="card fade-in-object fade-left">
+              <div class="card-block">
+                <div class="card-text">
+                  After talking about all the geometrical structure of zonoids, it comes natural to ask how their properties can be employed
+                  outside of the theoretical domain of computaional geometry.
+                  <br/>In short, <b>what can we do with zonoids?</b>
+                  <br/>
+                  <br/> It turns out that the notion of zonoid depth plays an interesting role in the fields of statistics
+                  and machine learning.
+                  <br/> In this chapter we'll see why this is the case, and how zonoids are related to common tasks and algorithms
+                  in machine learning and data-analysis.
+                  <br/>
+                  <br/> Before going any further, it is crucial to have clear in mind the definition and the properties of
+                  <b>zonoid depth</b>. In case you need a refresher, check <a href="#zonoid-depth-definition">Chapter 1</a>.
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-4 fade-in-object fade-right">
-            <section>
-              <h3 class="text-center">Useful algorithms:</h3>
-              <ul>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-                <li class="list-elem">Bootstrap grid system provides the quick and easy way to create responsive website layouts.</li>
-              </ul>
-            </section>
+
+          <!--Right column of the first section-->
+          <div class="col-4">
+            <div class="card fade-in-object fade-right" id="chapter-4-summary">
+              <div class="card-block">
+                <h4 class="card-title">In this chapter:</h4>
+                <ul>
+                  <li>Why is zonoid depth used in statistics?</li>
+                  <li>Zonoid depth for <b>non-parametric classification</b></li>
+                  <li><b>SVMs</b> and zonoid depth</li>
+                </ul>
+              </div>
+            </div>
+            <!--END OF CHAPTER SUMMARY-->
           </div>
         </div>
       </div>
+
+      <div class="container-fluid content-block" id="zonoid-depth-app-intro">
+        <div class="row justify-content-start">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left" id="zonoid-depth-app-intro-1">
+              <div class="card-block" id="zonoid-depth-app-intro-1-block">
+                <div class="card-text">
+                  In this chapter we'll no longer work with bidimensional points, but we'll assume that our points have arbitrary dimensionality.
+                  <br/> In the fields of statistics and machine learning points usually represent individuals, and their
+                  coordinates are the values that the individuals have with respect to certain metrics.
+                   <div class="card" id="data-example">
+                    <div class="card-block">
+                      <div class="card-text">
+                        As a simple example, we can have 3D points in which each point represents a person, and each of the 3 axes represents the person's height, weight and salary.
+                        <br/>In this case, a set of points (also referred to as <i>data-cloud</i> or <i>point-cloud</i>) would represent a sample population. 
+                      </div>
+                    </div>
+                  </div>
+                  It's not uncommon to deal with individuals with dozens, or even hundreds, of dimensions. As a consequence it emerges the need to have tools capable of addressing this high dimensionality, both in terms of robustness and computational speed.
+                </div>
+              </div>
+            </div>
+
+            <div class="card fade-in-object fade-left" id="zonoid-depth-app-intro-2">
+              <div class="card-block" id="zonoid-depth-app-intro-2-block">
+                <div class="card-text">
+                  In statistics, it is often asked how <i>central</i>, or <i>deep</i>, a given point is with respect to a data-cloud. A variety of <b>depth measures</b> have been invented or employed: 
+                  in this context, we can look at the zonoid depth of a point as a measure of <i>how deep</i> the point is with respect to a data-cloud.
+                  <br/>Intuitively, the higher the depth, the closer a point is to the <i>average</i> point in the cloud.
+                  <br/>
+                  <br/>
+                  An attractive feature of zonoid depth is that is it <b>non-parametric</b>, which means that it doesn't assume any underlying distribution for the data-cloud.
+                  <br/>Not assuming an underlying distribution for the data (for example, a multivariate gaussian), makes zonoid depth a robust and versatile depth measure.
+                  <br/>Instead, zonoid depth characterize an empirical distribution by <b>trimmed regions</b>, sets of points with equal zonoid depth.
+                </div>
+                <!--END OF TEXT -->
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
+
+
 
 
 
