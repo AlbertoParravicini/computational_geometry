@@ -333,3 +333,42 @@ a.splash-arrow:hover {
 #classification-1 {
   margin-bottom: 1.5em;
 }
+
+#svm-2 {
+  margin-top: 1.5em;
+}
+
+.references-list {
+  counter-reset: big-counter;
+}
+
+.references-list dt:before {
+  content: counter(big-counter);
+  counter-increment: big-counter;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font: bold 3em Sans-Serif;
+}
+
+.references-list dt {
+  position: relative;
+  padding: 0 0 10px 0;
+}
+
+.references-list dt, .references-list dd {
+  padding-left: 50px;
+}
+
+.end {
+  height: 100%;
+  background-color: #d4d4d2;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center 
+}
+
+#ulb-logo {
+ margin: 0
+}

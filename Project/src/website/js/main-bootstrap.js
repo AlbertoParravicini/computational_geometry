@@ -7,6 +7,7 @@ $(document).ready(function () {
       $(".splash").slideUp(1000, function () {
         $(".wrapper").css({ "display": "block" })
         $(".wrapper").css("opacity", "1");
+        $(".end").css("opacity", "1");
         $('.wrapper').addClass("animated fadeInUp");
         $(".splash").css({ "display": "hidden" })
         $('#chapter1').addClass("animated fadeInLeft");
@@ -52,6 +53,7 @@ $(document).ready(function () {
     $(".wrapper").css({ "display": "block" })
     $(".splash").slideUp(1000, function () {
       $(".wrapper").css("opacity", "1");
+      $(".end").css("opacity", "1");
       $('.wrapper').addClass("animated fadeInUp");
     });
   });

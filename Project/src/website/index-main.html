@@ -35,8 +35,8 @@
   <script type="text/javascript" src="./js/demos/test_k_sets_animation.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_levels_1.js"></script>
   <script type="text/javascript" src="./js/demos/test_k_levels_base.js"></script>
-  <!--<script type="text/javascript" src="./js/demos/test_k_levels.js"></script>
-  <script type="text/javascript" src="./js/demos/test_k_levels_intersection.js"></script>-->
+  <script type="text/javascript" src="./js/demos/test_k_levels.js"></script>
+  <script type="text/javascript" src="./js/demos/test_k_levels_intersection.js"></script>
 
 </head>
 
@@ -894,6 +894,9 @@
                   <br/>Instead, zonoid depth characterize an empirical distribution by <b>trimmed regions</b>, sets of points
                   with equal zonoid depth.
                 </div>
+                <br/>
+                <br/> A drawback of zonoid depth as a depth measure is that it is \(0\) for every point \(x \notin CH(S)\),
+                i.e. for every point outside the convex hull of the data-cloud.
                 <!--END OF TEXT -->
               </div>
             </div>
@@ -939,7 +942,7 @@
             </div>
 
             <div class="card fade-in-object fade-right" id="classification-2">
-              <div class="card-block" id="zclassification-2-block">
+              <div class="card-block" id="classification-2-block">
                 <div class="card-text">
                   Zonoid depth can be used for classification in a quite natural way.
                   <br/> The set of points that forms the data-cloud can be partitioned according to the class of each point.
@@ -957,7 +960,107 @@
         </div>
       </div>
 
+      <hr class="content-divider">
+      <!--SVM WITH ZONOIDS-->
+      <div class="container-fluid content-block" id="svm">
+        <div class="row justify-content-end">
+          <div class="col-10">
+            <div class="card fade-in-object fade-right" id="svm-1">
+              <div class="card-block" id="svm1-1-block">
+                <h3 class="card-title">Support vector machines and Zonoids</h3>
+                <div class="card-text">
+                  Support vector machines (<b>SVMs</b>) are a very powerful algorithm used in classification. It exists a
+                  strong link between zonoids and a common extension of SVMs, called <b>soft-margin SVM</b>: this section
+                  will present the geometrical intuition behind soft-margin SVMs, and how it relates to zonoids.
 
+                  <br/>
+                  <br/> Explaining the details of SVMs is outside the scope of this work, and it is assumed that the reader
+                  already has a small background on the topic. If not, it is advised to refer to the references to get an
+                  in-depth explanation of the topic.
+                  <br/>
+                  <br/> We suppose that we are given a data-cloud, and we want to perform <i>binary classification</i>. In
+                  other words, we want to find a way to separate the points belonging to the first class (referred to as
+                  <i>positive examples</i>), from the points in the second class (<i>negative examples</i>).
+                  <br/> SVMs try to do so by finding 2 parallel hyperplanes defined by \(wx = b_+\) and \(wx = b_-\) such
+                  that \(wx_i \leq b_-,\ \forall i \in I_-\) and \(wx_i \geq b_+,\ \forall i \in I_+\), where \(I_+\) and
+                  \(I_-\) are the set of <i>positive</i> and <i>negative</i> points.
+                  <br/> Basically, we look for 2 parallel planes such that the points of each class are all on one side of
+                  each plane, and among all the possible planes, we pick the 2 with greatest distance.
+                </div>
+              </div>
+            </div>
+
+            <div class="card fade-in-object fade-right" id="svm-2">
+              <div class="card-block" id="svm-2-block">
+                <div class="card-text">
+                  The dual problem of finding the 2 parallel hyperplanes with maximum distance that separate positive and negative points,
+                  is to minimize the distance of the points in the convex hulls of \(I_+\) and \(I_-\).
+                  <br/>
+                  <div class="card equation-card" id="svm-formula">
+                    <div class="card-block equation-block">
+                      <div class="card-text">
+                        $$\operatorname*{min}_{\alpha_i}\left\| \sum_{i \in I_+}{\alpha_i x_i} - \sum_{i \in I_-}{\alpha_i x_i}\right \|^2\ subject\
+                        to\ 0\leq \alpha_i \leq 1,\ \sum_{i \in I_+}{\alpha_i} = 1,\ \sum_{i \in I_-}{\alpha_i} = 1$$
+                      </div>
+                    </div>
+                  </div>
+                  <br/> By fixing a value for the vector \(\alpha\), we are considering 2 points in the convex hulls of \(I_+\)
+                  and \(I_-\), and of all the points, we want to find the pair that is closest. This pair will be given by
+                  picking the 2 convex hull vertices (1 for each hull) that are the closest. The separating hyperplanes will
+                  be tangent to the hulls in exactly these 2 points.
+
+                </div>
+                <!--END OF TEXT -->
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
+      <!--SOFT MARGIN SVM WITH ZONOIDS-->
+      <div class="container-fluid content-block" id="smsvm">
+        <div class="row justify-content-start">
+          <div class="col-10">
+            <div class="card fade-in-object fade-left" id="smsvm-1">
+              <div class="card-block" id="smsvm-1-block">
+                <h3 class="card-title">Soft margin SVM and Zonoids</h3>
+                <div class="card-text">
+                  The previous formulation of SVM works only under the assumption that exists a plane that can separate the positive points
+                  from the negative points. When working in real life applications, this is usually not the case: to overcome
+                  the issue, it has been introduced a variant of SVM, called <b>soft-margin SVM</b>.
+                  <br/>
+                  <br/> In soft-margin SVM we still look for a separating hyperplane, but this time we allow some of the
+                  points to be on the wrong side of the plane. These missclassified points will have a penalty assigned,
+                  which will influence the optimization process.
+                  <br/> This time, we want each of the points to satisfy \(wx_i \leq b_- + \xi_i,\ \forall i \in I_-\) and
+                  \(wx_i \geq b_+ - \xi_i,\ \forall i \in I_+\), where \(\xi_i\) is a slack variable that works as penalty
+                  factor.
+                  <br/>
+                  <br/> This time the dual formulation of the problem will be:
+
+                  <div class="card equation-card" id="smsvm-formula">
+                    <div class="card-block equation-block">
+                      <div class="card-text">
+                        $$\operatorname*{min}_{\alpha_i}\left\| \sum_{i \in I_+}{\alpha_i x_i} - \sum_{i \in I_-}{\alpha_i x_i}\right \|^2\ subject\
+                        to\ 0\leq \alpha_i \leq \mu,\ \sum_{i \in I_+}{\alpha_i} = 1,\ \sum_{i \in I_-}{\alpha_i} = 1$$
+                      </div>
+                    </div>
+                  </div>
+                  <br/> We are imposing that \(\alpha\) can be no larger that a certain value \(\mu\), which is the same
+                  as the zonoid formulation seen in <a href="#zonoid-definition">Chapter 1</a>! Once again, we are looking
+                  for a pair of points with minimum distance, but this time we are constraining them to be on the zonoids
+                  of \(I_+\) and \(I_-\).
+                  <br/> Clearly, we want these zonoids to be as close as possible to the convex hulls, in order to mimimize
+                  the penalty factor.
+
+                </div>
+                <!--END OF TEXT -->
+              </div>
+            </div>
+            <!--END OF CARD-->
+          </div>
+        </div>
+      </div>
 
     </div>
     <!--END OF CHAPTER 4-->
@@ -966,10 +1069,47 @@
     <!-- ############################################################ -->
     <!-- ############################################################ -->
 
+
     <footer id="footer" class="chapter-header jumbotron">
+      <div class="container-fluid content-block" id="references">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <div class="card fade-in-object fade-on equation-card" id="references-card">
+              <div class="card-block equation-block" id="references-block">
+                <h3 class="card-title">References</h3>
+                <div class="card-text">
+                  <dl class="references-list">
+                    <dt><b>Mosler, Karl, and Richard Hoberg.</b> "Data analysis and classification with the zonoid depth." DIMACS
+                      Series in Discrete Mathematics and Theoretical Computer Science 72 (2006): 49.</dt>
+                    <dt><b>Mosler, Karl.</b> "Depth statistics." Robustness and complex data structures. Springer Berlin Heidelberg,
+                      2013. 17-34.</dt>
+                    <dt><b>Morin, Pat.</b> "An optimal randomized algorithm for d-variate zonoid depth." Computational Geometry
+                      39.3 (2008): 229-235.</dt>
+                    <dt><b>Gopala, Harish, and Pat Morin.</b> "Algorithms for bivariate zonoid depth." Computational Geometry
+                      39.1 (2008): 2-13.
+                    </dt>
+                    <dt><b>Bern, Marshall, and David Eppstein.</b> "Optimization over zonotopes and training support vector machines."
+                      Workshop on Algorithms and Data Structures. Springer Berlin Heidelberg, 2001.</dt>
+                    <dt><b>Dyckerhoff, Rainer, Karl Mosler, and Gleb Koshevoy.</b> "Zonoid data depth: Theory and computation."
+                      COMPSTAT. Physica-Verlag HD, 1996.</dt>
+                    <dt><b>Lange, Tatjana, Karl Mosler, and Pavlo Mozharovskyi.</b> "Fast nonparametric classification based
+                      on data depth." Statistical Papers 55.1 (2014): 49-69. </dt>
+                    </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   </div>
 
+  <div class="end">
+
+
+    <img src="./img/logo3lg.png" alt="" id="ulb-logo">
+
+  </div>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
