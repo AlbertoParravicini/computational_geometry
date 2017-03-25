@@ -3,7 +3,7 @@
   var k_level_1_demo, k_levels_1_p5;
 
   k_level_1_demo = function(p_o) {
-    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, h, input_points, k, k_level_d, k_level_u, num_input_points, reflex_vertices_d, reflex_vertices_u, scale_factor, w, zonoid, zonoid_lines, zonoid_vertices_d, zonoid_vertices_u;
+    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, dual_lines_temp, h, input_points, k, k_level_u, k_level_u_temp, num_input_points, reflex_vertices_u, reflex_vertices_u_temp, scale_factor, w, zonoid, zonoid_lines, zonoid_vertices_u;
     input_points = [new Point(0.31, 3), new Point(0.1, 0.6), new Point(0.4, 1.2), new Point(-0.4, 4.2), new Point(-0.3, 5), new Point(0.9, 0.3), new Point(0.8, -0.6), new Point(-0.8, 6), new Point(0.05, 2)];
     default_color = [121, 204, 147, 200];
     num_input_points = 15;
@@ -12,13 +12,13 @@
     h = 480;
     canvas_bound_original = 5;
     dual_lines = [];
+    dual_lines_temp = [];
     k = 1;
     k_level_u = [];
     reflex_vertices_u = [];
     zonoid_vertices_u = [];
-    k_level_d = [];
-    reflex_vertices_d = [];
-    zonoid_vertices_d = [];
+    k_level_u_temp = [];
+    reflex_vertices_u_temp = [];
     zonoid_lines = [];
     zonoid = [];
     p_o.setup = function() {
@@ -31,46 +31,46 @@
         p = input_points[j];
         dual_lines.push(create_line_from_m_q(p.x, p.y));
       }
+      dual_lines_temp = dual_lines.map(function(l) {
+        return [new Point(l.start.x * scale_factor, l.start.y * scale_factor), new Point(l.end.x * scale_factor, l.end.y * scale_factor)];
+      });
       k_level_u = compute_k_level(dual_lines, k, {
         reverse: true
       });
       reflex_vertices_u = compute_reflex_vertices(k_level_u, {
         up: false
       });
-      return zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, {
+      zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, {
         up: false
+      });
+      k_level_u_temp = k_level_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      return reflex_vertices_u_temp = reflex_vertices_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
       });
     };
     p_o.draw = function() {
-      var i, j, k_level_u_temp, l, len, len1, m, n, p, ref, ref1, ref2, results;
+      var i, j, l, len, len1, m, n, p, ref, results;
       p_o.background(253, 253, 253);
       p_o.fill("black");
       p_o.stroke("black");
-      ref = dual_lines.map(function(l) {
-        return [new Point(l.start.x * scale_factor, l.start.y * scale_factor), new Point(l.end.x * scale_factor, l.end.y * scale_factor)];
-      });
-      for (j = 0, len = ref.length; j < len; j++) {
-        l = ref[j];
+      for (j = 0, len = dual_lines_temp.length; j < len; j++) {
+        l = dual_lines_temp[j];
         p_o.stroke(default_color);
         p_o.strokeWeight(2);
         p_o.line(l[0].x, l[0].y, l[1].x, l[1].y);
       }
       p_o.fill(143, 27, 10, 200);
       p_o.stroke(231, 120, 58, 200);
-      k_level_u_temp = k_level_u.map(function(p) {
-        return new Point(p.x * scale_factor, p.y * scale_factor);
-      });
-      for (i = m = 1, ref1 = k_level_u.length - 1; 1 <= ref1 ? m <= ref1 : m >= ref1; i = 1 <= ref1 ? ++m : --m) {
+      for (i = m = 1, ref = k_level_u.length - 1; 1 <= ref ? m <= ref : m >= ref; i = 1 <= ref ? ++m : --m) {
         p_o.strokeWeight(6);
         p_o.line(k_level_u_temp[i - 1].x, k_level_u_temp[i - 1].y, k_level_u_temp[i].x, k_level_u_temp[i].y);
       }
       p_o.strokeWeight(1);
-      ref2 = reflex_vertices_u.map(function(p) {
-        return new Point(p.x * scale_factor, p.y * scale_factor);
-      });
       results = [];
-      for (n = 0, len1 = ref2.length; n < len1; n++) {
-        p = ref2[n];
+      for (n = 0, len1 = reflex_vertices_u_temp.length; n < len1; n++) {
+        p = reflex_vertices_u_temp[n];
         p_o.fill(143, 27, 10, 200);
         p_o.stroke(231, 120, 58, 200);
         results.push(p_o.ellipse(p.x, p.y, 20, 20));
@@ -92,8 +92,14 @@
       k_level_u = compute_k_level(dual_lines, k, {
         reverse: true
       });
-      return reflex_vertices_u = compute_reflex_vertices(k_level_u, {
+      reflex_vertices_u = compute_reflex_vertices(k_level_u, {
         up: false
+      });
+      k_level_u_temp = k_level_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      return reflex_vertices_u_temp = reflex_vertices_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
       });
     };
     return draw_poly = function(p_o, points, arg) {

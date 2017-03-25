@@ -45,6 +45,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
 
   dual_lines = []
+  dual_lines_temp = []
 
   k = 3
 
@@ -57,9 +58,19 @@ zonoids_k_level_intersection_demo = (p_o) ->
   zonoid_vertices_d = []
 
   zonoid_lines = []
+  zonoid_lines_temp = []
+
+  k_level_u_temp = []
+  reflex_vertices_u_temp = []
+  k_level_d_temp = []
+  reflex_vertices_d_temp = []
+
+  zonoid_vertices_u_temp = []
+  zonoid_vertices_d_temp = []
 
 
   zonoid = []
+  zonoid_temp = []
 
 
   p_o.setup = () ->
@@ -71,7 +82,12 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
     for p in input_points
       dual_lines.push(create_line_from_m_q(p.x, p.y))
-    
+    # For displaying the duals
+    dual_lines_temp = dual_lines.map((l) -> return [
+        new Point(l.start.x * scale_factor, l.start.y * scale_factor),
+        new Point(l.end.x * scale_factor, l.end.y * scale_factor)
+        ])
+
 
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
@@ -81,13 +97,30 @@ zonoids_k_level_intersection_demo = (p_o) ->
     reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
     zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
 
+    # For displaying the duals
+    k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_u_temp = reflex_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_d_temp = reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+
     zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
     for p_i in zonoid_dual_vertices
       zonoid_lines.push(new Line(new Point(-10000, -p_i.x * -10000 + p_i.y), new Point(10000, -p_i.x * 10000 + p_i.y), -p_i.x, p_i.y))
 
 
     zonoid = compute_zonoid(input_points, k:k-1)
+
+    zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+    zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
       
+    zonoid_lines_temp = zonoid_lines.map((l) -> return [
+      new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
+      new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
+      ]) 
   p_o.draw = () -> 
     p_o.background(253, 253, 253)
 
@@ -95,10 +128,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.stroke("black");
 
 
-    for l in dual_lines.map((l) -> return [
-        new Point(l.start.x * scale_factor, l.start.y * scale_factor),
-        new Point(l.end.x * scale_factor, l.end.y * scale_factor)
-        ])
+    for l in dual_lines_temp
       p_o.stroke(default_color)
       p_o.strokeWeight(2)
       p_o.line(l[0].x, l[0].y, l[1].x, l[1].y)
@@ -107,7 +137,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     # DRAW K-LEVEL UPPER   
     p_o.fill(143, 27, 10, 200)  
     p_o.stroke(231, 120, 58, 200)
-    k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    #k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
     for i in [1..k_level_u.length - 1]
       p_o.strokeWeight(6)
       
@@ -115,7 +145,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.strokeWeight(1)
 
     # DRAW REFLEX VERTICES UPPER
-    for p in reflex_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    for p in reflex_vertices_u_temp
       p_o.fill(143, 27, 10, 200)  
       p_o.stroke(231, 120, 58, 200)
       p_o.ellipse(p.x, p.y, 20, 20)
@@ -132,7 +162,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.fill(143, 27, 10, 200)  
     p_o.stroke(231, 120, 58, 200);
     p_o.strokeWeight(6)
-    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    #zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
     if zonoid_vertices_u_temp.length > 1
       for i in [1..zonoid_vertices_u_temp.length - 1]
         p_o.line(zonoid_vertices_u_temp[i - 1].x, zonoid_vertices_u_temp[i - 1].y, zonoid_vertices_u_temp[i].x, zonoid_vertices_u_temp[i].y)
@@ -150,7 +180,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     # # DRAW K-LEVEL LOWER   
     p_o.fill(98, 122, 161, 200)  
     p_o.stroke(21, 32, 50, 200); 
-    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    #k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
     for i in [1..k_level_d_temp.length - 1]
       p_o.strokeWeight(6)
       p_o.line(k_level_d_temp[i - 1].x, k_level_d_temp[i - 1].y, k_level_d_temp[i].x, k_level_d_temp[i].y)
@@ -158,7 +188,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
 
     # # DRAW REFLEX VERTICES LOWER
-    for p in reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    for p in reflex_vertices_d_temp
       p_o.fill(98, 122, 161, 200)  
       p_o.stroke(21, 32, 50, 200); 
       p_o.ellipse(p.x, p.y, 20, 20)
@@ -175,7 +205,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.fill(98, 122, 161, 200)  
     p_o.stroke(21, 32, 50, 200); 
     p_o.strokeWeight(6)
-    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    #zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
     if zonoid_vertices_d_temp.length > 1
       for i in [1..zonoid_vertices_d_temp.length - 1]
         p_o.line(zonoid_vertices_d_temp[i - 1].x, zonoid_vertices_d_temp[i - 1].y, zonoid_vertices_d_temp[i].x, zonoid_vertices_d_temp[i].y)
@@ -205,8 +235,8 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.stroke(143, 114, 93, 200)
 
     #DRAW THE ZONOID COMPUTED THROUGH KSETS
-    zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
-    zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
+    # zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+    # zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
     for z_i in zonoid_temp
       p_o.fill(16, 74, 34, 180)
       p_o.stroke(16, 74, 34, 255)
@@ -227,10 +257,7 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
     # DRAW ZONOID BASED ON THE DUAL REFLEX VERTICES
     p_o.stroke(143, 114, 93, 120)
-    for l_i in zonoid_lines.map((l) -> return [
-        new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
-        new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
-        ])
+    for l_i in zonoid_lines_temp
       p_o.line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y)
 
     # DRAW QUERY POINT AND DUAL
@@ -280,12 +307,29 @@ zonoids_k_level_intersection_demo = (p_o) ->
     reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
     zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
 
+    # For displaying the duals
+    k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_u_temp = reflex_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_d_temp = reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+
     zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
     zonoid_lines = []
     for p_i in zonoid_dual_vertices
       zonoid_lines.push(new Line(new Point(-10000, -p_i.x * -10000 + p_i.y), new Point(10000, -p_i.x * 10000 + p_i.y), -p_i.x, p_i.y))
 
     zonoid = compute_zonoid(input_points, k:k-1)
+    zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+    zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
+    
+    zonoid_lines_temp = zonoid_lines.map((l) -> return [
+      new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
+      new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
+      ]) 
       
 
   draw_poly = (p_o, points, {fill_color, stroke_color} = {}) ->
