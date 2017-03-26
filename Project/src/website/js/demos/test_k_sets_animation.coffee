@@ -33,6 +33,10 @@ zonoids_k_sets_anim_demo = (p_o) ->
   # True if we can start the animation. It is set to true after the canvas has appeared
   start_animation = false
 
+  slider = false
+  label = false
+
+
   k_sets = false
 
   sep_p1 = false
@@ -46,6 +50,12 @@ zonoids_k_sets_anim_demo = (p_o) ->
     p_o.frameRate(10)
 
     canvas.mouseWheel(canvas_mouseWheel)
+
+    slider = p_o.createSlider(1, input_points.length, k, 1);
+    slider.changed(select_event);
+
+    label = p_o.createElement('p', 'Value of K');
+    label.html("<b>K:</b> " + k)
 
     k_sets = compute_k_sets_disc_2(input_points, k:k)
     sep_p1 = k_sets[current_k_set].separator[0]
@@ -69,6 +79,8 @@ zonoids_k_sets_anim_demo = (p_o) ->
     
     # Play the zonoid build-up animation 
     if build_zonoid and start_animation
+       #disable slider for the animation
+      slider.attribute("disabled", "true")
 
       # Draw the separator
       p_o.strokeWeight(5)
@@ -108,6 +120,8 @@ zonoids_k_sets_anim_demo = (p_o) ->
       else 
         build_zonoid = false
         current_duration = 0
+        #enable slider for the animation
+        slider.removeAttribute("disabled")
       
     # Draw the final zonoid
     else
@@ -133,6 +147,9 @@ zonoids_k_sets_anim_demo = (p_o) ->
         k = 1
       if k > input_points.length
         k = input_points.length
+
+      label.html("<b>K:</b> " + k)
+      slider.value(k)
       k_sets = compute_k_sets_disc_2(input_points, k:k)
       current_k_set = 0
       sep_p1 = k_sets[current_k_set].separator[0]
@@ -147,7 +164,6 @@ zonoids_k_sets_anim_demo = (p_o) ->
 
 
   draw_poly = (p_o, points, {fill_color, stroke_color} = {}) ->
-
     fill_color ?= default_color
     stroke_color ?= default_color
     p_o.fill(fill_color[0], fill_color[1], fill_color[2], fill_color[3])
@@ -156,6 +172,30 @@ zonoids_k_sets_anim_demo = (p_o) ->
     for p_i in points 
       p_o.vertex(p_i.x, p_i.y)
     p_o.endShape(p_o.CLOSE)
+
+  select_event = () ->
+    if !build_zonoid and current_duration == animation_duration
+      k = slider.value()
+      label.html("<b>K:</b> " + k)       
+
+      if event.deltaY > 0
+        k -= 1
+      else if event.deltaY < 0
+        k += 1
+      if k < 1
+        k = 1
+      if k > input_points.length
+        k = input_points.length
+      k_sets = compute_k_sets_disc_2(input_points, k:k)
+      current_k_set = 0
+      sep_p1 = k_sets[current_k_set].separator[0]
+      sep_p2 = k_sets[current_k_set].separator[1]
+      m_sep = (sep_p2.y - sep_p1.y) / (sep_p2.x - sep_p1.x)
+      q_sep = (sep_p1.y * sep_p2.x - sep_p2.y * sep_p1.x) / (sep_p2.x - sep_p1.x)
+      zonoid = []
+      zonoid.push(k_sets[current_k_set].mean_point)
+      build_zonoid = true
+      current_duration = 0
     
 # Instantiate a local variable for p5
 zonoids_k_sets_anim_p5 = new p5(zonoids_k_sets_anim_demo, "demo-zonoid-k-sets-anim-canvas")

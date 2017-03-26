@@ -10,12 +10,12 @@ zonoids_depth_demo = (p_o) ->
 
   default_color = [121, 204, 147, 40]
 
+  label = false
+
 
   h = 480
   w = 640
 
-  # for i in [0..num_input_points - 1]
-  #    input_points.push(new Point(Math.floor(Math.random() * w), Math.floor(Math.random() * h)))
 
   zonoid = []
 
@@ -62,6 +62,9 @@ zonoids_depth_demo = (p_o) ->
     canvas_zonoid_depth = p_o.createCanvas(w, h)
     p_o.fill('red')   
     p_o.frameRate(20)
+
+    label = p_o.createElement('p', '<b>ZONOID DEPTH:</b> 0');
+    
   
 
   p_o.draw = () -> 
@@ -88,6 +91,7 @@ zonoids_depth_demo = (p_o) ->
       [zonoid, k_depth] = compute_zonoid_depth(input_points, new Point(p_o.mouseX, p_o.mouseY), return_zonoid:true)
       if k_depth > 0
         console.log "DEPTH: ", k_depth 
+        label.html("<b>ZONOID DEPTH:</b> " + k_depth)
         for z_i in zonoid
           p_o.fill(16, 74, 34, 165)
           p_o.stroke(16, 74, 34, 255)

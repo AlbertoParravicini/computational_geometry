@@ -16,6 +16,9 @@ zonoids_k_sets_demo = (p_o) ->
 
   k = 1
 
+  slider = false
+  label = false
+
   zonoid = []
 
   ###################
@@ -50,7 +53,16 @@ zonoids_k_sets_demo = (p_o) ->
     p_o.fill('red')   
     p_o.frameRate(10)
 
+    slider = p_o.createSlider(1, input_points.length, k, 0.1);
+    slider.changed(select_event);
+
+    label = p_o.createElement('p', 'Value of K');
+    label.html("<b>K:</b> " + k)
+
     canvas.mouseWheel(canvas_mouseWheel)
+
+    zonoid = compute_zonoid(input_points, k:k)
+    zonoid = radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true)
 
   p_o.draw = () -> 
     p_o.background(253, 253, 253)
@@ -82,9 +94,17 @@ zonoids_k_sets_demo = (p_o) ->
         k = 1
       if k > input_points.length
         k = input_points.length
+      slider.value(k)
+      label.html("<b>K:</b> " + k)
       zonoid = compute_zonoid(input_points, k:k)
       zonoid = radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true)
 
+  select_event = () ->
+    k = slider.value()
+    label.html("<b>K:</b> " + k)
+    zonoid = compute_zonoid(input_points, k:k)
+    zonoid = radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true)
+    
 
 
 
@@ -97,6 +117,8 @@ zonoids_k_sets_demo = (p_o) ->
       k = 1
     if k > input_points.length
       k = input_points.length
+    slider.value(k)
+    label.html("<b>K:</b> " + k)
     zonoid = compute_zonoid(input_points, k:k)
     zonoid = radial_sort(zonoid, anchor: leftmost_point(zonoid), cw: true)
 
