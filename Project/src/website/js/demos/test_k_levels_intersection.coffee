@@ -72,6 +72,9 @@ zonoids_k_level_intersection_demo = (p_o) ->
   zonoid = []
   zonoid_temp = []
 
+  slider = false
+  label = false
+
 
   p_o.setup = () ->
     canvas = p_o.createCanvas(w, h)
@@ -88,6 +91,13 @@ zonoids_k_level_intersection_demo = (p_o) ->
         new Point(l.end.x * scale_factor, l.end.y * scale_factor)
         ])
 
+    slider = p_o.createSlider(2, input_points.length, k, 1);
+    slider.changed(select_event);
+    slider.position(0, 590);
+
+    label = p_o.createElement('p', 'Value of K');
+    label.html("<b>K:</b> " + k)
+    label.position(10, 570);
 
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
@@ -221,10 +231,11 @@ zonoids_k_level_intersection_demo = (p_o) ->
 
 
     # DRAW THE PRIMAL ON THE RIGHT SIDE
-    draw_poly(p_o, [new Point(w / 2, 0), new Point(w, 0), new Point(w, h), new Point(w / 2, h)], fill_color:[253, 253, 253, 255], stroke_color:[0,0,0,0])
+    w_2 = w / 2
+    draw_poly(p_o, [new Point(w_2, 0), new Point(w, 0), new Point(w, h), new Point(w_2, h)], fill_color:[253, 253, 253, 255], stroke_color:[0,0,0,0])
     p_o.stroke(143, 114, 93, 120)
     p_o.strokeWeight(6)
-    p_o.line(w / 2, 0, w / 2, h)
+    p_o.line(w_2, 0, w_2, h)
     p_o.stroke("black")
     p_o.strokeWeight(1)
 
@@ -299,6 +310,10 @@ zonoids_k_level_intersection_demo = (p_o) ->
       k = 2
     if k > dual_lines.length 
       k = dual_lines.length 
+
+    slider.value(k)
+    label.html("<b>K:</b> " + k)
+
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
     zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
@@ -345,6 +360,44 @@ zonoids_k_level_intersection_demo = (p_o) ->
     p_o.fill("black")
     p_o.stroke("black")
     
+  select_event = () ->
+    k = slider.value()
+    label.html("<b>K:</b> " + k)
+    k_level_u = compute_k_level(dual_lines, k, reverse:true)
+    reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
+    
+    k_level_u = compute_k_level(dual_lines, k, reverse:true)
+    reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
+    zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
+
+    k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
+    reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
+    zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
+
+    # For displaying the duals
+    k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_u_temp = reflex_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_d_temp = reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+
+    zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d)
+    zonoid_lines = []
+    for p_i in zonoid_dual_vertices
+      zonoid_lines.push(new Line(new Point(-10000, -p_i.x * -10000 + p_i.y), new Point(10000, -p_i.x * 10000 + p_i.y), -p_i.x, p_i.y))
+
+    zonoid = compute_zonoid(input_points, k:k-1)
+    zonoid_temp = zonoid.map((p) -> return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100))
+    zonoid_temp = radial_sort(zonoid_temp, anchor: leftmost_point(zonoid_temp), cw: true)
+    
+    zonoid_lines_temp = zonoid_lines.map((l) -> return [
+      new Point(l.start.x * (scale_factor * 2) + w * 0.75, l.start.y * scale_factor + 100),
+      new Point(l.end.x * (scale_factor * 2) + w * 0.75, l.end.y * scale_factor + 100)
+      ]) 
+      
 
 # Instantiate a local variable for p5
 zonoid_k_levels_intersection_p5 = new p5(zonoids_k_level_intersection_demo, "demo-zonoid-k-levels-intersection-canvas")

@@ -68,6 +68,10 @@ k_level_base_demo = (p_o) ->
 
   zonoid = []
 
+  slider = false
+  label = false
+
+
 
   p_o.setup = () ->
     canvas = p_o.createCanvas(w, h)
@@ -84,6 +88,11 @@ k_level_base_demo = (p_o) ->
         new Point(l.end.x * scale_factor, l.end.y * scale_factor)
         ])
 
+    slider = p_o.createSlider(2, input_points.length, k, 1);
+    slider.changed(select_event);
+
+    label = p_o.createElement('p', 'Value of K');
+    label.html("<b>K:</b> " + k)
 
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
@@ -211,6 +220,31 @@ k_level_base_demo = (p_o) ->
       k = 2
     if k > dual_lines.length 
       k = dual_lines.length 
+
+    slider.value(k)
+    label.html("<b>K:</b> " + k)
+
+    k_level_u = compute_k_level(dual_lines, k, reverse:true)
+    reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
+    zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
+
+    k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, reverse:true)
+    reflex_vertices_d = compute_reflex_vertices(k_level_d, up:true)
+    zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, up:true)
+
+    # For displaying the duals
+    k_level_u_temp = k_level_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_u_temp = reflex_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    k_level_d_temp = k_level_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    reflex_vertices_d_temp = reflex_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+    zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+    zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
+
+  select_event = () ->
+    k = slider.value()
+    label.html("<b>K:</b> " + k)
+    
     k_level_u = compute_k_level(dual_lines, k, reverse:true)
     reflex_vertices_u = compute_reflex_vertices(k_level_u, up:false)
     zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, up:false)
@@ -227,7 +261,6 @@ k_level_base_demo = (p_o) ->
 
     zonoid_vertices_u_temp = zonoid_vertices_u.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
     zonoid_vertices_d_temp = zonoid_vertices_d.map((p) -> return new Point(p.x * scale_factor, p.y * scale_factor))
-
  
       
 

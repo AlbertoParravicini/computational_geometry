@@ -3,7 +3,7 @@
   var k_level_1_demo, k_levels_1_p5;
 
   k_level_1_demo = function(p_o) {
-    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, dual_lines_temp, h, input_points, k, k_level_u, k_level_u_temp, num_input_points, reflex_vertices_u, reflex_vertices_u_temp, scale_factor, w, zonoid, zonoid_lines, zonoid_vertices_u;
+    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, dual_lines_temp, h, input_points, k, k_level_u, k_level_u_temp, label, num_input_points, reflex_vertices_u, reflex_vertices_u_temp, scale_factor, select_event, slider, w, zonoid, zonoid_lines, zonoid_vertices_u;
     input_points = [new Point(0.31, 3), new Point(0.1, 0.6), new Point(0.4, 1.2), new Point(-0.4, 4.2), new Point(-0.3, 5), new Point(0.9, 0.3), new Point(0.8, -0.6), new Point(-0.8, 6), new Point(0.05, 2)];
     default_color = [121, 204, 147, 200];
     num_input_points = 15;
@@ -21,6 +21,8 @@
     reflex_vertices_u_temp = [];
     zonoid_lines = [];
     zonoid = [];
+    slider = false;
+    label = false;
     p_o.setup = function() {
       var canvas, j, len, p;
       canvas = p_o.createCanvas(w, h);
@@ -34,6 +36,10 @@
       dual_lines_temp = dual_lines.map(function(l) {
         return [new Point(l.start.x * scale_factor, l.start.y * scale_factor), new Point(l.end.x * scale_factor, l.end.y * scale_factor)];
       });
+      slider = p_o.createSlider(1, input_points.length, k, 1);
+      slider.changed(select_event);
+      label = p_o.createElement('p', 'Value of K');
+      label.html("<b>K:</b> " + k);
       k_level_u = compute_k_level(dual_lines, k, {
         reverse: true
       });
@@ -89,6 +95,24 @@
       if (k > dual_lines.length) {
         k = dual_lines.length;
       }
+      k_level_u = compute_k_level(dual_lines, k, {
+        reverse: true
+      });
+      reflex_vertices_u = compute_reflex_vertices(k_level_u, {
+        up: false
+      });
+      slider.value(k);
+      label.html("<b>K:</b> " + k);
+      k_level_u_temp = k_level_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      return reflex_vertices_u_temp = reflex_vertices_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+    };
+    select_event = function() {
+      k = slider.value();
+      label.html("<b>K:</b> " + k);
       k_level_u = compute_k_level(dual_lines, k, {
         reverse: true
       });

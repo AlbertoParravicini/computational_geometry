@@ -3,7 +3,7 @@
   var zonoid_k_levels_p5, zonoids_k_level_demo;
 
   zonoids_k_level_demo = function(p_o) {
-    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, dual_lines_temp, h, input_points, k, k_level_d, k_level_d_temp, k_level_u, k_level_u_temp, num_input_points, reflex_vertices_d, reflex_vertices_d_temp, reflex_vertices_u, reflex_vertices_u_temp, scale_factor, w, zonoid, zonoid_lines, zonoid_vertices_d, zonoid_vertices_d_temp, zonoid_vertices_u, zonoid_vertices_u_temp;
+    var canvas_bound_original, canvas_mouseWheel, default_color, draw_poly, dual_lines, dual_lines_temp, h, input_points, k, k_level_d, k_level_d_temp, k_level_u, k_level_u_temp, label, num_input_points, reflex_vertices_d, reflex_vertices_d_temp, reflex_vertices_u, reflex_vertices_u_temp, scale_factor, select_event, slider, w, zonoid, zonoid_lines, zonoid_temp, zonoid_vertices_d, zonoid_vertices_d_temp, zonoid_vertices_u, zonoid_vertices_u_temp;
     input_points = [new Point(0.31, 3), new Point(0.1, 0.6), new Point(0.4, 1.2), new Point(-0.4, 4.2), new Point(-0.3, 5), new Point(0.9, 0.3), new Point(0.8, -0.6), new Point(-0.8, 6), new Point(0.05, 2)];
     default_color = [121, 204, 147, 200];
     num_input_points = 15;
@@ -28,6 +28,9 @@
     zonoid_vertices_d_temp = [];
     zonoid_lines = [];
     zonoid = [];
+    zonoid_temp = [];
+    slider = false;
+    label = false;
     p_o.setup = function() {
       var canvas, j, len, len1, m, p, p_i, zonoid_dual_vertices;
       canvas = p_o.createCanvas(w, h);
@@ -59,6 +62,12 @@
       zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, {
         up: true
       });
+      slider = p_o.createSlider(2, dual_lines.length, k, 1);
+      slider.changed(select_event);
+      slider.position(0, 590);
+      label = p_o.createElement('p', 'Value of K');
+      label.html("<b>K:</b> " + k);
+      label.position(10, 570);
       k_level_u_temp = k_level_u.map(function(p) {
         return new Point(p.x * scale_factor, p.y * scale_factor);
       });
@@ -82,12 +91,19 @@
         p_i = zonoid_dual_vertices[m];
         zonoid_lines.push(new Line(new Point(-10000, -p_i.x * -10000 + p_i.y), new Point(10000, -p_i.x * 10000 + p_i.y), -p_i.x, p_i.y));
       }
-      return zonoid = compute_zonoid(input_points, {
+      zonoid = compute_zonoid(input_points, {
         k: k - 1
+      });
+      zonoid_temp = zonoid.map(function(p) {
+        return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100);
+      });
+      return zonoid_temp = radial_sort(zonoid_temp, {
+        anchor: leftmost_point(zonoid_temp),
+        cw: true
       });
     };
     p_o.draw = function() {
-      var i, i1, j, j1, l, l_i, len, len1, len2, len3, len4, len5, len6, len7, m, n, o, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, s, t, u, v, x, y, z, z_i, zonoid_slice_d, zonoid_slice_u, zonoid_temp;
+      var i, i1, j, j1, l, l_i, len, len1, len2, len3, len4, len5, len6, len7, m, n, o, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, s, t, u, v, w_2, x, y, z, z_i, zonoid_slice_d, zonoid_slice_u;
       p_o.background(253, 253, 253);
       p_o.fill("black");
       p_o.stroke("black");
@@ -183,13 +199,14 @@
           });
         }
       }
-      draw_poly(p_o, [new Point(w / 2, 0), new Point(w, 0), new Point(w, h), new Point(w / 2, h)], {
+      w_2 = w / 2;
+      draw_poly(p_o, [new Point(w_2, 0), new Point(w, 0), new Point(w, h), new Point(w_2, h)], {
         fill_color: [253, 253, 253, 255],
         stroke_color: [0, 0, 0, 0]
       });
       p_o.stroke(143, 114, 93, 120);
       p_o.strokeWeight(6);
-      p_o.line(w / 2, 0, w / 2, h);
+      p_o.line(w_2, 0, w_2, h);
       p_o.stroke("black");
       p_o.strokeWeight(1);
       p_o.fill(85, 185, 102, 60);
@@ -209,9 +226,6 @@
         l_i = ref7[i1];
         p_o.line(l_i[0].x, l_i[0].y, l_i[1].x, l_i[1].y);
       }
-      zonoid_temp = zonoid.map(function(p) {
-        return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100);
-      });
       for (j1 = 0, len7 = zonoid_temp.length; j1 < len7; j1++) {
         z_i = zonoid_temp[j1];
         p_o.fill(16, 74, 34, 180);
@@ -220,10 +234,7 @@
         p_o.ellipse(z_i.x, z_i.y, 10, 10);
       }
       if (zonoid_temp.length > 0) {
-        return draw_poly(p_o, radial_sort(zonoid_temp, {
-          anchor: leftmost_point(zonoid_temp),
-          cw: true
-        }), {
+        return draw_poly(p_o, zonoid_temp, {
           fill_color: [78, 185, 120, 160],
           stroke_color: [16, 74, 34, 255]
         });
@@ -242,6 +253,8 @@
       if (k > dual_lines.length) {
         k = dual_lines.length;
       }
+      slider.value(k);
+      label.html("<b>K:</b> " + k);
       k_level_u = compute_k_level(dual_lines, k, {
         reverse: true
       });
@@ -284,11 +297,18 @@
       zonoid_vertices_d_temp = zonoid_vertices_d.map(function(p) {
         return new Point(p.x * scale_factor, p.y * scale_factor);
       });
-      return zonoid = compute_zonoid(input_points, {
+      zonoid = compute_zonoid(input_points, {
         k: k - 1
       });
+      zonoid_temp = zonoid.map(function(p) {
+        return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100);
+      });
+      return zonoid_temp = radial_sort(zonoid_temp, {
+        anchor: leftmost_point(zonoid_temp),
+        cw: true
+      });
     };
-    return draw_poly = function(p_o, points, arg) {
+    draw_poly = function(p_o, points, arg) {
       var fill_color, j, len, p_i, ref, stroke_color;
       ref = arg != null ? arg : {}, fill_color = ref.fill_color, stroke_color = ref.stroke_color;
       if (fill_color == null) {
@@ -307,6 +327,63 @@
       p_o.endShape(p_o.CLOSE);
       p_o.fill("black");
       return p_o.stroke("black");
+    };
+    return select_event = function() {
+      var j, len, p_i, zonoid_dual_vertices;
+      k = slider.value();
+      label.html("<b>K:</b> " + k);
+      k_level_u = compute_k_level(dual_lines, k, {
+        reverse: true
+      });
+      reflex_vertices_u = compute_reflex_vertices(k_level_u, {
+        up: false
+      });
+      zonoid_vertices_u = compute_zonoid_vertices_from_reflex(reflex_vertices_u, dual_lines, {
+        up: false
+      });
+      k_level_d = compute_k_level(dual_lines, dual_lines.length - k + 1, {
+        reverse: true
+      });
+      reflex_vertices_d = compute_reflex_vertices(k_level_d, {
+        up: true
+      });
+      zonoid_vertices_d = compute_zonoid_vertices_from_reflex(reflex_vertices_d, dual_lines, {
+        up: true
+      });
+      zonoid_dual_vertices = zonoid_vertices_u.concat(zonoid_vertices_d);
+      zonoid_lines = [];
+      for (j = 0, len = zonoid_dual_vertices.length; j < len; j++) {
+        p_i = zonoid_dual_vertices[j];
+        zonoid_lines.push(new Line(new Point(-10000, -p_i.x * -10000 + p_i.y), new Point(10000, -p_i.x * 10000 + p_i.y), -p_i.x, p_i.y));
+      }
+      k_level_u_temp = k_level_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      reflex_vertices_u_temp = reflex_vertices_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      k_level_d_temp = k_level_d.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      reflex_vertices_d_temp = reflex_vertices_d.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      zonoid_vertices_u_temp = zonoid_vertices_u.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      zonoid_vertices_d_temp = zonoid_vertices_d.map(function(p) {
+        return new Point(p.x * scale_factor, p.y * scale_factor);
+      });
+      zonoid = compute_zonoid(input_points, {
+        k: k - 1
+      });
+      zonoid_temp = zonoid.map(function(p) {
+        return new Point(p.x * (scale_factor * 2) + w * 0.75, p.y * scale_factor + 100);
+      });
+      return zonoid_temp = radial_sort(zonoid_temp, {
+        anchor: leftmost_point(zonoid_temp),
+        cw: true
+      });
     };
   };
 
