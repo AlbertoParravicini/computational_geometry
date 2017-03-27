@@ -370,8 +370,19 @@ a.splash-arrow:hover {
 }
 
 #ulb-logo {
- margin: 0
+ margin: 0;
 }
+
+#bonus-demo-chapter {
+  height: 10rem;
+  padding: 1em;
+}
+
+#bonus-demo-body {
+  overflow: hidden;
+}
+
+
 
 /* STYLE THE SLIDER */
 /*http://danielstern.ca/range.css/?ref=css-tricks#/*/
