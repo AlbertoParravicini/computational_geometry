@@ -134,9 +134,9 @@ zonoids_k_level_intersection_demo = (p_o) ->
       p_o.fill(default_color)  
       p_o.stroke(default_color) 
       p_o.strokeWeight(2)
-      while y < h
-        p_o.ellipse(p.x, y, 2, 2)
-        y += 10
+      # while y < h
+      #   p_o.ellipse(p.x, y, 2, 2)
+      #   y += 10
       
     # DRAW ZONOID UPPER  
     p_o.fill(143, 27, 10, 200)  
@@ -177,9 +177,9 @@ zonoids_k_level_intersection_demo = (p_o) ->
       p_o.fill(default_color)  
       p_o.stroke(default_color) 
       p_o.strokeWeight(2)
-      while y > 0
-        p_o.ellipse(p.x, y, 2, 2)
-        y -= 10
+      # while y > 0
+      #   p_o.ellipse(p.x, y, 2, 2)
+      #   y -= 10
 
     # DRAW ZONOID LOWER  
     p_o.fill(98, 122, 161, 200)  

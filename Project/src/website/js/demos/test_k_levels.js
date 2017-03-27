@@ -129,10 +129,6 @@
         p_o.fill(default_color);
         p_o.stroke(default_color);
         p_o.strokeWeight(2);
-        while (y < h) {
-          p_o.ellipse(p.x, y, 2, 2);
-          y += 10;
-        }
       }
       p_o.fill(143, 27, 10, 200);
       p_o.stroke(231, 120, 58, 200);
@@ -172,10 +168,6 @@
         p_o.fill(default_color);
         p_o.stroke(default_color);
         p_o.strokeWeight(2);
-        while (y > 0) {
-          p_o.ellipse(p.x, y, 2, 2);
-          y -= 10;
-        }
       }
       p_o.fill(98, 122, 161, 200);
       p_o.stroke(21, 32, 50, 200);
