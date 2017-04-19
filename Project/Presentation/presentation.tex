@@ -1,0 +1,195 @@
+\documentclass[14pt, handout]{beamer}
+
+% Presento style file
+\usepackage{config/presento}
+
+% Remove "figure" label in figures
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% custom command and packages
+\input{config/custom-command}
+
+% Information
+\title{ZONOIDS}
+\author{Alberto Parravicini}
+\institute{Université libre de Bruxelles}
+\date{April 19, 2017}
+
+\setbeamertemplate{bibliography item}[text] % No icons in bibliography
+
+\begin{document}
+
+% Title page
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+
+% SUMMARY %%%%%%%%%%%%
+
+\begin{frame}{A super short summary:}
+ \begin{fullpageitemize}
+  \item<1->[\rtarrow] {\montserratfont\ Some interesting facts}
+  \item<2->[\rtarrow] {\montserratfont\ Zonoids \& K-Sets}
+  \item<3->[\rtarrow] {\montserratfont\ Zonoids \& K-Levels}
+  \item<4->[\rtarrow] {\montserratfont\ Applications}
+ \end{fullpageitemize}
+\end{frame}
+
+
+% DEFINITIONS %%%%%%%%%%%%
+
+\section{Definitions \& Properties}
+\begin{frame}{Definition}
+    \begin{fullpageitemize}		
+     \item<1->You might recall...
+     \item<2->Given a set of points $S = \{p_1,\ p_2,\ \ldots,\ p_n\} \subset \mathbb{R}^d$
+     \item<3->[\rtarrow]\textbf{Convex Hull:} $CH(S) = \left \{ \sum_{i=1}^{n}{\lambda_ip_i:\ 0\leq\lambda_i\leq 1}, \sum_{i=1}^{n}{\lambda_i=1} \right\}$
+     \item<4->Let's impose a constraint on $\lambda_i$, i.e. $\lambda_i\leq\frac{1}{k}\ \forall k \in [1, n]$ 
+     \item<5->[\rtarrow]$Z_k(S) = \left \{ \sum_{i=1}^{n}{\lambda_ip_i:\ 0\leq\lambda_i\leq\frac{1}{k}}, \sum_{i=1}^{n}{\lambda_i=1}\right \}$
+    \end{fullpageitemize}	
+\end{frame}
+
+\begin{frame}{What does it look like?}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth, keepaspectratio=1]{{"./images/zonoid_1"}.png}
+        \caption{\emph{A place-holder zonoid, for $k=3$. Look at the demo instead!}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Cool facts!}
+    \begin{fullpageitemize}
+    \item<1->[\rtarrow]For $k = 1$, we get the convex hull.
+    \item<2->[\rtarrow]For $k = n$, we find the mean point of $S$ (as $\lambda_i = \frac{1}{n}\ \forall i$).
+    \item<3->[\rtarrow]\(\forall k,\ Z_k(S)\) is a \textbf{convex} polygon.
+    \item<4->[\rtarrow]If \(k_1 > k_2\), then \(Z_{k_1} \subseteq Z_{k_2}\).
+    \end{fullpageitemize}
+\end{frame}
+
+\begin{frame}{Zonoid depth}
+    \begin{fullpageitemize}
+        \item<1->The \textbf{zonoid depth} of \(x\) with respect to \(S\)
+        is the \textbf{max} value of \(k\) s.t. \(x \in Z_k(S)\). 
+        \item<2->$$D(x, S) = \left\{\begin{array}{ll}
+        max\{k\ | \ x \in Z_k(S)\},\ if\ x \in CH(S) \\ 0,\ otherwise \end{array}\right.$$
+        \item<3->[\rtarrow]\textbf{Affine invariant}: \(D(Ax + Ab, AS + Ab) = D(x, S),\ \forall A:\mathbb{R}^{d \times d},b \in \mathbb{R}^d\)
+        \item<4->[\rtarrow]\textbf{Zero at infinity}: \(\lim_{\|x\| \rightarrow \infty}{D(x, S)} = 0\).
+    \end{fullpageitemize}
+\end{frame}    
+
+\begin{frame}{What does it look like?}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth, keepaspectratio=1]{{"./images/zonoid_depth"}.png}
+        \caption{\emph{Zonoid depth $=5$. Look at the demo instead!}}
+    \end{figure}
+\end{frame}
+
+
+% KSETS %%%%%%%%%%%%
+
+\section{K-Sets \& Zonoids}
+\begin{frame}{K-Sets, definition}
+	\begin{center}
+		\begin{fullpageitemize}		
+			\item<1->[\rtarrow] How can we draw a zonoid?		
+			\item<2->[\rtarrow] Exploit \textbf{K-Sets}!
+			\item<3->[\rtarrow] \textbf{K-Set}: subset of $S$ of size $k$ that can be separated from the other points in $S$ with a straight line.
+		\end{fullpageitemize}
+	\end{center}
+\end{frame}
+
+\begin{frame}{K-Sets \& Zonoids}
+    \begin{center}
+        \begin{fullpageitemize}		
+            \item<1->[\rtarrow] Obtain a vertex of the $k$-zonoid by giving $\lambda = 1$ to the $k$ extreme points in a direction.
+            \item<2->[\rtarrow] Equal to taking the mean of a certain $k$-set!
+            \item<3->[\rtarrow] Repeat for all $k$-sets and find all the vertices.
+            \item<4->[\rtarrow] Formally, the $k$-zonoid vertex $x$ in a direction $p$ is:\\
+            \(\operatorname*{arg\,max}_x \{p\cdot x\ |\ x \in Z_k(S)\} = \left ( \sum_{i=1}^{k}{\frac{1}{k}S_i^p} \right ) \)
+        \end{fullpageitemize}
+    \end{center}
+\end{frame}
+
+% KLEVELS %%%%%%%%%%%%
+
+\section{K-Levels \& Zonoids}
+\begin{frame}{K-Levels}
+    \begin{fullpageitemize}		
+        \item<1->[\rtarrow] The \textbf{k-level} of a set of lines \(L\) is the the set of points
+        on one line of \(L\) and strictly \textbf{above} \(k-1\) lines.
+        \item<2->[\rtarrow] \textbf{Reflex vertices}: points on the $k$-level found at the intersection
+        of 2 lines, and above \(k-2\) lines.
+        \item<3->[\rtarrow] \textbf{Point-line duality}: the dual of \(p = (p_1, p_2)\) is the line \(p* = \{(x,y):y=p_1x - p_2\}\). The dual of a
+        line \(l = \{(x,y):y=ax + b\}\) is the point \(l^*=(a, -b)\).
+    \end{fullpageitemize}
+\end{frame}
+
+\begin{frame}{K-Level, visually}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth, keepaspectratio=1]{{"./images/k_level"}.png}
+		\caption{\emph{$k$-level of a set of lines, for $k=3$}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{K-Levels \& Zonoids, 1}
+    \begin{fullpageitemize}		
+        \item<1->[\rtarrow] \textbf{Reflex vertices} are above or equal $k$ lines. 
+        \item<2->[\rtarrow] In the primal plane, a reflex vertex becomes a line above $k$ points.
+        \item<3->[\rtarrow] These $k$ points are a $k$-set in the primal plane!
+    \end{fullpageitemize}
+\end{frame}
+
+\begin{frame}{K-Levels \& Zonoids, 2}
+    \begin{fullpageitemize}		
+        \item<1->[\rtarrow] For each reflex vertex of the $k$-level, trace a downward vertical ray.
+        \item<2->[\rtarrow] Intersect the ray with the lines below the reflex vertex.
+        \item<3->[\rtarrow] Compute the mean point of the intersections, find an \textit{envelope}.
+        \item<4->[\rtarrow] It will be a line of the zonoid boundary, in the primal plane!
+        \item<5->[\rtarrow] Repeat for the $n-k$-level, with an upward ray.
+    \end{fullpageitemize}
+\end{frame}
+
+\begin{frame}{K-Level \& Zonoids, visually}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth, keepaspectratio=1]{{"./images/k_level_zonoid"}.png}
+        \caption{\emph{$3$-zonoid computed from the k-levels.}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Zonoid point inclusion}
+  \begin{fullpageitemize}		
+      \item<1->[\rtarrow] How can we check if a point is inside the $k$-zonoid?
+      \item<2->[\rtarrow] Look at the \textit{envelopes} of the zonoid in the dual plane.
+      \item<3->[\rtarrow] The point is included if its dual line intersects the envelopes.
+      \item<4-> It works as \textit{duality} is \textbf{order-preserving}:
+      \item<5-> If a primal point is outside, it is above (below) 2 edges of the zonoid. 
+      In the dual, the dual line will be above the duals of those 2 edges, i.e. points on the 2 envelopes.
+  \end{fullpageitemize}
+\end{frame} 
+    
+\begin{frame}{K-Level \& Zonoids, visually}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth, keepaspectratio=1]{{"./images/k_level_zonoid_inc"}.png}
+        \caption{\emph{The point is inside the zonoid, the dual line doesn't intersect the envelopes}}
+    \end{figure}
+\end{frame}    
+    
+\framecard[colorgreen]{{\color{white}\hugetext{THANK YOU!}}}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
+	\nocite{*}
+	\scriptsize{\bibliographystyle{plainurl}}	
+	\bibliography{../Latex/bibliography} %bibtex file name without .bib extension
+	\begin{baseitemize}
+		\item \textbf{Beamer theme:} \textit{Presento}, by 
+		Ratul Saha. \textit{The research system in Germany}, by Hazem Alsaied
+	\end{baseitemize}
+\end{frame}
+
+
+\end{document}
